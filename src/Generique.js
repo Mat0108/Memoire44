@@ -6,7 +6,7 @@ export class Terrain extends React.Component{
         this._x = props.x;
         this._y = props.y;
         this._grille = new Array(props.y).fill(0).map(() => new Array(props.x).fill({case:null,defense:null,unité:null,action:null}));   
-        this._grille[3][4] = {case:new Position(3,4),defense:null,unité:null};
+        this._grille[3][4] = {case:new Position(3,4,0),defense:null,unité:null};
         this._terrain = props.terrain
         this._list = []
     }
@@ -48,6 +48,9 @@ export class Position{
     constructor(posx,posy){
         this._posx = posx;
         this._posy = posy;
+        // this._portéetir = portéetir;
+        // this._portéedeplacementavectir = portéedeplacementavectir;
+        // this._portéedeplacementsanstir = portéedeplacementsanstir;
     }
     getX(){
         return this._posx;
@@ -61,159 +64,159 @@ export class Position{
     setY(){
         return this._posy;
     }
-    CaseProche(portée){ //x : 0-12 y : 0-8 portée : 1 - 2
-        let list = [
-            {x:this._posx-1,y:this._posy},
-            {x:this._posx+1,y:this._posy},
-            {x:this._posx,y:this._posy-1},
-            {x:this._posx,y:this._posy+1},
-            {x:this._posx+1,y:this._posy-1},
-            {x:this._posx+1,y:this._posy+1}
-        ]
-        if(portée == 2){
-            list.push({x:this._posx-2,y:this._posy});
-            list.push({x:this._posx-1,y:this._posy-1});
-            list.push({x:this._posx-1,y:this._posy+1}); //partie gauche du cercle
+    // PortéeDeplacement(){ //x : 0-12 y : 0-8 portée : 1 - 2
+    //     if(this.portéedeplacementsanstir){
 
-            list.push({x:this._posx-1,y:this._posy-2}); //partie haute et bas du cercle
-            list.push({x:this._posx-1,y:this._posy+2});
-            list.push({x:this._posx,y:this._posy-2});
-            list.push({x:this._posx,y:this._posy+2});
-            list.push({x:this._posx+1,y:this._posy-2});
-            list.push({x:this._posx+1,y:this._posy+2});
+    //     }
+    //     let list = [
+    //         {x:this._posx-1,y:this._posy,tir:},
+    //         {x:this._posx+1,y:this._posy},
+    //         {x:this._posx,y:this._posy-1},
+    //         {x:this._posx,y:this._posy+1},
+    //         {x:this._posx+1,y:this._posy-1},
+    //         {x:this._posx+1,y:this._posy+1}
+    //     ]
+    //     if(this._portéedeplacement == 2){
+    //         list.push({x:this._posx-2,y:this._posy});
+    //         list.push({x:this._posx-1,y:this._posy-1});
+    //         list.push({x:this._posx-1,y:this._posy+1}); //partie gauche du cercle
+
+    //         list.push({x:this._posx-1,y:this._posy-2}); //partie haute et bas du cercle
+    //         list.push({x:this._posx-1,y:this._posy+2});
+    //         list.push({x:this._posx,y:this._posy-2});
+    //         list.push({x:this._posx,y:this._posy+2});
+    //         list.push({x:this._posx+1,y:this._posy-2});
+    //         list.push({x:this._posx+1,y:this._posy+2});
             
-            list.push({x:this._posx+2,y:this._posy}); //partie droite du cercle
-            list.push({x:this._posx+2,y:this._posy-1});
-            list.push({x:this._posx+2,y:this._posy+1});
-        }
-        let updatelist = []
-        list.map(e=>{
-            if(e.x >= 0 && e.x < 13 && e.y >= 0 && e.y < 9){
-                updatelist.push(e)
-            }     
-        })
-        return updatelist;
-    }
-    Portée(dés){  //dés[0] = 3 dés[1] = 2 dés[2] = 0
-        let list = [
-            {x:this._posx-1,y:this._posy,dés:dés[0]},
-            {x:this._posx+1,y:this._posy,dés:dés[0]},
-            {x:this._posx,y:this._posy-1,dés:dés[0]},
-            {x:this._posx,y:this._posy+1,dés:dés[0]},
-            {x:this._posx+1,y:this._posy-1,dés:dés[0]},
-            {x:this._posx+1,y:this._posy+1,dés:dés[0]}
-        ]
-        if(portée >= 2){
-            list.push({x:this._posx-2,y:this._posy,dés:dés[1]});
-            list.push({x:this._posx-1,y:this._posy-1,dés:dés[1]});
-            list.push({x:this._posx-1,y:this._posy+1,dés:dés[1]}); //partie gauche du cercle
+    //         list.push({x:this._posx+2,y:this._posy}); //partie droite du cercle
+    //         list.push({x:this._posx+2,y:this._posy-1});
+    //         list.push({x:this._posx+2,y:this._posy+1});
+    //     }
+    //     let updatelist = []
+    //     list.map(e=>{
+    //         if(e.x >= 0 && e.x < 13 && e.y >= 0 && e.y < 9){
+    //             updatelist.push(e)
+    //         }     
+    //     })
+    //     return updatelist;
+    // }
+    // PortéeTir(dés){  //dés[0] = 3 dés[1] = 2 dés[2] = 0
+    //     let list = [
+    //         {x:this._posx-1,y:this._posy,dés:dés[0]},
+    //         {x:this._posx+1,y:this._posy,dés:dés[0]},
+    //         {x:this._posx,y:this._posy-1,dés:dés[0]},
+    //         {x:this._posx,y:this._posy+1,dés:dés[0]},
+    //         {x:this._posx+1,y:this._posy-1,dés:dés[0]},
+    //         {x:this._posx+1,y:this._posy+1,dés:dés[0]}
+    //     ]
+    //     if(this._portée >= 2){
+    //         list.push({x:this._posx-2,y:this._posy,dés:dés[1]});
+    //         list.push({x:this._posx-1,y:this._posy-1,dés:dés[1]});
+    //         list.push({x:this._posx-1,y:this._posy+1,dés:dés[1]}); //partie gauche du cercle
 
-            list.push({x:this._posx-1,y:this._posy-2,dés:dés[1]}); //partie haute et bas du cercle
-            list.push({x:this._posx-1,y:this._posy+2,dés:dés[1]});
-            list.push({x:this._posx,y:this._posy-2,dés:dés[1]});
-            list.push({x:this._posx,y:this._posy+2,dés:dés[1]});
-            list.push({x:this._posx+1,y:this._posy-2,dés:dés[1]});
-            list.push({x:this._posx+1,y:this._posy+2,dés:dés[1]});
+    //         list.push({x:this._posx-1,y:this._posy-2,dés:dés[1]}); //partie haute et bas du cercle
+    //         list.push({x:this._posx-1,y:this._posy+2,dés:dés[1]});
+    //         list.push({x:this._posx,y:this._posy-2,dés:dés[1]});
+    //         list.push({x:this._posx,y:this._posy+2,dés:dés[1]});
+    //         list.push({x:this._posx+1,y:this._posy-2,dés:dés[1]});
+    //         list.push({x:this._posx+1,y:this._posy+2,dés:dés[1]});
             
-            list.push({x:this._posx+2,y:this._posy,dés:dés[1]}); //partie droite du cercle
-            list.push({x:this._posx+2,y:this._posy-1,dés:dés[1]});
-            list.push({x:this._posx+2,y:this._posy+1,dés:dés[1]});
-        }
-        if(portée >= 3){
-            list.push({x:this._posx-3,y:this._posy,dés:dés[2]}); //partie gauche du cercle
-            list.push({x:this._posx-3,y:this._posy-1,dés:dés[2]});
-            list.push({x:this._posx-3,y:this._posy+1,dés:dés[2]});
-            list.push({x:this._posx-2,y:this._posy-2,dés:dés[2]});
-            list.push({x:this._posx-2,y:this._posy+2,dés:dés[2]});
+    //         list.push({x:this._posx+2,y:this._posy,dés:dés[1]}); //partie droite du cercle
+    //         list.push({x:this._posx+2,y:this._posy-1,dés:dés[1]});
+    //         list.push({x:this._posx+2,y:this._posy+1,dés:dés[1]});
+    //     }
+    //     if(portée >= 3){
+    //         list.push({x:this._posx-3,y:this._posy,dés:dés[2]}); //partie gauche du cercle
+    //         list.push({x:this._posx-3,y:this._posy-1,dés:dés[2]});
+    //         list.push({x:this._posx-3,y:this._posy+1,dés:dés[2]});
+    //         list.push({x:this._posx-2,y:this._posy-2,dés:dés[2]});
+    //         list.push({x:this._posx-2,y:this._posy+2,dés:dés[2]});
 
 
-            list.push({x:this._posx+3,y:this._posy,dés:dés[2]}); //partie droite du cercle
-            list.push({x:this._posx+2,y:this._posy-1,dés:dés[2]});
-            list.push({x:this._posx+2,y:this._posy+1,dés:dés[2]});
-            list.push({x:this._posx+2,y:this._posy-2,dés:dés[2]});
-            list.push({x:this._posx+2,y:this._posy+2,dés:dés[2]});
+    //         list.push({x:this._posx+3,y:this._posy,dés:dés[2]}); //partie droite du cercle
+    //         list.push({x:this._posx+2,y:this._posy-1,dés:dés[2]});
+    //         list.push({x:this._posx+2,y:this._posy+1,dés:dés[2]});
+    //         list.push({x:this._posx+2,y:this._posy-2,dés:dés[2]});
+    //         list.push({x:this._posx+2,y:this._posy+2,dés:dés[2]});
 
             
-            list.push({x:this._posx-2,y:this._posy+3,dés:dés[2]}); //partie haute du cercle
-            list.push({x:this._posx-1,y:this._posy+3,dés:dés[2]});
-            list.push({x:this._posx,y:this._posy+3,dés:dés[2]});
-            list.push({x:this._posx+1,y:this._posy+3,dés:dés[2]});
+    //         list.push({x:this._posx-2,y:this._posy+3,dés:dés[2]}); //partie haute du cercle
+    //         list.push({x:this._posx-1,y:this._posy+3,dés:dés[2]});
+    //         list.push({x:this._posx,y:this._posy+3,dés:dés[2]});
+    //         list.push({x:this._posx+1,y:this._posy+3,dés:dés[2]});
 
-            list.push({x:this._posx-2,y:this._posy-3,dés:dés[2]}); //partie basse du cercle
-            list.push({x:this._posx-1,y:this._posy-3,dés:dés[2]});
-            list.push({x:this._posx,y:this._posy-3,dés:dés[2]});
-            list.push({x:this._posx+1,y:this._posy-3,dés:dés[2]});
-        }
-        if(portée >=4){
-            list.push({x:this._posx-4,y:this._posy,dés:dés[3]}); //partie gauche du cercle
-            list.push({x:this._posx-4,y:this._posy-1,dés:dés[3]});
-            list.push({x:this._posx-4,y:this._posy+1,dés:dés[3]});
-            list.push({x:this._posx-3,y:this._posy-2,dés:dés[3]});
-            list.push({x:this._posx-3,y:this._posy+2,dés:dés[3]});
-            list.push({x:this._posx-3,y:this._posy-3,dés:dés[3]});
-            list.push({x:this._posx-3,y:this._posy+3,dés:dés[3]});
+    //         list.push({x:this._posx-2,y:this._posy-3,dés:dés[2]}); //partie basse du cercle
+    //         list.push({x:this._posx-1,y:this._posy-3,dés:dés[2]});
+    //         list.push({x:this._posx,y:this._posy-3,dés:dés[2]});
+    //         list.push({x:this._posx+1,y:this._posy-3,dés:dés[2]});
+    //     }
+    //     if(portée >=4){
+    //         list.push({x:this._posx-4,y:this._posy,dés:dés[3]}); //partie gauche du cercle
+    //         list.push({x:this._posx-4,y:this._posy-1,dés:dés[3]});
+    //         list.push({x:this._posx-4,y:this._posy+1,dés:dés[3]});
+    //         list.push({x:this._posx-3,y:this._posy-2,dés:dés[3]});
+    //         list.push({x:this._posx-3,y:this._posy+2,dés:dés[3]});
+    //         list.push({x:this._posx-3,y:this._posy-3,dés:dés[3]});
+    //         list.push({x:this._posx-3,y:this._posy+3,dés:dés[3]});
 
-            list.push({x:this._posx+4,y:this._posy,dés:dés[3]}); //partie droite du cercle
-            list.push({x:this._posx+3,y:this._posy-1,dés:dés[3]});
-            list.push({x:this._posx+3,y:this._posy+1,dés:dés[3]});
-            list.push({x:this._posx+3,y:this._posy-2,dés:dés[3]});
-            list.push({x:this._posx+3,y:this._posy+2,dés:dés[3]});
-            list.push({x:this._posx+2,y:this._posy-3,dés:dés[3]});
-            list.push({x:this._posx+2,y:this._posy+3,dés:dés[3]});
+    //         list.push({x:this._posx+4,y:this._posy,dés:dés[3]}); //partie droite du cercle
+    //         list.push({x:this._posx+3,y:this._posy-1,dés:dés[3]});
+    //         list.push({x:this._posx+3,y:this._posy+1,dés:dés[3]});
+    //         list.push({x:this._posx+3,y:this._posy-2,dés:dés[3]});
+    //         list.push({x:this._posx+3,y:this._posy+2,dés:dés[3]});
+    //         list.push({x:this._posx+2,y:this._posy-3,dés:dés[3]});
+    //         list.push({x:this._posx+2,y:this._posy+3,dés:dés[3]});
 
-            list.push({x:this._posx-2,y:this._posy+4,dés:dés[3]}); //partie haute du cercle
-            list.push({x:this._posx-1,y:this._posy+4,dés:dés[3]});
-            list.push({x:this._posx,y:this._posy+4,dés:dés[3]});
-            list.push({x:this._posx+1,y:this._posy+4,dés:dés[3]});
-            list.push({x:this._posx+2,y:this._posy+4,dés:dés[3]});
+    //         list.push({x:this._posx-2,y:this._posy+4,dés:dés[3]}); //partie haute du cercle
+    //         list.push({x:this._posx-1,y:this._posy+4,dés:dés[3]});
+    //         list.push({x:this._posx,y:this._posy+4,dés:dés[3]});
+    //         list.push({x:this._posx+1,y:this._posy+4,dés:dés[3]});
+    //         list.push({x:this._posx+2,y:this._posy+4,dés:dés[3]});
 
-            list.push({x:this._posx-2,y:this._posy-4,dés:dés[3]}); //partie basse du cercle
-            list.push({x:this._posx-1,y:this._posy-4,dés:dés[3]});
-            list.push({x:this._posx,y:this._posy-4,dés:dés[3]});
-            list.push({x:this._posx+1,y:this._posy-4,dés:dés[3]});
-            list.push({x:this._posx+2,y:this._posy-4,dés:dés[3]});
-        }
-        let updatelist = []
-        list.map(e=>{
-            if(e.x >= 0 && e.x < 13 && e.y >= 0 && e.y < 9){
-                updatelist.push(e)
-            }     
-        })
-        return updatelist;
-    }
+    //         list.push({x:this._posx-2,y:this._posy-4,dés:dés[3]}); //partie basse du cercle
+    //         list.push({x:this._posx-1,y:this._posy-4,dés:dés[3]});
+    //         list.push({x:this._posx,y:this._posy-4,dés:dés[3]});
+    //         list.push({x:this._posx+1,y:this._posy-4,dés:dés[3]});
+    //         list.push({x:this._posx+2,y:this._posy-4,dés:dés[3]});
+    //     }
+    //     let updatelist = []
+    //     list.map(e=>{
+    //         if(e.x >= 0 && e.x < 13 && e.y >= 0 && e.y < 9){
+    //             updatelist.push(e)
+    //         }     
+    //     })
+    //     return updatelist;
+    // }
 
 }
 export class SoldatGenerique  {
-    // constructor(nombre,vie,portée,deplacementavectir,deplacementsanstir,image,posx,posy,clan){
-    //     this._nombre = nombre;
-    //     this._vie = vie;
-    //     this._portée = portée;
-    //     this._deplacementavectir = deplacementavectir;
-    //     this._deplacementsanstir = deplacementsanstir;
-    //     this.image = image;
-    //     this._pos = Position(posx,posy);
-    //     this._clan = clan; 
-
-    // }
-    constructor(image,nombre,vie){
-        
-        this._image = image;
+    constructor(image,nombre,vie,portée,deplacementavectir,deplacementsanstir){
         this._nombre = nombre;
         this._vie = vie;
+        this._portée = portée;
+        this._deplacementavectir = deplacementavectir;
+        this._deplacementsanstir = deplacementsanstir;
+        this._image = image;
     }
+    // constructor(image,nombre,vie){
+        
+    //     this._image = image;
+    //     this._nombre = nombre;
+    //     this._vie = vie;
+    // }
     render(){
         if(this._nombre == 4){
             let elem = <img src={this._image} alt={"Soldat"} className="w-1/2"/>
                         
             return (
             <div className="flex  w-full">
-                <div className="absolute top-2 w-full">
+                <div className="absolute top-0 w-full">
                     <div className="flex flex-row ">
                         {this._vie > 0 ? elem:""}
                         {this._vie > 1 ? elem:""}
                     </div>
                 </div>
-                <div className="absolute top-12 z-[40]">
+                <div className="absolute top-9 z-[40]">
                     <div className="flex flex-row">                    
                         {this._vie > 2 ? elem:""}
                         {this._vie > 3 ? elem:""}
@@ -244,7 +247,7 @@ export class SoldatGenerique  {
                         
             return (
             <div className="flex w-full">
-                <div className="absolute top-6 z-[40]">
+                <div className="absolute top-7 z-[40]">
                     <div className="flex flex-row">                    
                         {this._vie > 0 ? elem:""}
                         {this._vie > 1 ? elem:""}
@@ -264,13 +267,29 @@ export class SoldatGenerique  {
 }
 
 export class CaseGenerique {
-    constructor(image ) {
+    constructor(image,malus,deplacmentmax,ignorereflag,lineofsight,byentering,imageexplicatif,hover ) {
         this._image = image;
-        this._malus = 0;
+        this._malus = malus ? malus :null;
+        this._deplacmentmax = deplacmentmax ? deplacmentmax : null;
+        this._ignorereflag = ignorereflag ? ignorereflag : null;
+        this._lineofsight = lineofsight ? lineofsight : null;
+        this._byentering = byentering ? byentering : null;
+        this._imageexplicatif = imageexplicatif ? imageexplicatif : null;
+        this._hover = hover ? hover : null;
+
     }
     render(){
-        return <div><img src={this._image} alt={"Case"}/></div>
+        return <div onMouseEnter={()=>this._hover ? this._hover({card:this._imageexplicatif,showing:true}):""} onMouseLeave={()=>this._hover ? this._hover({card:"",showing:false}):""}><img src={this._image} alt={"Case"} /></div>
     }
+}
+
+
+export class Action {
+
+}
+
+export class Dés {
+
 }
 
 
