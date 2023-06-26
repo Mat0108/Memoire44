@@ -1,11 +1,3 @@
-<<<<<<< HEAD
-
-export class Terrain{
-    constructor(x,y){
-        this._x = x;
-        this._y = y;
-    }
-=======
 import React from "react";
 
 export class Terrain extends React.Component{
@@ -45,7 +37,6 @@ export class Terrain extends React.Component{
     </div></div>
     }
 
->>>>>>> 2331620 (commit)
     getTerrainX(){
         return this._x;
     }
@@ -54,11 +45,7 @@ export class Terrain extends React.Component{
     }
 }
 export class Position{
-<<<<<<< HEAD
-    constructor(posx,posy,x,y){
-=======
     constructor(posx,posy){
->>>>>>> 2331620 (commit)
         this._posx = posx;
         this._posy = posy;
     }
