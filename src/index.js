@@ -4,20 +4,25 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import {Terrain,CaseGenerique,SoldatGenerique} from './Generique'
 import { SoldatAllies, CharAllies, ArtillerieAllies } from './army/allies';
-import { Forest, Hills, SandBag, SelectHexa, Village } from './haxagone/divers';
-import { RiversCurve, RiversRight } from './haxagone/rivers';
+import { Forest, Hills, SandBag, SelectHexa, Village,RiversCurve, RiversRight  } from './haxagone/base';
 import { ArtillerieAxis, CharAxis, SoldatAxis, TankAxis } from './army/axis';
-import { loadScenario } from './scenario';
+import { SelecteurScenario, loadScenario } from './scenario';
 import { Marquisdemalleval } from './scenario/marquisdemalleval';
+import { Batailledesaintnizier } from './scenario/batailledesaintnizier';
+
+
 function App() {
   const [card, setCard] = useState({card:"",showing:false});
+  const [selectedScenerio,setSelectedScenario] = useState(Batailledesaintnizier);
   const showingCard = useMemo(() => {
     return card.showing ? <div className=''><img src={card.card} alt={"card"}/></div>:""}, [card])
 
   let x = 13;
   let y = 9;
-  let scenario = loadScenario(Marquisdemalleval);
-  let grille = scenario.grille
+  
+  const grille = useMemo(() => {
+    return loadScenario(selectedScenerio);
+  }, [selectedScenerio])
   
   // new Array(y).fill(0).map(() => new Array(x).fill({case:null,defense:null,unité:null,action:null,highlight:null}));   
   // grille[1][3] = {case: new Forest(),defense:null,unité:null,action:null,highlight:null}
@@ -46,9 +51,9 @@ function App() {
       console.log(grille)
       return (
       <div className="relative w-fit h-fit">
-        <div className=""><img src={`images/${scenario.terrain}.png`} alt={"terrain"} className='w-full h-full'/></div>
+        <div className=""><img src={`images/${grille.terrain}.png`} alt={"terrain"} className='w-full h-full'/></div>
         <div className="absolute flex flex-col z-[2000] top-[58px] left-[10px]">
-          {grille.map((e,pos)=>{
+          {grille.grille.map((e,pos)=>{
             return <div className={`${pos % 2 == 1 ? "ml-[45px]":""} w-full flex flex-row`}>{
               e.map((f,pos2)=>{
 
@@ -68,14 +73,18 @@ function App() {
         </div>
       </div>)
       }
-     },[grille])
+     },[grille.grille])
 
      
        
   return (
-    <div className="App w-full h-full relative bg-[#EEE8E4] flex flex-col ">
+    <div className="App w-full h-full relative bg-[#EEE8E4]  ">
+      <div className='flex'>{SelecteurScenario(selectedScenerio,setSelectedScenario)}</div>
+      <div className='flex flex-col'>
         {global} 
         {showingCard}
+      </div>
+        
       </div>
   );
 }

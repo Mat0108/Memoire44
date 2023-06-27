@@ -1,4 +1,4 @@
-import { CaseGenerique } from "../Generique";
+import { CaseGenerique, test3, test6 } from "../Generique";
 
 export class SandBag extends CaseGenerique {
     constructor(orientation){
@@ -46,19 +46,17 @@ export class Village extends CaseGenerique{
 
 export class Bridge extends CaseGenerique{
     constructor(orientation){
-        super(`images/base/${orientation == 6 ? "o_bridge6":orientation == 5 ? "o_bridge5" : orientation == 4 ?
-        "o_bridge4":orientation == 3 ? "o_bridge3":orientation == 2 ? "o_bridge2":"o_bridge1"}.png`)
+        super(test6("base","o_bridge",orientation))
     }
 }
 
 export class RiversRight extends CaseGenerique{
     constructor(orientation){
-        super(`images/base/${orientation == 3 ? "h_river3":orientation == 2 ? "h_river2" : "h_river1"}.png`)
+        super(test3("base","h_river",orientation))   
     }
 }
 export class RiversCurve extends CaseGenerique{
     constructor(orientation){
-        super(`images/base/${orientation == 6 ? "h_curve6":orientation == 5 ? "h_curve5" : orientation == 4 ?
-        "h_curve4":orientation == 3 ? "h_curve3":orientation == 2 ? "h_curve2":"h_curve1"}.png`)
-    }
+        super(test6("base","h_curve",orientation))
+           }
 }
