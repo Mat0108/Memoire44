@@ -6,7 +6,9 @@ import {Terrain,CaseGenerique,SoldatGenerique} from './Generique'
 import { SoldatAllies, CharAllies, ArtillerieAllies } from './army/allies';
 import { Forest, Hills, SandBag, SelectHexa, Village } from './haxagone/divers';
 import { RiversCurve, RiversRight } from './haxagone/rivers';
-import { ArtillerieAxis, SoldatAxis, TankAxis } from './army/axis';
+import { ArtillerieAxis, CharAxis, SoldatAxis, TankAxis } from './army/axis';
+import { loadScenario } from './scenario';
+import { Marquisdemalleval } from './scenario/marquisdemalleval';
 function App() {
   const [card, setCard] = useState({card:"",showing:false});
   const showingCard = useMemo(() => {
@@ -14,34 +16,37 @@ function App() {
 
   let x = 13;
   let y = 9;
-  let grille = new Array(y).fill(0).map(() => new Array(x).fill({case:null,defense:null,unité:null,action:null,highlight:null}));   
-  grille[1][3] = {case: new Forest(),defense:null,unité:null,action:null,highlight:null}
-  grille[1][4] = {case: new Forest(),defense:null,unité:null,action:null,highlight:null}
-  grille[2][4] = {case: new Hills(),defense:null,unité:null,action:null,highlight:null}
-  grille[5][10] = {case: new Hills(),defense:null,unité: new SoldatAllies(true),action:null}
-  grille[7][8] = {case: new Forest(),defense:new SandBag(false),unité: new CharAllies(false),action:null,highlight:null}
-  grille[2][8] = {case: new RiversRight(),defense:new SandBag(false),unité: new ArtillerieAllies(false),action:null,highlight:new SelectHexa()}
-  grille[2][9] = {case: new RiversRight() ,defense:new SandBag(true),unité: new ArtillerieAllies(true),action:null,highlight:new SelectHexa()}
-  grille[2][10] = {case: new RiversCurve(5), defense:null,unité:null,action:null,highlight:null}
-  grille[3][10] = {case: new RiversRight(3), defense:null,unité:null,action:null,highlight:null}
-  grille[5][5] = {case: new Village(), defense:null,unité:null,action:null,highlight:null}
-  grille[5][6] = {case: new Village(), defense:null,unité:null,action:null,highlight:null}
-
-
-  grille[4][6] = {case: new Village(setCard), defense:null,unité:null,action:null,highlight:null}
-  grille[5][6] = {case: new Village(), defense:null,unité:null,action:null,highlight:null}
-  grille[5][6] = {case: new Village(), defense:null,unité:null,action:null,highlight:null}
+  let scenario = loadScenario(Marquisdemalleval);
+  let grille = scenario.grille
   
-  grille[7][1] = {case: new Village(),defense:null,unité: new SoldatAxis(),action:null,highlight:null}
-  grille[7][4] = {case: new Hills(),defense:null,unité:new TankAxis(),action:null,highlight:null}
-  grille[7][5] = {case: new Hills(),defense:null,unité:new ArtillerieAxis(),action:null,highlight:null}
+  // new Array(y).fill(0).map(() => new Array(x).fill({case:null,defense:null,unité:null,action:null,highlight:null}));   
+  // grille[1][3] = {case: new Forest(),defense:null,unité:null,action:null,highlight:null}
+  // grille[1][4] = {case: new Forest(),defense:null,unité:null,action:null,highlight:null}
+  // grille[2][4] = {case: new Hills(),defense:null,unité:null,action:null,highlight:null}
+  // grille[5][10] = {case: new Hills(),defense:null,unité: new SoldatAllies(),action:null}
+  // grille[7][8] = {case: new Forest(),defense:new SandBag(false),unité: new CharAxis(false),action:null,highlight:null}
+  // grille[2][8] = {case: new RiversRight(),defense:new SandBag(false),unité: new ArtillerieAxis(false),action:null,highlight:new SelectHexa()}
+  // grille[2][9] = {case: new RiversRight() ,defense:new SandBag(true),unité: new ArtillerieAllies(true),action:null,highlight:new SelectHexa()}
+  // grille[2][10] = {case: new RiversCurve(5), defense:null,unité:null,action:null,highlight:null}
+  // grille[3][10] = {case: new RiversRight(3), defense:null,unité:null,action:null,highlight:null}
+  // grille[5][5] = {case: new Village(), defense:null,unité:null,action:null,highlight:null}
+  // grille[5][6] = {case: new Village(), defense:null,unité:null,action:null,highlight:null}
+
+
+  // grille[4][6] = {case: new Village(setCard), defense:null,unité:null,action:null,highlight:null}
+  // grille[5][6] = {case: new Village(), defense:null,unité:null,action:null,highlight:null}
+  // grille[5][6] = {case: new Village(), defense:null,unité:null,action:null,highlight:null}
+  
+  // grille[7][1] = {case: new Village(),defense:null,unité: new SoldatAxis(),action:null,highlight:null}
+  // grille[7][4] = {case: new Hills(),defense:null,unité:new TankAxis(),action:null,highlight:null}
+  // grille[7][5] = {case: new Hills(),defense:null,unité:new ArtillerieAxis(),action:null,highlight:null}
   
   const global = useMemo(()=>{
     {
       console.log(grille)
       return (
       <div className="relative w-fit h-fit">
-        <div className=""><img src={"images/terrain0.png"} alt={"terrain"} className='w-full h-full'/></div>
+        <div className=""><img src={`images/${scenario.terrain}.png`} alt={"terrain"} className='w-full h-full'/></div>
         <div className="absolute flex flex-col z-[2000] top-[58px] left-[10px]">
           {grille.map((e,pos)=>{
             return <div className={`${pos % 2 == 1 ? "ml-[45px]":""} w-full flex flex-row`}>{

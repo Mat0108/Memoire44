@@ -1,4 +1,5 @@
 import React from "react";
+import './App.css';
 
 export class Terrain extends React.Component{
     constructor(props){
@@ -190,13 +191,14 @@ export class Position{
 
 }
 export class SoldatGenerique  {
-    constructor(image,nombre,vie,portée,deplacementavectir,deplacementsanstir){
+    constructor(image,nombre,vie,portée,deplacementavectir,deplacementsanstir,taille){
         this._nombre = nombre;
         this._vie = vie;
         this._portée = portée;
         this._deplacementavectir = deplacementavectir;
         this._deplacementsanstir = deplacementsanstir;
         this._image = image;
+        this._taille = taille ? taille : "w-1/2"
     }
     // constructor(image,nombre,vie){
         
@@ -205,19 +207,20 @@ export class SoldatGenerique  {
     //     this._vie = vie;
     // }
     render(){
+        let elem = <img src={this._image} alt={"Soldat"} className={this._taille}/>
+            
         if(this._nombre == 4){
-            let elem = <img src={this._image} alt={"Soldat"} className="w-1/2"/>
                         
             return (
             <div className="flex  w-full">
                 <div className="absolute top-0 w-full">
-                    <div className="flex flex-row ">
+                    <div className="flex flex-row center">
                         {this._vie > 0 ? elem:""}
                         {this._vie > 1 ? elem:""}
                     </div>
                 </div>
                 <div className="absolute top-9 z-[40]">
-                    <div className="flex flex-row">                    
+                    <div className="flex flex-row center">                    
                         {this._vie > 2 ? elem:""}
                         {this._vie > 3 ? elem:""}
                     </div>
@@ -225,7 +228,6 @@ export class SoldatGenerique  {
             </div>)
         }
         if(this._nombre == 3){
-            let elem = <img src={this._image} alt={"Soldat"} className="w-1/2"/>
                         
             return (
             <div className="flex  w-full">
@@ -235,7 +237,7 @@ export class SoldatGenerique  {
                     </div>
                 </div>
                 <div className="absolute top-12 z-[40]">
-                    <div className="flex flex-row">                    
+                    <div className="flex flex-row center">                    
                         {this._vie > 1 ? elem:""}
                         {this._vie > 2 ? elem:""}
                     </div>
@@ -243,12 +245,11 @@ export class SoldatGenerique  {
             </div>)
         }
         if(this._nombre == 2){
-            let elem = <img src={this._image} alt={"Soldat"} className="w-1/2"/>
                         
             return (
             <div className="flex w-full">
                 <div className="absolute top-7 z-[40]">
-                    <div className="flex flex-row">                    
+                    <div className="flex flex-row center">                    
                         {this._vie > 0 ? elem:""}
                         {this._vie > 1 ? elem:""}
                     </div>
@@ -267,7 +268,7 @@ export class SoldatGenerique  {
 }
 
 export class CaseGenerique {
-    constructor(image,malus,deplacmentmax,ignorereflag,lineofsight,byentering,imageexplicatif,hover ) {
+    constructor(image,malus,deplacmentmax,ignorereflag,lineofsight,byentering,imageexplicatif,hover,className ) {
         this._image = image;
         this._malus = malus ? malus :null;
         this._deplacmentmax = deplacmentmax ? deplacmentmax : null;
@@ -276,10 +277,11 @@ export class CaseGenerique {
         this._byentering = byentering ? byentering : null;
         this._imageexplicatif = imageexplicatif ? imageexplicatif : null;
         this._hover = hover ? hover : null;
+        this._className = className ? className : null; 
 
     }
     render(){
-        return <div onMouseEnter={()=>this._hover ? this._hover({card:this._imageexplicatif,showing:true}):""} onMouseLeave={()=>this._hover ? this._hover({card:"",showing:false}):""}><img src={this._image} alt={"Case"} /></div>
+        return <div onMouseEnter={()=>this._hover ? this._hover({card:this._imageexplicatif,showing:true}):""} onMouseLeave={()=>this._hover ? this._hover({card:"",showing:false}):""} ><img src={this._image} alt={"Case"} className={this._className}/></div>
     }
 }
 
