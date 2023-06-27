@@ -1,6 +1,6 @@
 import { SoldatAllies } from "../army/allies";
 import { SoldatAxis } from "../army/axis";
-import { Forest, Hills, Village } from "../haxagone/divers";
+import { Forest, Hills, Village } from "../haxagone/base";
 import { Mountain } from "../haxagone/terrain";
 
 export const Marquisdemalleval = {
