@@ -20,11 +20,6 @@ export class Bunker extends CaseGenerique{
         super("images/base/o_bunker.png",{soldat:-1,tank:-2},true,true,true)
     }
 }
-export class SelectHexa extends CaseGenerique {
-    constructor(){
-        super("images/divers/activated.png")
-    }
-}
 
 export class Hills extends CaseGenerique {
     constructor (){

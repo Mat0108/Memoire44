@@ -11,3 +11,8 @@
 .aligned {
 @apply align-middle items-center content-center;
 }
+
+.darker{
+    filter: brightness(80%);
+}
+

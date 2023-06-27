@@ -1,5 +1,7 @@
-import { Batailledesaintnizier } from "./batailledesaintnizier";
-import { Marquisdemalleval } from "./marquisdemalleval";
+import { Assaultsurvassieuxenvercours } from "./batailleduvercors/assaultsurvassieuxenvercours";
+import { Batailledesaintnizier } from "./batailleduvercors/batailledesaintnizier";
+import { Marquisdemalleval } from "./batailleduvercors/marquisdemalleval";
+import { Scenariovide } from "./scenariovide";
 
 export function loadScenario(scenario){
     let x = 13;
@@ -21,14 +23,24 @@ function ReturnScenario(pos){
             return Marquisdemalleval;
     }
 }
+const listScenario = [
+    {name:"Merci de choisir un scenario ",value:Scenariovide},
+    {name:"-----------Bataille du Ver Cours------------",value:Scenariovide},
+    {name:"Bataille de Saint-nizier",value:Batailledesaintnizier},
+    {name:"Marquis de Malleval",value:Marquisdemalleval},
+    {name:"Assault sur Vassieux en Ver Cours",value:Assaultsurvassieuxenvercours},
+    {name:"-------Bataille du débarquement----------",value:Scenariovide},
+    {name:"test",value:Scenariovide}
+]
 export function SelecteurScenario(grille,setGrille){
     return <div>
         <select
-        value={grille}
-        onChange={(e)=>{console.log(e.target.value)}}
-    >
-            <option value={0}>Batailledesaintnizier</option>
-            <option value={1}>Marquisdemalleval</option>
+        onChange={(e)=>{setGrille(listScenario[e.target.value].value)}}
+        className="w-[300px]"
+        >
+            {listScenario.map((e,pos)=>{
+
+                return <option value={pos} >{e.name}</option>})}
         </select>
     </div>
 }

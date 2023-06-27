@@ -1,7 +1,7 @@
-import { SoldatAllies } from "../army/allies";
-import { SoldatAxis } from "../army/axis";
-import { Forest, Hills, SandBag, Village } from "../haxagone/base";
-import { Mountain, RoadCurve, RoadHillCurve, RoadRight } from "../haxagone/terrain";
+import { SoldatAllies } from "../../army/allies";
+import { SoldatAxis } from "../../army/axis";
+import { Forest, Hills, SandBag, Village } from "../../haxagone/base";
+import { Mountain, RoadCurve, RoadHillCurve, RoadRight } from "../../haxagone/terrain";
 
 export const Batailledesaintnizier = {
     terrain:"terrain0",

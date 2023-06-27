@@ -55,3 +55,9 @@ export class RiverY extends CaseGenerique {
         super(test2("terrain","h_riverY",orientation))
     }
 }
+
+export class AirField extends CaseGenerique {
+    constructor(orientation){
+        super(test3("terrain","h_airfield",orientation),false,false,false,false,false,false,false,"darker")
+    }
+}

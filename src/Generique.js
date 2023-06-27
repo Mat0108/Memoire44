@@ -65,133 +65,10 @@ export class Position{
     setY(){
         return this._posy;
     }
-    // PortéeDeplacement(){ //x : 0-12 y : 0-8 portée : 1 - 2
-    //     if(this.portéedeplacementsanstir){
-
-    //     }
-    //     let list = [
-    //         {x:this._posx-1,y:this._posy,tir:},
-    //         {x:this._posx+1,y:this._posy},
-    //         {x:this._posx,y:this._posy-1},
-    //         {x:this._posx,y:this._posy+1},
-    //         {x:this._posx+1,y:this._posy-1},
-    //         {x:this._posx+1,y:this._posy+1}
-    //     ]
-    //     if(this._portéedeplacement == 2){
-    //         list.push({x:this._posx-2,y:this._posy});
-    //         list.push({x:this._posx-1,y:this._posy-1});
-    //         list.push({x:this._posx-1,y:this._posy+1}); //partie gauche du cercle
-
-    //         list.push({x:this._posx-1,y:this._posy-2}); //partie haute et bas du cercle
-    //         list.push({x:this._posx-1,y:this._posy+2});
-    //         list.push({x:this._posx,y:this._posy-2});
-    //         list.push({x:this._posx,y:this._posy+2});
-    //         list.push({x:this._posx+1,y:this._posy-2});
-    //         list.push({x:this._posx+1,y:this._posy+2});
-            
-    //         list.push({x:this._posx+2,y:this._posy}); //partie droite du cercle
-    //         list.push({x:this._posx+2,y:this._posy-1});
-    //         list.push({x:this._posx+2,y:this._posy+1});
-    //     }
-    //     let updatelist = []
-    //     list.map(e=>{
-    //         if(e.x >= 0 && e.x < 13 && e.y >= 0 && e.y < 9){
-    //             updatelist.push(e)
-    //         }     
-    //     })
-    //     return updatelist;
-    // }
-    // PortéeTir(dés){  //dés[0] = 3 dés[1] = 2 dés[2] = 0
-    //     let list = [
-    //         {x:this._posx-1,y:this._posy,dés:dés[0]},
-    //         {x:this._posx+1,y:this._posy,dés:dés[0]},
-    //         {x:this._posx,y:this._posy-1,dés:dés[0]},
-    //         {x:this._posx,y:this._posy+1,dés:dés[0]},
-    //         {x:this._posx+1,y:this._posy-1,dés:dés[0]},
-    //         {x:this._posx+1,y:this._posy+1,dés:dés[0]}
-    //     ]
-    //     if(this._portée >= 2){
-    //         list.push({x:this._posx-2,y:this._posy,dés:dés[1]});
-    //         list.push({x:this._posx-1,y:this._posy-1,dés:dés[1]});
-    //         list.push({x:this._posx-1,y:this._posy+1,dés:dés[1]}); //partie gauche du cercle
-
-    //         list.push({x:this._posx-1,y:this._posy-2,dés:dés[1]}); //partie haute et bas du cercle
-    //         list.push({x:this._posx-1,y:this._posy+2,dés:dés[1]});
-    //         list.push({x:this._posx,y:this._posy-2,dés:dés[1]});
-    //         list.push({x:this._posx,y:this._posy+2,dés:dés[1]});
-    //         list.push({x:this._posx+1,y:this._posy-2,dés:dés[1]});
-    //         list.push({x:this._posx+1,y:this._posy+2,dés:dés[1]});
-            
-    //         list.push({x:this._posx+2,y:this._posy,dés:dés[1]}); //partie droite du cercle
-    //         list.push({x:this._posx+2,y:this._posy-1,dés:dés[1]});
-    //         list.push({x:this._posx+2,y:this._posy+1,dés:dés[1]});
-    //     }
-    //     if(portée >= 3){
-    //         list.push({x:this._posx-3,y:this._posy,dés:dés[2]}); //partie gauche du cercle
-    //         list.push({x:this._posx-3,y:this._posy-1,dés:dés[2]});
-    //         list.push({x:this._posx-3,y:this._posy+1,dés:dés[2]});
-    //         list.push({x:this._posx-2,y:this._posy-2,dés:dés[2]});
-    //         list.push({x:this._posx-2,y:this._posy+2,dés:dés[2]});
-
-
-    //         list.push({x:this._posx+3,y:this._posy,dés:dés[2]}); //partie droite du cercle
-    //         list.push({x:this._posx+2,y:this._posy-1,dés:dés[2]});
-    //         list.push({x:this._posx+2,y:this._posy+1,dés:dés[2]});
-    //         list.push({x:this._posx+2,y:this._posy-2,dés:dés[2]});
-    //         list.push({x:this._posx+2,y:this._posy+2,dés:dés[2]});
-
-            
-    //         list.push({x:this._posx-2,y:this._posy+3,dés:dés[2]}); //partie haute du cercle
-    //         list.push({x:this._posx-1,y:this._posy+3,dés:dés[2]});
-    //         list.push({x:this._posx,y:this._posy+3,dés:dés[2]});
-    //         list.push({x:this._posx+1,y:this._posy+3,dés:dés[2]});
-
-    //         list.push({x:this._posx-2,y:this._posy-3,dés:dés[2]}); //partie basse du cercle
-    //         list.push({x:this._posx-1,y:this._posy-3,dés:dés[2]});
-    //         list.push({x:this._posx,y:this._posy-3,dés:dés[2]});
-    //         list.push({x:this._posx+1,y:this._posy-3,dés:dés[2]});
-    //     }
-    //     if(portée >=4){
-    //         list.push({x:this._posx-4,y:this._posy,dés:dés[3]}); //partie gauche du cercle
-    //         list.push({x:this._posx-4,y:this._posy-1,dés:dés[3]});
-    //         list.push({x:this._posx-4,y:this._posy+1,dés:dés[3]});
-    //         list.push({x:this._posx-3,y:this._posy-2,dés:dés[3]});
-    //         list.push({x:this._posx-3,y:this._posy+2,dés:dés[3]});
-    //         list.push({x:this._posx-3,y:this._posy-3,dés:dés[3]});
-    //         list.push({x:this._posx-3,y:this._posy+3,dés:dés[3]});
-
-    //         list.push({x:this._posx+4,y:this._posy,dés:dés[3]}); //partie droite du cercle
-    //         list.push({x:this._posx+3,y:this._posy-1,dés:dés[3]});
-    //         list.push({x:this._posx+3,y:this._posy+1,dés:dés[3]});
-    //         list.push({x:this._posx+3,y:this._posy-2,dés:dés[3]});
-    //         list.push({x:this._posx+3,y:this._posy+2,dés:dés[3]});
-    //         list.push({x:this._posx+2,y:this._posy-3,dés:dés[3]});
-    //         list.push({x:this._posx+2,y:this._posy+3,dés:dés[3]});
-
-    //         list.push({x:this._posx-2,y:this._posy+4,dés:dés[3]}); //partie haute du cercle
-    //         list.push({x:this._posx-1,y:this._posy+4,dés:dés[3]});
-    //         list.push({x:this._posx,y:this._posy+4,dés:dés[3]});
-    //         list.push({x:this._posx+1,y:this._posy+4,dés:dés[3]});
-    //         list.push({x:this._posx+2,y:this._posy+4,dés:dés[3]});
-
-    //         list.push({x:this._posx-2,y:this._posy-4,dés:dés[3]}); //partie basse du cercle
-    //         list.push({x:this._posx-1,y:this._posy-4,dés:dés[3]});
-    //         list.push({x:this._posx,y:this._posy-4,dés:dés[3]});
-    //         list.push({x:this._posx+1,y:this._posy-4,dés:dés[3]});
-    //         list.push({x:this._posx+2,y:this._posy-4,dés:dés[3]});
-    //     }
-    //     let updatelist = []
-    //     list.map(e=>{
-    //         if(e.x >= 0 && e.x < 13 && e.y >= 0 && e.y < 9){
-    //             updatelist.push(e)
-    //         }     
-    //     })
-    //     return updatelist;
-    // }
 
 }
 export class SoldatGenerique  {
-    constructor(image,nombre,vie,portée,deplacementavectir,deplacementsanstir,taille){
+    constructor(image,nombre,vie,portée,deplacementavectir,deplacementsanstir,taille,type,camp){
         this._nombre = nombre;
         this._vie = vie;
         this._portée = portée;
@@ -199,6 +76,8 @@ export class SoldatGenerique  {
         this._deplacementsanstir = deplacementsanstir;
         this._image = image;
         this._taille = taille ? taille : "w-1/2"
+        this._type = type ? type : "1"
+        this._camp = camp ? camp : "Axis"
     }
     // constructor(image,nombre,vie){
         
@@ -296,12 +175,93 @@ export function test2(path,name,orientation){
     return `images/${path}/${orientation == 2 ? `${name}2` : `${name}1`}.png`
 }
 
-export class Action {
+export function showPortee(portée,posx,posy,dés,deplacement){
+    console.log("posy : ",posy)
+    let list = [
+        {x:posx-1,y: posx %2  == 1 ? posy : posy-1,dés: dés ? dés[0] : 0,deplacement:deplacement ? deplacement[0]:null},
+        {x:posx+1,y: posx %2  == 1 ? posy : posy-1,dés:dés ? dés[0] : 0,deplacement:deplacement ? deplacement[0]:null},
+        {x:posx,y:posy-1,dés:dés ? dés[0] : 0,deplacement:deplacement ? deplacement[0]:null},
+        {x:posx,y:posy+1,dés:dés ? dés[0] : 0,deplacement:deplacement ? deplacement[0]:null},
+        {x:posx-1,y:posx %2  == 1 ? posy+1:posy,dés:dés ? dés[0] : 0,deplacement:deplacement ? deplacement[0]:null},
+        {x:posx+1,y:posx %2  == 1 ? posy+1:posy,dés:dés ? dés[0] : 0,deplacement:deplacement ? deplacement[0]:null}
+    ]
+    if(portée >= 2){
+        list.push({x:posx-2,y:posy,dés:dés ? dés[0] : 0,deplacement:deplacement ? deplacement[1]:null});
+        list.push({x:posx-2,y:posy-1,dés:dés ? dés[0] : 0,deplacement:deplacement ? deplacement[1]:null});
+        list.push({x:posx-2,y:posy+1,dés:dés ? dés[0] : 0,deplacement:deplacement ? deplacement[1]:null}); //partie gauche du cercle
 
-}
+        list.push({x:posx-1,y:posx %2  == 1 ? posy-1:posy-2,dés:dés ? dés[1] : 0,deplacement:deplacement ? deplacement[1]:null}); //partie haute et bas du cercle
+        list.push({x:posx+1,y:posx %2  == 1 ? posy-1:posy-2,dés:dés ? dés[1] : 0,deplacement:deplacement ? deplacement[1]:null});
+        list.push({x:posx,y:posy-2,dés:dés ? dés[1] : 0,deplacement:deplacement ? deplacement[1]:null});
+        list.push({x:posx,y:posy+2,dés:dés ? dés[1] : 0,deplacement:deplacement ? deplacement[1]:null});
+        list.push({x:posx-1,y:posx %2  == 1 ? posy+2:posy+1,dés:dés ? dés[1] : 0,deplacement:deplacement ? deplacement[1]:null});
+        list.push({x:posx+1,y:posx %2  == 1 ? posy+2:posy+1,dés:dés ? dés[1] : 0,deplacement:deplacement ? deplacement[1]:null});
+        
+        list.push({x:posx+2,y:posy,dés:dés ? dés[1] : 0,deplacement:deplacement ? deplacement[1]:null}); //partie droite du cercle
+        list.push({x:posx+2,y:posy-1,dés:dés ? dés[1] : 0,deplacement:deplacement ? deplacement[1]:null});
+        list.push({x:posx+2,y:posy+1,dés:dés ? dés[1] : 0,deplacement:deplacement ? deplacement[1]:null});
+    }
+    if(portée >= 3){
+        list.push({x:posx-3,y:posy,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null}); //partie gauche du cercle
+        list.push({x:posx-3,y:posy-1,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
+        list.push({x:posx-3,y:posy+1,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
+        list.push({x:posx-2,y:posy-2,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
+        list.push({x:posx-2,y:posy+2,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
 
-export class Dés {
 
+        list.push({x:posx+3,y:posy,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null}); //partie droite du cercle
+        list.push({x:posx+2,y:posy-1,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
+        list.push({x:posx+2,y:posy+1,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
+        list.push({x:posx+2,y:posy-2,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
+        list.push({x:posx+2,y:posy+2,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
+
+        
+        list.push({x:posx-2,y:posy+3,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null}); //partie haute du cercle
+        list.push({x:posx-1,y:posy+3,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
+        list.push({x:posx,y:posy+3,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
+        list.push({x:posx+1,y:posy+3,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
+
+        list.push({x:posx-2,y:posy-3,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null}); //partie basse du cercle
+        list.push({x:posx-1,y:posy-3,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
+        list.push({x:posx,y:posy-3,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
+        list.push({x:posx+1,y:posy-3,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
+    }
+    if(portée >=4){
+        list.push({x:posx-4,y:posy,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null}); //partie gauche du cercle
+        list.push({x:posx-4,y:posy-1,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
+        list.push({x:posx-4,y:posy+1,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
+        list.push({x:posx-3,y:posy-2,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
+        list.push({x:posx-3,y:posy+2,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
+        list.push({x:posx-3,y:posy-3,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
+        list.push({x:posx-3,y:posy+3,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
+
+        list.push({x:posx+4,y:posy,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null}); //partie droite du cercle
+        list.push({x:posx+3,y:posy-1,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
+        list.push({x:posx+3,y:posy+1,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
+        list.push({x:posx+3,y:posy-2,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
+        list.push({x:posx+3,y:posy+2,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
+        list.push({x:posx+2,y:posy-3,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
+        list.push({x:posx+2,y:posy+3,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
+
+        list.push({x:posx-2,y:posy+4,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null}); //partie haute du cercle
+        list.push({x:posx-1,y:posy+4,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
+        list.push({x:posx,y:posy+4,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
+        list.push({x:posx+1,y:posy+4,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
+        list.push({x:posx+2,y:posy+4,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
+
+        list.push({x:posx-2,y:posy-4,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null}); //partie basse du cercle
+        list.push({x:posx-1,y:posy-4,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
+        list.push({x:posx,y:posy-4,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
+        list.push({x:posx+1,y:posy-4,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
+        list.push({x:posx+2,y:posy-4,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
+    }
+    let updatelist = []
+    list.map(e=>{
+        if(e.x >= 0 && e.x <= 13 && e.y >= 0 && e.y <= 9){
+            updatelist.push(e)
+        }     
+    })
+    return updatelist;
 }
 
 
