@@ -16,3 +16,46 @@
     filter: brightness(80%);
 }
 
+:root{
+    --anim: playX 0.5s steps(8) infinite, playY 2s steps(4) infinite;
+}
+.DiceSoldat {
+    height: 128px;
+    width: 128px;
+    background-image: url("../public/images/dice/dice_soldat_anim.png"); /* width: 2048px; height: 512px; */
+    animation: var(--anim);
+}
+
+.DiceGrenade {
+    height: 128px;
+    width: 128px;
+    background-image: url("../public/images/dice/dice_grenade_anim.png"); /* width: 2048px; height: 512px; */
+    animation: var(--anim);
+}
+.DiceChar {
+    height: 128px;
+    width: 128px;
+    background-image: url("../public/images/dice/dice_char_anim.png"); /* width: 2048px; height: 512px; */
+    animation: var(--anim);
+}
+.DiceFlag {
+    height: 128px;
+    width: 128px;
+    background-image: url("../public/images/dice/dice_flag_anim.png"); /* width: 2048px; height: 512px; */
+    animation: var(--anim);
+ }
+.DiceStar {
+    height: 128px;
+    width: 128px;
+    background-image: url("../public/images/dice/dice_star_anim.png"); /* width: 2048px; height: 512px; */
+    animation: var(--anim);
+
+}
+@keyframes playX {
+  from {background-position-x: 0px;}
+  to {background-position-x: -1024px;}
+}
+@keyframes playY {
+  from {background-position-y: 0px;}
+  to {background-position-y: -512px;}
+}

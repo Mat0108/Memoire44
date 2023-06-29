@@ -5,6 +5,7 @@ import { Mountain, RoadCurve, RoadHillCurve, RoadRight } from "../../haxagone/te
 
 export const Batailledesaintnizier = {
     terrain:"terrain0",
+    medal:6,
     hexa:[
         {x:0,y:0,contenu:{case:null,defense:null,unité:new SoldatAxis(),action:null,highlight:null,select:null}},
         {x:0,y:1,contenu:{case:null,defense:null,unité:new SoldatAxis(),action:null,highlight:null,select:null}},

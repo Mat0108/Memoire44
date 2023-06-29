@@ -4,7 +4,7 @@ import { CaseGenerique, test2, test3, test6 } from "../Generique";
 
 export class Mountain extends CaseGenerique{
     constructor(orientation){
-        super(`images/terrain/h_mountain.png`,false,false,false,false,false,false,false,"darker")
+        super(`images/terrain/h_mountain.png`,{soldat:-2,tank:-2},true,false,true,false,false,false,"darker")
     }
 }
 

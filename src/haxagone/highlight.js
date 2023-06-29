@@ -1,4 +1,4 @@
-import { CaseGenerique } from "../Generique";
+import { CaseGenerique, test3 } from "../Generique";
 
 export class SelectHexa extends CaseGenerique {
     constructor(){
@@ -13,5 +13,10 @@ export class Move extends CaseGenerique {
 export class Attacking extends CaseGenerique {
     constructor(){
         super("images/divers/attacking.png")
+    }
+}
+export class Target extends CaseGenerique{
+    constructor(nb){
+        super(nb ? test3("divers","target-",nb):"images/divers/target.png")
     }
 }
