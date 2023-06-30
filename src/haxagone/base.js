@@ -1,4 +1,4 @@
-import { CaseGenerique, test3, test6 } from "../Generique";
+import { CaseGenerique, test3, test6 } from "../divers/Generique";
 
 export class SandBag extends CaseGenerique {
     constructor(orientation){

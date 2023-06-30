@@ -1,4 +1,4 @@
-import { CaseGenerique, test2, test3, test6 } from "../Generique";
+import { CaseGenerique, test2, test3, test6 } from "../divers/Generique";
 
 
 

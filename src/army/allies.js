@@ -1,4 +1,4 @@
-import { SoldatGenerique } from "../Generique";
+import { SoldatGenerique } from "../divers/Generique";
 
 export class SoldatAllies extends SoldatGenerique {
     constructor(nb){  //orientation: true => bas, false => haut 

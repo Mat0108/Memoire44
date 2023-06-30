@@ -1,5 +1,4 @@
 import React from "react";
-import './App.css';
 
 export class Position{
     constructor(posx,posy){
@@ -122,6 +121,20 @@ export class CaseGenerique {
     }
 }
 
+export class CardGenerique {
+    // {card:"",img:"",nbunit:1,zone:2,type:"ALL",showing:false}
+    constructor(titre,image,nbunit,zone,type){
+        this._titre = titre;
+        this._image = image;
+        this._nbunit = nbunit ? nbunit : "ALL";
+        this._zone = zone ? zone : "ALL";
+        this._type = type ? type : "ALL";
+        
+    }
+    render(){
+        <div><img src={`images/cards/commandement/${this._image}-large.png`} alt={this._titre}/></div>
+    }
+} 
 export function test6(path,name,orientation){
     return `images/${path}/${orientation == 6 ? `${name}6`:orientation == 5 ? `${name}5` : orientation == 4 ?
     `${name}4`:orientation == 3 ? `${name}3`:orientation == 2 ? `${name}2`:`${name}1`}.png`
@@ -376,7 +389,7 @@ export function Dice(nb,unité,setAnimation,Star){
         animation[index]=dice.result;
         
     }
-    console.log('animation : ', animation)
     setAnimation(animation)
     return LoseLife;
 }
+

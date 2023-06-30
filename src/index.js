@@ -1,14 +1,15 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
+
 import reportWebVitals from './reportWebVitals';
-import {Dice, VerificationLineOfSight, showPortee} from './Generique'
+import {Dice, VerificationLineOfSight, showPortee} from './divers/Generique'
 import { SelecteurScenario, loadScenario } from './scenario';
 import { Scenariovide } from './scenario/scenariovide';
 import { Assaultsurvassieuxenvercours } from './scenario/batailleduvercors/assaultsurvassieuxenvercours';
 import { Attacking, Move, SelectHexa, Target } from './haxagone/highlight';
 import { HitUnit } from './army/army';
-
+import "./index.css"
+import { RandomListCard } from './divers/Card';
 
 
 function App() {
@@ -180,18 +181,22 @@ function App() {
   }
   //function pour selectionner les unités 
   function selectedUnit(){
+    console.log(RandomListCard())
     let filtrecol = {min:0,max:12}
     switch(card.zone){
       case 1:
-        filtrecol = {min:0,max:3}
+        filtrecol = {min:0,max:3,min2:0,max2:12}
         break;
       case 2:
-        filtrecol = {min:3,max:8}
+        filtrecol = {min:3,max:8,min2:0,max2:12}
         break;
       case 3:
-        filtrecol = {min:8,max:12}
+        filtrecol = {min:8,max:12,min2:0,max2:12}
         break;
-      case 4:
+      case 3:
+        filtrecol = {min:0,max:3,min2:8,max2:12}
+        break;
+      case "ALL":
         break; 
     }
     let localgrille = {...grille};
@@ -199,7 +204,8 @@ function App() {
     
     localgrille.grille.map((e,pos)=>{
       e.map((f,pos2)=>{
-        if(pos2 >= filtrecol.min && pos2 <=filtrecol.max){
+        
+        if(pos2 >= filtrecol.min2 && pos2 <=filtrecol.max2 && pos2 >= filtrecol.min && pos2 <=filtrecol.max ){
           if(f.unité && (card.type == "ALL" || f.unité._type == card.type) && f.unité._camp == camp){
             localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:f.unité,action:()=>{ShowPortéeUnit(pos,pos2,f.unité)},highlight:f.highlight,select:new SelectHexa()}
           }

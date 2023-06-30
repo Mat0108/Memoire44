@@ -1,4 +1,4 @@
-import { CaseGenerique, test3 } from "../Generique";
+import { CaseGenerique, test3 } from "../divers/Generique";
 
 export class SelectHexa extends CaseGenerique {
     constructor(){
