@@ -2,18 +2,19 @@ import React, { useEffect, useMemo, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 
 import reportWebVitals from './reportWebVitals';
-import {Dice, VerificationLineOfSight, showPortee} from './divers/Generique'
+import {CardGenerique, Dice, VerificationLineOfSight, showPortee} from './divers/Generique'
 import { SelecteurScenario, loadScenario } from './scenario';
 import { Scenariovide } from './scenario/scenariovide';
 import { Assaultsurvassieuxenvercours } from './scenario/batailleduvercors/assaultsurvassieuxenvercours';
 import { Attacking, Move, SelectHexa, Target } from './haxagone/highlight';
 import { HitUnit } from './army/army';
 import "./index.css"
-import { RandomListCard } from './divers/Card';
+import { CardSelect, RandomListCard } from './divers/Card';
 
 
 function App() {
-  const [card, setCard] = useState({card:"",img:"",nbunit:1,zone:2,type:"ALL",showing:false}); //zone:1 gauche, zone:2 centre zone:3 droite zone:4 all type:1 soldat, type:2 tank type:3 artilleries type:4 all
+  const [card, setCard] = useState(new CardGenerique("Choisir une carte","back-fr")); //zone:1 gauche, zone:2 centre zone:3 droite zone:4 all type:1 soldat, type:2 tank type:3 artilleries type:4 all
+  
   const [selectedScenerio,setSelectedScenario] = useState(Assaultsurvassieuxenvercours);
   const [status,setStatus ] = useState(1)
   const [grille, setGrille ] = useState(loadScenario(Assaultsurvassieuxenvercours));
@@ -181,9 +182,8 @@ function App() {
   }
   //function pour selectionner les unités 
   function selectedUnit(){
-    console.log(RandomListCard())
     let filtrecol = {min:0,max:12}
-    switch(card.zone){
+    switch(card._zone){
       case 1:
         filtrecol = {min:0,max:3,min2:0,max2:12}
         break;
@@ -206,7 +206,7 @@ function App() {
       e.map((f,pos2)=>{
         
         if(pos2 >= filtrecol.min2 && pos2 <=filtrecol.max2 && pos2 >= filtrecol.min && pos2 <=filtrecol.max ){
-          if(f.unité && (card.type == "ALL" || f.unité._type == card.type) && f.unité._camp == camp){
+          if(f.unité && (card._type == "ALL" || f.unité._type == card._type) && f.unité._camp == camp){
             localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:f.unité,action:()=>{ShowPortéeUnit(pos,pos2,f.unité)},highlight:f.highlight,select:new SelectHexa()}
           }
           
@@ -219,11 +219,16 @@ function App() {
   }
   
   const showingCard = useMemo(() => {
-    return <div className='w-[500px] h-[300px] ml-8 flex flex-col'>
-      {StateButton("Selection",status == 1 ? "Commencer":"Valider",status == 2 ? true:false,status == 1 ? ()=>{setStatus(2);selectedUnit();}:()=>{setStatus(3);selectedAttackUnit()},status < 3 ? true:false)}
-      {StateButton("Deplacement",status == 3 ? "Continuer":"Valider",status == 3 ? true:false,false,status == 3 ? true:false)}
-      {StateButton("Combat",status == 5 ? "Continuer":"Valider",status == 5 ? true:false,status < 7 ? true:false)}
-      {card.showing ? <div className=''><img src={card.card} alt={"card"}/></div>:""}
+    console.log('card : ', card)
+    return <div className='w-[500px] h-[300px] ml-8 flex flex-row'>
+      <div className='flex flex-col w-[276px] '>
+        {<CardSelect onChange={setCard}/> }
+        {StateButton("Selection",status == 1 ? "Commencer":"Valider",status == 2 ? true:false,status == 1 ? ()=>{setStatus(2);selectedUnit();}:()=>{setStatus(3)},status < 3 ? true:false)}
+        {StateButton("Deplacement",status == 3 ? "Continuer":"Valider",status == 3 ? true:false,status == 4 ? ()=>{setStatus(4)}:()=>{setStatus(5);selectedAttackUnit();},status == 3 ? true:false)}
+        {StateButton("Combat",status == 5 ? "Continuer":"Valider",status == 5 ? true:false,status < 7 ? true:false)}      
+      </div>
+      <div className="w-[261px] h-[403px] m-[20px]"> <img src={`images/cards/commandement/${card._image}-large.png`} alt={card._titre} className="w-[261px] h-[403px] ml-[20px] "/></div>
+    
     </div>
 
   }

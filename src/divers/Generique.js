@@ -132,7 +132,7 @@ export class CardGenerique {
         
     }
     render(){
-        <div><img src={`images/cards/commandement/${this._image}-large.png`} alt={this._titre}/></div>
+        <div className="w-[261px] h-[403px] ml-[20px] bg-white"> <img src={`images/cards/commandement/${this._image}-large.png`} alt={this._titre} className="w-[261px] h-[403px] ml-[20px] bg-white"/></div>
     }
 } 
 export function test6(path,name,orientation){

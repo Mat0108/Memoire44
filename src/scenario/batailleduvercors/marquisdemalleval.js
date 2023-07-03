@@ -5,7 +5,8 @@ import { Mountain } from "../../haxagone/terrain";
 
 export const Marquisdemalleval = {
     terrain:"terrain0",
-    medal:6,
+    medal:5,
+    camp:"Axis",
     hexa:[
         {x:0,y:0,contenu:{case:null,defense:null,unité:new SoldatAxis(),action:null,highlight:null,select:null}},
         {x:0,y:2,contenu:{case:null,defense:null,unité:new SoldatAxis(),action:null,highlight:null,select:null}},

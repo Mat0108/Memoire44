@@ -1,6 +1,7 @@
 import { CardGenerique } from "./Generique";
 
 export const ListCard = [
+    new CardGenerique("Choisir une carte","back-fr"),
     new CardGenerique("Attaque aérienne","air-power-fr"),
     new CardGenerique("Embuscade","ambush-fr"),
     new CardGenerique("Assault de blindés","armor-assault-fr",4,"ALL","Char"),
@@ -35,4 +36,14 @@ export const ListCard = [
 
 export function RandomListCard(){
     return ListCard.sort((a,b)=>0.5-Math.random())
+}
+
+export const CardSelect = ({onChange}) =>{
+    let list = ListCard;
+    return <select onChange={(e)=>{onChange(ListCard[e.target.value])}} className="w-[276px] mt-[20px]" >
+        {list.map((item,pos)=>{
+            return <option value={pos}>{item._titre}</option>
+        })}
+    </select>
+        
 }
