@@ -5,7 +5,7 @@ import {CardGenerique, Dice, Flag, VerificationLineOfSight, showPortee} from './
 import { SelecteurScenario, loadScenario } from './scenario';
 import { Scenariovide } from './scenario/scenariovide';
 import { Assaultsurvassieuxenvercours } from './scenario/batailleduvercors/assaultsurvassieuxenvercours';
-import { Attacking, Move, SelectHexa, Target } from './haxagone/highlight';
+import { Attacking, Move, Retreat, SelectHexa, Target } from './haxagone/highlight';
 import { HitUnit } from './army/army';
 import "./index.css"
 import { CardSelect, RandomListCard } from './divers/Card';
@@ -40,22 +40,24 @@ function App() {
     let localgrille2 = {...grille};
     localgrille.grille.map((e,pos)=>{
       e.map((f,pos2)=>{
-        if(f.highlight && (f.highlight.constructor.name == "Move" || f.highlight.constructor.name == "Target")){
+        if(f.highlight && (f.highlight.constructor.name == "Move" || f.highlight.constructor.name == "Target" || f.highlight.constructor.name == "Retreat")){
           localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:f.unité,action:null,highlight:null,select:f.select}
         }
       })})
     setGrille(localgrille2)
 
   }
-  function moveUnit(x,y,nbunit){
+  function moveUnit(x,y,x2,y2,nbunit){
+    RemoveHighlight();
     let localgrille = {...grille};
     let f = localgrille.grille[x][y];
-    localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:f.unité._nombre - result > 0 ? HitUnit(f.unité.constructor.name,nbunit):null,action:null,highlight:null,select:null}
+    let f2 = localgrille.grille[x2][y2];
+    localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:null,action:null,highlight:null,select:null}
+    localgrille.grille[x2][y2] = {case:f2.case,defense:f2.defense,unité:HitUnit(f.unité.constructor.name,nbunit),action:null,highlight:null,select:null}
     setGrille(localgrille)
   }
 
   function updateAttackUnit(x,y,x2,y2,unité,dicenb){
-
     let localgrille = {...grille};
     let dice = Dice(dicenb,unité,setAnimation,false)
     let result = dice.LoseLife
@@ -64,6 +66,10 @@ function App() {
     setTimeout(() => {
       setAnimationShow(false)
     }, 2100);
+
+    setTimeout(() => {
+      setAnimation(new Array())
+    }, 6000);
     setTimeout(() => {
       RemoveHighlight()
       let f = localgrille.grille[x][y];
@@ -80,15 +86,45 @@ function App() {
         }
       }
       if(dice.nbflag > 0 && localgrille.grille[x][y]._ignoreflag ? dice.nbflag > 1 : true){
-        let alllist = Flag(x,y,dice.nbflag,camp);
-        
-        
-        listflag.map(item=>{
+        let flaglist = Flag(x,y,dice.nbflag,camp2);
+        if(!Object.keys(flaglist).length ){
+          localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:f.unité._nombre - result > 0 ? HitUnit(f.unité.constructor.name,f.unité._nombre - result ):null,action:null,highlight:null,select:null}
+      
+        }else{
+          let chooseflag = 0
+          flaglist.map(item=>{
 
-        })
+            if(localgrille.grille[item.x][item.y].unité){
+              chooseflag += 1;
+            }
+          })
+          if(chooseflag == Object.keys(flaglist).length  ){
+            
+            localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:f.unité._nombre - result-dice.nbflag > 0 ? HitUnit(f.unité.constructor.name,f.unité._nombre - result - dice.nbflag ):null,action:null,highlight:null,select:null}
+      
+          }else if(chooseflag == Object.keys(flaglist).length-1  ){
+            flaglist.map(item=>{
+              if(!localgrille.grille[item.x][item.y].unité){
+                let g = localgrille.grille[item.x][item.y];
+                localgrille.grille[item.x][item.y] = {case:g.case,defense:g.defense,unité:f.unité._nombre - result > 0 ? HitUnit(f.unité.constructor.name,f.unité._nombre - result):null,action:null,highlight:null,select:null}
+                localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:null,action:null,highlight:null,select:null}
+      
+              }
+            })
+          
+          }else{
+            localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:f.unité,action:()=>moveUnit(x,y,x,y,f.unité._nombre - result -dice.nbflag),highlight:new Retreat(0,-1*dice.nbflag),select:null}
+            flaglist.map(item=>{
+              if(!localgrille.grille[item.x][item.y].unité){
+                let g = localgrille.grille[item.x][item.y];
+                localgrille.grille[item.x][item.y] = {case:g.case,defense:g.defense,unité:g.unité,action:()=>moveUnit(x,y,item.x,item.y,f.unité._nombre - result+(item.flag-dice.nbflag)),highlight:new Retreat(item.flag,item.flag-dice.nbflag),select:null}
+              }  
+            })
+          }
+        }
+        
       }
       
-      localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:f.unité._nombre - result > 0 ? HitUnit(f.unité.constructor.name,f.unité._nombre - result):null,action:null,highlight:null,select:null}
       localgrille.grille[x2][y2] = {case:f2.case,defense:f2.defense,unité:f2.unité,action:null,highlight:null,select:null}
       setGrille(localgrille)
     }, 2200);

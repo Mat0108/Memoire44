@@ -398,43 +398,40 @@ export function Dice(nb,unité,setAnimation,Star){
 export function Flag(x,y,nbflag,camp){ 
     //1 pos toucé 2 pos tiré
     let list = []
-    let list2 = []
-    let list3 = []
     if(camp == "Axis"){
         if(nbflag >= 1){
-            list.push({x:x-1,y:x%2==1?y+1:y});
-            list.push({x:x-1,y:x%2==1?y:y-1});
+            list.push({x:x-1,y:x%2==1?y+1:y,flag:1});
+            list.push({x:x-1,y:x%2==1?y:y-1,flag:1});
         }
         if(nbflag >= 2){
-            list2.push({x:x-2,y:y-1});
-            list2.push({x:x-2,y:y});
-            list2.push({x:x-2,y:y+1});
+            list.push({x:x-2,y:y-1,flag:2});
+            list.push({x:x-2,y:y,flag:2});
+            list.push({x:x-2,y:y+1,flag:2});
         }
         if(nbflag >= 3){
-            list3.push({x:x-3,y:x%2==1?y-1:y-2});
-            list3.push({x:x-3,y:x%2==1?y:y-1});
-            list3.push({x:x-3,y:x%2==1?y+1:y});
-            list3.push({x:x-3,y:x%2==1?y+2:y+1});
+            list.push({x:x-3,y:x%2==1?y-1:y-2,flag:3});
+            list.push({x:x-3,y:x%2==1?y:y-1,flag:3});
+            list.push({x:x-3,y:x%2==1?y+1:y,flag:3});
+            list.push({x:x-3,y:x%2==1?y+2:y+1,flag:3});
         }
     }else{
         if(nbflag >= 1){
-            list.push({x:x+1,y:x%2==1?y+1:y});
-            list.push({x:x+1,y:x%2==1?y:y-1});
+            list.push({x:x+1,y:x%2==1?y+1:y,flag:1});
+            list.push({x:x+1,y:x%2==1?y:y-1,flag:1});
         }
         if(nbflag >= 2){
-            list2.push({x:x+2,y:y-1});
-            list2.push({x:x+2,y:y});
-            list2.push({x:x+2,y:y+1});
+            list.push({x:x+2,y:y-1,flag:2});
+            list.push({x:x+2,y:y,flag:2});
+            list.push({x:x+2,y:y+1,flag:2});
         }
         if(nbflag >= 3){
-            list3.push({x:x+3,y:x%2==1?y-1:y-2});
-            list3.push({x:x+3,y:x%2==1?y:y-1});
-            list3.push({x:x+3,y:x%2==1?y+1:y});
-            list3.push({x:x+3,y:x%2==1?y+2:y+1});
+            list.push({x:x+3,y:x%2==1?y-1:y-2,flag:3});
+            list.push({x:x+3,y:x%2==1?y:y-1,flag:3});
+            list.push({x:x+3,y:x%2==1?y+1:y,flag:3});
+            list.push({x:x+3,y:x%2==1?y+2:y+1,flag:3});
         }
     }
-    let alllist = [...list,...list2,...list3]
-    return {1:VerList(list),2:list2,3:list3,alllist:alllist};
+    return VerList(list)
 }
 
 // list.push({x:x,y:y})
