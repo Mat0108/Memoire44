@@ -103,11 +103,11 @@ export class SoldatGenerique  {
 }
 
 export class CaseGenerique {
-    constructor(image,malus,deplacmentmax,ignorereflag,lineofsight,byentering,imageexplicatif,hover,className ) {
+    constructor(image,malus,deplacmentmax,ignoreflag,lineofsight,byentering,imageexplicatif,hover,className ) {
         this._image = image;
         this._malus = malus ? malus :null;
         this._deplacmentmax = deplacmentmax ? deplacmentmax : null;
-        this._ignorereflag = ignorereflag ? ignorereflag : null;
+        this._ignoreflag = ignoreflag ? ignoreflag : null;
         this._lineofsight = lineofsight ? lineofsight : false;
         this._byentering = byentering ? byentering : null;
         this._imageexplicatif = imageexplicatif ? imageexplicatif : null;
@@ -383,13 +383,58 @@ export function switchResult(unité,Star){
 export function Dice(nb,unité,setAnimation,Star){
     let animation = new Array(6)
     let LoseLife = 0;
+    let nbflag = 0
     for (let index = 0; index < nb; index++) {
         let dice = switchResult(unité,Star);
         if(dice.dice){LoseLife += 1}
+        if(dice.result == "Flag"){nbflag += 1}
         animation[index]=dice.result;
         
     }
     setAnimation(animation)
-    return LoseLife;
+    return {LoseLife:LoseLife,nbflag:nbflag};
 }
 
+export function Flag(x,y,nbflag,camp){ 
+    //1 pos toucé 2 pos tiré
+    let list = []
+    let list2 = []
+    let list3 = []
+    if(camp == "Axis"){
+        if(nbflag >= 1){
+            list.push({x:x-1,y:x%2==1?y+1:y});
+            list.push({x:x-1,y:x%2==1?y:y-1});
+        }
+        if(nbflag >= 2){
+            list2.push({x:x-2,y:y-1});
+            list2.push({x:x-2,y:y});
+            list2.push({x:x-2,y:y+1});
+        }
+        if(nbflag >= 3){
+            list3.push({x:x-3,y:x%2==1?y-1:y-2});
+            list3.push({x:x-3,y:x%2==1?y:y-1});
+            list3.push({x:x-3,y:x%2==1?y+1:y});
+            list3.push({x:x-3,y:x%2==1?y+2:y+1});
+        }
+    }else{
+        if(nbflag >= 1){
+            list.push({x:x+1,y:x%2==1?y+1:y});
+            list.push({x:x+1,y:x%2==1?y:y-1});
+        }
+        if(nbflag >= 2){
+            list2.push({x:x+2,y:y-1});
+            list2.push({x:x+2,y:y});
+            list2.push({x:x+2,y:y+1});
+        }
+        if(nbflag >= 3){
+            list3.push({x:x+3,y:x%2==1?y-1:y-2});
+            list3.push({x:x+3,y:x%2==1?y:y-1});
+            list3.push({x:x+3,y:x%2==1?y+1:y});
+            list3.push({x:x+3,y:x%2==1?y+2:y+1});
+        }
+    }
+    let alllist = [...list,...list2,...list3]
+    return {1:VerList(list),2:list2,3:list3,alllist:alllist};
+}
+
+// list.push({x:x,y:y})

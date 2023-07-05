@@ -1,8 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 
-import reportWebVitals from './reportWebVitals';
-import {CardGenerique, Dice, VerificationLineOfSight, showPortee} from './divers/Generique'
+import {CardGenerique, Dice, Flag, VerificationLineOfSight, showPortee} from './divers/Generique'
 import { SelecteurScenario, loadScenario } from './scenario';
 import { Scenariovide } from './scenario/scenariovide';
 import { Assaultsurvassieuxenvercours } from './scenario/batailleduvercors/assaultsurvassieuxenvercours';
@@ -13,7 +12,7 @@ import { CardSelect, RandomListCard } from './divers/Card';
 
 
 function App() {
-  const [card, setCard] = useState(new CardGenerique("Choisir une carte","back-fr")); //zone:1 gauche, zone:2 centre zone:3 droite zone:4 all type:1 soldat, type:2 tank type:3 artilleries type:4 all
+  const [card, setCard] = useState(new CardGenerique("Attaque centre","attack-center-fr",3,2,"ALL"),); //zone:1 gauche, zone:2 centre zone:3 droite zone:4 all type:1 soldat, type:2 tank type:3 artilleries type:4 all
   
   const [selectedScenerio,setSelectedScenario] = useState(Assaultsurvassieuxenvercours);
   const [status,setStatus ] = useState(1)
@@ -26,8 +25,10 @@ function App() {
   const [medalAlliés,setMedalAlliés] = useState(0)
   const [medalAxisList,setMedalAxisList] = useState(new Array(selectedScenerio.medal))
   const [medalAxis,setMedalAxis] = useState(0)
+  const UnitSelected = []
   const UnitCanAttack = []
-  const debug = false;
+  
+  const debug = true;
   let x = 13;
   let y = 9;
   function StateButton(text,textvalider,status,action,showvalider){
@@ -46,11 +47,19 @@ function App() {
     setGrille(localgrille2)
 
   }
-  
+  function moveUnit(x,y,nbunit){
+    let localgrille = {...grille};
+    let f = localgrille.grille[x][y];
+    localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:f.unité._nombre - result > 0 ? HitUnit(f.unité.constructor.name,nbunit):null,action:null,highlight:null,select:null}
+    setGrille(localgrille)
+  }
+
   function updateAttackUnit(x,y,x2,y2,unité,dicenb){
 
     let localgrille = {...grille};
-    let result = Dice(dicenb,unité,setAnimation,false)
+    let dice = Dice(dicenb,unité,setAnimation,false)
+    let result = dice.LoseLife
+    if(dice.nbflag > 0)
     setAnimationShow(true)
     setTimeout(() => {
       setAnimationShow(false)
@@ -61,16 +70,23 @@ function App() {
       let f2 = localgrille.grille[x2][y2];
       if(f.unité._nombre - result <= 0){
         if(camp == "Allies"){
-          console.log("test")
           // let medal = {...medalAlliésList}
-          console.log('medalAlliésList : ', medalAlliésList)
-          medalAlliésList[medalAlliés] = HitUnit(f.unité.constructor.name,1)
-          console.log('medal : ', medalAlliésList)
-          // setMedalAlliés(medalAlliés+1)
+          medalAlliésList[medalAlliés] = HitUnit(f.unité.constructor.name,1);
+          setMedalAlliés(medalAlliés+1);
           // setMedalAlliésList(medal);
+        }else{
+          medalAxisList[medalAxis] = HitUnit(f.unité.constructor.name,1);
+          setMedalAxis(medalAxis+1);
         }
       }
-     
+      if(dice.nbflag > 0 && localgrille.grille[x][y]._ignoreflag ? dice.nbflag > 1 : true){
+        let alllist = Flag(x,y,dice.nbflag,camp);
+        
+        
+        listflag.map(item=>{
+
+        })
+      }
       
       localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:f.unité._nombre - result > 0 ? HitUnit(f.unité.constructor.name,f.unité._nombre - result):null,action:null,highlight:null,select:null}
       localgrille.grille[x2][y2] = {case:f2.case,defense:f2.defense,unité:f2.unité,action:null,highlight:null,select:null}
@@ -78,6 +94,7 @@ function App() {
     }, 2200);
     
   }
+
 
   function calculDés(x,y,unité){
     RemoveHighlight()
@@ -160,7 +177,7 @@ function App() {
     
     let list = showPortee(grille,Object.keys(unité._deplacement).length,posx,posy,null,unité._deplacement)
 
-
+    
     let localgrille = {...grille};
     let localgrille2 = {...grille};
 
@@ -204,8 +221,16 @@ function App() {
     
     localgrille.grille.map((e,pos)=>{
       e.map((f,pos2)=>{
-        
+            
         if(pos2 >= filtrecol.min2 && pos2 <=filtrecol.max2 && pos2 >= filtrecol.min && pos2 <=filtrecol.max ){
+          if(card._nbunit == "ALL"){
+
+          }else{
+            if(Object.keys(UnitSelected).length < card._nbunit){
+              
+            }
+          }
+          
           if(f.unité && (card._type == "ALL" || f.unité._type == card._type) && f.unité._camp == camp){
             localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:f.unité,action:()=>{ShowPortéeUnit(pos,pos2,f.unité)},highlight:f.highlight,select:new SelectHexa()}
           }
@@ -219,7 +244,6 @@ function App() {
   }
   
   const showingCard = useMemo(() => {
-    console.log('card : ', card)
     return <div className='w-[500px] h-[300px] ml-8 flex flex-row'>
       <div className='flex flex-col w-[276px] '>
         {<CardSelect onChange={setCard}/> }
@@ -287,22 +311,23 @@ function App() {
       
       return (
       <div className="relative w-fit h-fit">
-        <div className='absolute mt-[38px] mr-[50px] right-0 z-[10] w-[550px] h-[54px] flex flex-row'>*
-          {medalAxisList.map(medal=>{
-            return <div className='w-1/6 h-full flex center'>{medal.render()}</div>
+        <div className='absolute mt-[38px] mr-[50px] right-0 z-[10] w-[550px] h-[54px] flex flex-row'>
+          {medalAxisList.map((medal,pos)=>{
+            return <div className='w-1/6 h-full flex center' key={`axis-${pos}`}>{medal.render()}</div>
           })}
         </div>
-        <div className='absolute mb-[38px]  ml-[50px] bottom-0 left-0 z-[10] w-[550px] h-[54px] flex flex-row'>*
-        {medalAlliésList.map(medal=>{
-            return <div className='w-1/6 h-full flex center'>{medal.render()}</div>
+        <div className='absolute mb-[38px]  ml-[50px] bottom-0 left-0 z-[10] w-[550px] h-[54px] flex flex-row'>
+        {medalAlliésList.map((medal,pos)=>{
+            return <div className='w-1/6 h-full flex center' key={`allies-${pos}`}>{medal.render()}</div>
           })}
         </div>
         {debug ? <div className='absolute z-[4100] top-0 left-8 text-vivid_tangerine text-[20px] font-av-bold'><span className='text-white text-[20px] font-av-bold'>posx</span> posy</div>:""}
-        <div className=""><img src={`images/${grille.terrain}.png`} alt={"terrain"} className='w-full h-full'/></div>
+        <div key={"terrain"}><img src={`images/${grille.terrain}.png`} alt={"terrain"} className='w-full h-full'/></div>
         <div className="absolute flex flex-col z-[2000] top-[58px] left-[10px]">
           {grille.grille.map((e,pos)=>{
-            return <div className={`${pos % 2 == 1 ? "ml-[45px]":""} w-full flex flex-row`}>{
+            return <div className={`${pos % 2 == 1 ? "ml-[45px]":""} w-full flex flex-row`} key={`ligne-${pos}`}>{
               e.map((f,pos2)=>{
+
 
                   if(pos2 != (pos % 2 == 1 ? x-1 : x)){
                       
@@ -324,9 +349,9 @@ function App() {
       }
      },[grille])
 
-    
+  
   return (
-    <div className="App w-full h-full relative bg-[#EEE8E4]  ">
+    <div className="App w-full h-full relative bg-[#EEE8E4]  " key="main">
       {/* <div className='flex'>{SelecteurScenario(selectedScenerio,setSelectedScenario)}</div> */}
       <div className='flex flex-row'>
         {global} 
@@ -346,7 +371,3 @@ root.render(
   </React.StrictMode>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

@@ -20,3 +20,17 @@ export class Target extends CaseGenerique{
         super(nb ? test3("divers","target-",nb):"images/divers/target.png")
     }
 }
+export class retreat extends CaseGenerique{
+    constructor(nb){
+        this._nb = nb;
+        super(nb == 0 ? "images/divers/retreat_0.png" : test3("divers","retreat_",nb))
+    }
+    render(){
+      return <div className="relative w-fit h-fit">
+        <div className="absolute bottom-2 right-2">
+            {this._nb}
+        </div>
+        {super.render()}
+      </div>  
+    }
+}

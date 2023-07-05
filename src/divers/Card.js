@@ -1,6 +1,7 @@
 import { CardGenerique } from "./Generique";
 
 export const ListCard = [
+    // titre,imageurl,nbunit,zone,type
     new CardGenerique("Choisir une carte","back-fr"),
     new CardGenerique("Attaque aérienne","air-power-fr"),
     new CardGenerique("Embuscade","ambush-fr"),
@@ -17,7 +18,7 @@ export const ListCard = [
     new CardGenerique("Combat rapproché","close-assault-fr"),
     new CardGenerique("Contre-attaque","counter-attack-fr"),
     new CardGenerique("Consolidation de position","dig-in-fr"),
-    new CardGenerique("Ordre du QG","direct-hq-fr"),
+    new CardGenerique("Ordre du QG","direct-hq-fr",4,"ALL","ALL"),
     new CardGenerique("Fusillade","firefight-fr"),
     new CardGenerique("Attaque frontale","general-advance-fr",2,"ALL","ALL"),
     new CardGenerique("Assault d'infanterie","infantry-assault-fr"),
@@ -42,7 +43,7 @@ export const CardSelect = ({onChange}) =>{
     let list = ListCard;
     return <select onChange={(e)=>{onChange(ListCard[e.target.value])}} className="w-[276px] mt-[20px]" >
         {list.map((item,pos)=>{
-            return <option value={pos}>{item._titre}</option>
+            return <option value={pos} key={pos}>{item._titre}</option>
         })}
     </select>
         
