@@ -25,10 +25,10 @@ function App() {
   const [medalAlliés,setMedalAlliés] = useState(0)
   const [medalAxisList,setMedalAxisList] = useState(new Array(selectedScenerio.medal))
   const [medalAxis,setMedalAxis] = useState(0)
-  const UnitSelected = []
-  const UnitCanAttack = []
+  const [UnitSelected, setUnitSelected]  =useState(0)
+  let UnitCanAttack = []
   
-  const debug = true;
+  const debug = false;
   let x = 13;
   let y = 9;
   function StateButton(text,textvalider,status,action,showvalider){
@@ -233,6 +233,34 @@ function App() {
 
     setGrille(localgrille2)
   }
+
+  function updateSelectedUnit(x,y,isSelected){
+
+    let localgrille = {...grille};
+    let localgrille2 = {...grille};
+    let f = localgrille.grille[x][y];
+    // let localUnitSelected = UnitSelected
+    if(isSelected){
+      
+      setUnitSelected(UnitSelected + 1)
+      // setUnitSelected(localUnitSelected)
+      localgrille2.grille[x][y] = {case:f.case,defense:f.defense,unité:f.unité,action:()=>{updateSelectedUnit(x,y,false)},highlight:f.highlight,select:new SelectHexa()}    
+    }else{
+      const index = UnitSelected.indexOf(`${x}-${y}`);
+      if (index > -1) {
+
+        setUnitSelected(UnitSelected - 1)
+        // setUnitSelected(localUnitSelected)
+      }
+      localgrille2.grille[x][y] = {case:f.case,defense:f.defense,unité:f.unité,action:()=>{updateSelectedUnit(x,y,true)},highlight:f.highlight,select:null}      
+    }
+    
+    setGrille(localgrille2);
+  }
+
+  useEffect(()=>{
+    console.log('UnitSelected : ', UnitSelected)
+  },[UnitSelected])
   //function pour selectionner les unités 
   function selectedUnit(){
     let filtrecol = {min:0,max:12}
@@ -260,23 +288,25 @@ function App() {
             
         if(pos2 >= filtrecol.min2 && pos2 <=filtrecol.max2 && pos2 >= filtrecol.min && pos2 <=filtrecol.max ){
           if(card._nbunit == "ALL"){
-
+            if(f.unité && (card._type == "ALL" || f.unité._type == card._type) && f.unité._camp == camp){
+              localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:f.unité,action:()=>{ShowPortéeUnit(pos,pos2,f.unité)},highlight:f.highlight,select:new SelectHexa()}
+            }
           }else{
-            if(Object.keys(UnitSelected).length < card._nbunit){
-              
+            if(UnitSelected < card._nbunit){
+              if(f.unité && (card._type == "ALL" || f.unité._type == card._type) && f.unité._camp == camp){
+                localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:f.unité,action:()=>{updateSelectedUnit(pos,pos2,true)},highlight:f.highlight,select:null}
+              }
             }
           }
           
-          if(f.unité && (card._type == "ALL" || f.unité._type == card._type) && f.unité._camp == camp){
-            localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:f.unité,action:()=>{ShowPortéeUnit(pos,pos2,f.unité)},highlight:f.highlight,select:new SelectHexa()}
-          }
+         
           
 
         }
       })})
       
 
-    setGrille(localgrille)
+    setGrille(localgrille2);
   }
   
   const showingCard = useMemo(() => {
