@@ -4,8 +4,10 @@ import { Forest, Hills, SandBag, Village } from "../haxagone/base";
 import { Mountain, RoadCurve, RoadHillCurve, RoadRight } from "../haxagone/terrain";
 
 export const Scenariovide = {
+    name:"Scenariovide",
     terrain:"terrain0",
     medal:6,
+    camp:"Axis",
     hexa:[
         {x:0,y:0,contenu:{case:null,defense:null,unité:null,action:null,highlight:null,select:null}},
         {x:0,y:1,contenu:{case:null,defense:null,unité:null,action:null,highlight:null,select:null}},

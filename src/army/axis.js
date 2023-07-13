@@ -1,9 +1,9 @@
 import { SoldatGenerique } from "../divers/Generique"
 
 export class SoldatAxis extends SoldatGenerique {
-    constructor(nb){  //orientation: true => bas, false => haut 
+    constructor(nb,portée){  //orientation: true => bas, false => haut 
         let orientation = true;
-        super(`images/base/${orientation ? "u_gerinf_top":"u_gerinf_bottom"}.png`,nb ? nb : 4,[3,2,1],[1,2],"w-[38%]","Soldat","Axis")
+        super(`images/base/${orientation ? "u_gerinf_top":"u_gerinf_bottom"}.png`,nb ? nb : 4,portée ? portée[0] : [3,2,1],portée ? portée[1]:[1,2],"w-[38%]","Soldat","Axis")
     }
 }
 

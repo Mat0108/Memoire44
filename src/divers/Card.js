@@ -28,10 +28,9 @@ export const ListCard = [
     new CardGenerique("Accrochage centrer","probe-center-fr",2,2,"ALL"),
     new CardGenerique("Accrochage gauche","probe-left-fr",2,1,"ALL"),
     new CardGenerique("Accrochage droite","probe-right-fr",2,3,"ALL"),
-    new CardGenerique("reconnaissance centre","recon-center-fr",1,2,"ALL"),
     new CardGenerique("reconnaissance gauche","recon-left-fr",1,1,"ALL"),
+    new CardGenerique("reconnaissance centre","recon-center-fr",1,2,"ALL"),
     new CardGenerique("reconnaissance droite","recon-right-fr",1,3,"ALL"),
-    new CardGenerique("reconnaissance en force","recon-center-fr",1,"ALL","ALL"),
     new CardGenerique("Action héroïque","their-finest-hour-fr")
 ]
 
@@ -47,4 +46,16 @@ export const CardSelect = ({onChange}) =>{
         })}
     </select>
         
+}
+export const CampAffichage = ({camp}) =>{
+    return <div className='mt-[20px] w-[276px] h-[50px] relative p-2 flex flex-row bg-gray rounded-lg flex flex-row center justify-around'>
+        <div className="flex flex-row center">
+            <div className={`w-5 h-5 rounded-full  mr-[10px] border-[5px] ${camp == "Allies" ? "border-green":"border-red"}`}></div>
+            <div><img src={"images/divers/medalallies.png"} alt={"medalallies"} className="w-10 h-10"/></div>
+        </div>
+        <div className="flex flex-row center">
+            <div className={`w-5 h-5 rounded-full  mr-[10px] border-[5px] ${camp != "Allies" ? "border-green":"border-red"}`}></div>
+            <div><img src={"images/divers/medalaxis.png"} alt={"medalaxis"} className="w-10 h-10"/></div>
+        </div>
+    </div>
 }

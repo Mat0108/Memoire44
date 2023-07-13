@@ -5,6 +5,7 @@ import { Move } from "../../haxagone/highlight";
 import { AirField, Mountain, RoadCurve, RoadHillCurve, RoadRight } from "../../haxagone/terrain";
 
 export const Assaultsurvassieuxenvercours = {
+    name:"Assaultsurvassieuxenvercours",
     terrain:"terrain0",
     medal:5,
     camp:"Axis",
@@ -42,7 +43,7 @@ export const Assaultsurvassieuxenvercours = {
         {x:2,y:3,contenu:{case:null,defense:null,unité:null,action:null,highlight:null,select:null}},
         {x:2,y:4,contenu:{case:null,defense:null,unité:null,action:null,highlight:null,select:null}},
         {x:2,y:5,contenu:{case:new AirField(2),defense:null,unité:new SoldatAxis(),action:null,highlight:null,select:null}},
-        {x:2,y:6,contenu:{case:null,defense:null,unité:new SoldatAxis(),action:null,highlight:null,select:null}},
+        {x:2,y:6,contenu:{case:null,defense:null,unité:null,action:null,highlight:null,select:null}},
         {x:2,y:7,contenu:{case:new Village(),defense:null,unité:new SoldatAllies(3),action:null,highlight:null,select:null}},
         {x:2,y:8,contenu:{case:new Village(),defense:null,unité:new SoldatAllies(3),action:null,highlight:null,select:null}},
         {x:2,y:9,contenu:{case:null,defense:null,unité:null,action:null,highlight:null,select:null}},
@@ -70,7 +71,7 @@ export const Assaultsurvassieuxenvercours = {
         {x:4,y:4,contenu:{case:new Forest(),defense:null,unité:null,action:null,highlight:null,select:null}},
         {x:4,y:5,contenu:{case:null,defense:null,unité:null,action:null,highlight:null,select:null}},
         {x:4,y:6,contenu:{case:null,defense:null,unité:null,action:null,highlight:null,select:null}},
-        {x:4,y:7,contenu:{case:null,defense:null,unité:new CharAllies(),action:null,highlight:null,select:null}},
+        {x:4,y:7,contenu:{case:null,defense:null,unité:null,action:null,highlight:null,select:null}},
         {x:4,y:8,contenu:{case:null,defense:null,unité:null,action:null,highlight:null,select:null}},
         {x:4,y:9,contenu:{case:null,defense:null,unité:null,action:null,highlight:null,select:null}},
         {x:4,y:10,contenu:{case:null,defense:null,unité:null,action:null,highlight:null,select:null}},
@@ -81,7 +82,7 @@ export const Assaultsurvassieuxenvercours = {
         {x:5,y:1,contenu:{case:new Village(),defense:null,unité:new SoldatAllies(3),action:null,highlight:null,select:null}},
         {x:5,y:2,contenu:{case:null,defense:null,unité:null,action:null,highlight:null,select:null}},
         {x:5,y:3,contenu:{case:null,defense:null,unité:null,action:null,highlight:null,select:null}},
-        {x:5,y:4,contenu:{case:null,defense:null,unité:new CharAllies(),action:null,highlight:null,select:null}},
+        {x:5,y:4,contenu:{case:null,defense:null,unité:null,action:null,highlight:null,select:null}},
         {x:5,y:5,contenu:{case:new Forest(),defense:null,unité:null,action:null,highlight:null,select:null}},
         {x:5,y:6,contenu:{case:null,defense:null,unité:null,action:null,highlight:null,select:null}},
         {x:5,y:7,contenu:{case:null,defense:null,unité:new SoldatAxis(),action:null,highlight:null,select:null}},

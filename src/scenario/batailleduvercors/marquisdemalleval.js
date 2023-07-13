@@ -4,6 +4,7 @@ import { Forest, Hills, Village } from "../../haxagone/base";
 import { Mountain } from "../../haxagone/terrain";
 
 export const Marquisdemalleval = {
+    name:"Marquisdemalleval",
     terrain:"terrain0",
     medal:5,
     camp:"Axis",
