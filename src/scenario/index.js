@@ -18,11 +18,11 @@ export function loadScenario(scenario){
 }
 
 const listScenario = [
-    {name:"Merci de choisir un scenario ",value:"Scenariovide"},
-    {name:"Bataille du Ver Cours",value:"Scenariovide"},
-    {name:"Bataille de Saint-nizier",value:"Batailledesaintnizier"},
+    {name:"Merci de choisir un scénario ",value:"Scenariovide"},
+    {name:"Bataille du Vercors",value:"Scenariovide"},
+    {name:"Bataille de Saint-Nizier",value:"Batailledesaintnizier"},
     {name:"Marquis de Malleval",value:"Marquisdemalleval"},
-    {name:"Assault sur Vassieux en Ver Cours",value:"Assaultsurvassieuxenvercours"},
+    {name:"Assault sur Vassieux en Vercors",value:"Assaultsurvassieuxenvercours"},
     {name:"Bataille du débarquement",value:"Scenariovide"},
 
 ]
