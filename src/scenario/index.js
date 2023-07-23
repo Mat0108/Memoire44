@@ -5,6 +5,7 @@ import { Marquisdemalleval } from "./batailleduvercors/marquisdemalleval";
 import { Scenariovide } from "./scenariovide";
 
 import { Link } from 'react-router-dom';
+import { Scenariotest } from './scenariotest';
 export function loadScenario(scenario){
     let x = 13;
     let y = 9;
@@ -24,6 +25,7 @@ const listScenario = [
     {name:"Marquis de Malleval",value:"Marquisdemalleval"},
     {name:"Assault sur Vassieux en Vercors",value:"Assaultsurvassieuxenvercours"},
     {name:"Bataille du débarquement",value:"Scenariovide"},
+    {name:"Scenario test",value:"Scenariotest"}
 
 ]
 export const SelecteurScenario = ()=>{
@@ -37,7 +39,7 @@ export const SelecteurScenario = ()=>{
         return <div key={pos} onMouseEnter={()=>{setImage(e.value)}}  className={`text-left p-2 w-full bg-gray  h-[50px] text-2xl ${e.value == "Scenariovide" ? "text-center":"bg-lightgrey px-8"}`}>{e.name}</div>})}</div>
         <div className="w-[1200px] h-full bg-gray px-4  flex flex-col center space-2">
             {LoadImage}  
-            {image == "Scenariovide" ? <div className="w-[180px] h-[60px] mt-[30px]"></div>: <div className="w-[180px] h-[60px] mt-[30px] rounded-3xl text-white bg-green text-2xl text-center"><p className="p-2"><Link  to={`/scenario/${image}`}>Play</Link></p></div>}
+            {image == "Scenariovide" ? <div className="w-[180px] h-[60px] mt-[30px]"></div>: <Link  to={`/scenario/${image}`} className="w-[180px] h-[60px] mt-[30px] p-2 rounded-3xl text-white bg-green text-2xl text-center">Play</Link>}
           
         </div>  
 
@@ -51,7 +53,9 @@ export function ReturnScenario(scenarioname){
         case "Batailledesaintnizier":
             return Batailledesaintnizier;
         case "Marquisdemalleval":
-            return Marquisdemalleval;  
+            return Marquisdemalleval; 
+        case "Scenariotest":
+            return Scenariotest;
         default:
             return Scenariovide;
     }

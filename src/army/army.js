@@ -19,3 +19,21 @@ export function HitUnit(unit,nb){
                                                 
     }
 }
+
+export function AddDice(unit,nb,portée,deplacement){
+    switch(unit){
+        case "SoldatAxis":
+            return new SoldatAxis(nb,portée,deplacement);
+        case "CharAxis":
+            return new CharAxis(nb,portée,deplacement);    
+        case "ArtillerieAxis":
+            return new ArtillerieAxis(nb,portée,deplacement);    
+        case "SoldatAllies":
+            return new SoldatAllies(nb,portée,deplacement);    
+        case "CharAllies":
+            return new CharAllies(nb,portée,deplacement);    
+        case "ArtillerieAllies":
+            return new ArtillerieAllies(nb,portée,deplacement);    
+                                                
+    }
+}

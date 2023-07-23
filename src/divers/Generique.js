@@ -123,17 +123,19 @@ export class CaseGenerique {
 
 export class CardGenerique {
     // {card:"",img:"",nbunit:1,zone:2,type:"ALL",showing:false}
-    constructor(titre,image,nbunit,zone,type){
+    constructor(titre,image,nbunit,zone,type,type2,ignoreterrain,countstar,extradice){
         this._titre = titre;
         this._image = image;
         this._nbunit = nbunit ? nbunit : "ALL";
         this._zone = zone ? zone : "ALL";
         this._type = type ? type : "ALL";
+        this._type = type2 ? type2 : type ? type:"ALL";
+        this._ignoreterrain = ignoreterrain ? ignoreterrain : false;
+        this._countstar = countstar ? countstar : false;
+        this._extradice = extradice ? extradice : false; 
         
     }
-    render(){
-        <div className="w-[261px] h-[403px] ml-[20px] bg-white"> <img src={`images/cards/commandement/${this._image}-large.png`} alt={this._titre} className="w-[261px] h-[403px] ml-[20px] bg-white"/></div>
-    }
+
 } 
 export function test6(path,name,orientation){
     return `images/${path}/${orientation == 6 ? `${name}6`:orientation == 5 ? `${name}5` : orientation == 4 ?
@@ -161,6 +163,7 @@ function pointproche(x,y){
 }
 export function showPortee(grille,portée,posx,posy,dés,deplacement){
 
+    
     let list = [
         {x:posx-1,y: posx %2  == 1 ? posy : posy-1,dés: dés ? dés[0] : 0,deplacement:deplacement ? deplacement[0]:null},
         {x:posx+1,y: posx %2  == 1 ? posy : posy-1,dés:dés ? dés[0] : 0,deplacement:deplacement ? deplacement[0]:null},
@@ -169,21 +172,24 @@ export function showPortee(grille,portée,posx,posy,dés,deplacement){
         {x:posx-1,y:posx %2  == 1 ? posy+1:posy,dés:dés ? dés[0] : 0,deplacement:deplacement ? deplacement[0]:null},
         {x:posx+1,y:posx %2  == 1 ? posy+1:posy,dés:dés ? dés[0] : 0,deplacement:deplacement ? deplacement[0]:null}
     ]
+    function betterPush(x,y,nb,){
+        list.push({x:x,y:y,dés:dés ? dés[nb]:null,deplacement:deplacement ? deplacement[nb]:null})
+    }
     if(portée >= 2){
-        list.push({x:posx-2,y:posy,dés:dés ? dés[1] : 0,deplacement:deplacement ? deplacement[1]:null});
-        list.push({x:posx-2,y:posy-1,dés:dés ? dés[1] : 0,deplacement:deplacement ? deplacement[1]:null});
-        list.push({x:posx-2,y:posy+1,dés:dés ? dés[1] : 0,deplacement:deplacement ? deplacement[1]:null}); //partie gauche du cercle
+        betterPush(posx-2,posy,1);
+        betterPush(posx-2,posy-1,1);
+        betterPush(posx-2,posy+1,1); //partie gauche du cercle
 
-        list.push({x:posx-1,y:posx %2  == 1 ? posy-1:posy-2,dés:dés ? dés[1] : 0,deplacement:deplacement ? deplacement[1]:null}); //partie haute et bas du cercle
-        list.push({x:posx+1,y:posx %2  == 1 ? posy-1:posy-2,dés:dés ? dés[1] : 0,deplacement:deplacement ? deplacement[1]:null});
-        list.push({x:posx,y:posy-2,dés:dés ? dés[1] : 0,deplacement:deplacement ? deplacement[1]:null});
-        list.push({x:posx,y:posy+2,dés:dés ? dés[1] : 0,deplacement:deplacement ? deplacement[1]:null});
-        list.push({x:posx-1,y:posx %2  == 1 ? posy+2:posy+1,dés:dés ? dés[1] : 0,deplacement:deplacement ? deplacement[1]:null});
-        list.push({x:posx+1,y:posx %2  == 1 ? posy+2:posy+1,dés:dés ? dés[1] : 0,deplacement:deplacement ? deplacement[1]:null});
+        betterPush(posx-1,posx %2  == 1 ? posy-1:posy-2,1); //partie haute et bas du cercle
+        betterPush(posx+1,posx %2  == 1 ? posy-1:posy-2,1);
+        betterPush(posx,posy-2,1);
+        betterPush(posx,posy+2,1);
+        betterPush(posx-1,posx %2  == 1 ? posy+2:posy+1,1);
+        betterPush(posx+1,posx %2  == 1 ? posy+2:posy+1,1);
         
-        list.push({x:posx+2,y:posy,dés:dés ? dés[1] : 0,deplacement:deplacement ? deplacement[1]:null}); //partie droite du cercle
-        list.push({x:posx+2,y:posy-1,dés:dés ? dés[1] : 0,deplacement:deplacement ? deplacement[1]:null});
-        list.push({x:posx+2,y:posy+1,dés:dés ? dés[1] : 0,deplacement:deplacement ? deplacement[1]:null});
+        betterPush(posx+2,posy,1); //partie droite du cercle
+        betterPush(posx+2,posy-1,1);
+        betterPush(posx+2,posy+1,1);
     }
     if(portée >= 3){
         let list3 = [];
@@ -214,7 +220,7 @@ export function showPortee(grille,portée,posx,posy,dés,deplacement){
         list3.push({x:posx+1,y:posx %2  == 1 ? posy-2:posy-3,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
         
         list3.map(item=>{
-            if(deplacement && Object.keys(deplacement).length){
+            if(deplacement && Object.keys(deplacement).length && false){
                 pointproche(item.x,item.y).map(ptproche=>{
                     if(ptproche.x >= 0 && ptproche.x <= 8 && ptproche.y >= 0 && ptproche.y <= 12){
                         if(!grille.grille[ptproche.x][ptproche.y].case){
@@ -234,35 +240,108 @@ export function showPortee(grille,portée,posx,posy,dés,deplacement){
     
     }
     if(portée >=4){
-        list.push({x:posx-4,y:posy,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null}); //partie gauche du cercle
-        list.push({x:posx-4,y:posy-1,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
-        list.push({x:posx-4,y:posy+1,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
-        list.push({x:posx-3,y:posy-2,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
-        list.push({x:posx-3,y:posy+2,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
-        list.push({x:posx-3,y:posy-3,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
-        list.push({x:posx-3,y:posy+3,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
+        betterPush(posx-4,posy,3);//partie gauche du cercle
+        betterPush(posx-4,posy-1,3);
+        betterPush(posx-4,posy+1,3);
+        betterPush(posx-4,posy-2,3);
+        betterPush(posx-4,posy+2,3);
 
-        list.push({x:posx+4,y:posy,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null}); //partie droite du cercle
-        list.push({x:posx+3,y:posy-1,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
-        list.push({x:posx+3,y:posy+1,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
-        list.push({x:posx+3,y:posy-2,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
-        list.push({x:posx+3,y:posy+2,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
-        list.push({x:posx+2,y:posy-3,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
-        list.push({x:posx+2,y:posy+3,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
+        betterPush(posx-3,posx%2==1?posy-2:posy-3,3);
+        betterPush(posx-3,posx%2==1?posy+3:posy+2,3);
 
-        list.push({x:posx-2,y:posy+4,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null}); //partie haute du cercle
-        list.push({x:posx-1,y:posy+4,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
-        list.push({x:posx,y:posy+4,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
-        list.push({x:posx+1,y:posy+4,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
-        list.push({x:posx+2,y:posy+4,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
+        betterPush(posx+4,posy,3); //partie droite du cercle
+        betterPush(posx+4,posy-1,3);
+        betterPush(posx+4,posy+1,3);
+        betterPush(posx+4,posy-2,3);
+        betterPush(posx+4,posy+2,3);
 
-        list.push({x:posx-2,y:posy-4,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null}); //partie basse du cercle
-        list.push({x:posx-1,y:posy-4,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
-        list.push({x:posx,y:posy-4,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
-        list.push({x:posx+1,y:posy-4,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
-        list.push({x:posx+2,y:posy-4,dés:dés ? dés[3] : 0,deplacement:deplacement ? deplacement[3]:null});
+        betterPush(posx+3,posx%2==1?posy-2:posy-3,3);
+        betterPush(posx+3,posx%2==1?posy+3:posy+2,3);
+
+        betterPush(posx-2,posy+3,3); //partie haute du cercle
+        betterPush(posx-1,posx%2==1?posy+4:posy+3,3);
+        betterPush(posx,posy+4,3);
+        betterPush(posx+1,posx%2==1?posy+4:posy+3,3);
+        betterPush(posx+2,posy+3,3);
+
+        betterPush(posx-2,posy-3,3); //partie basse du cercle
+        betterPush(posx-1,posx%2==1?posy-3:posy-4,3);
+        betterPush(posx,posy-4,3);
+        betterPush(posx+1,posx%2==1?posy-3:posy-4,3);
+        betterPush(posx+2,posy-3,3);
     }
+    if(portée >=5){
+        betterPush(posx-4,posy,4);   
+        betterPush(posx-4,posy-1,4); 
+        betterPush(posx-4,posy+1,4); 
+        betterPush(posx-4,posy-2,4);
+        betterPush(posx-4,posy+2,4); 
+        betterPush(posx-4,posy-3,4); 
+        betterPush(posx-4,posy+3,4);
 
+        betterPush(posx+4,posy,4);  
+        betterPush(posx+4,posy-1,4); 
+        betterPush(posx+4,posy+1,4); 
+        betterPush(posx+4,posy-2,4);
+        betterPush(posx+4,posy+2,4); 
+        betterPush(posx+4,posy-3,4); 
+        betterPush(posx+4,posy+3,4);
+
+        betterPush(posx,posy-5,4);
+        betterPush(posx-1,posx%2==1?posy-4:posy-5,4);
+        betterPush(posx+1,posx%2==1?posy-4:posy-5,4);
+        betterPush(posx-2,posy-4,4);
+        betterPush(posx+2,posy-4,4);
+        betterPush(posx-3,posx%2==1?posy-3:posy-4,4);
+        betterPush(posx+3,posx%2==1?posy-3:posy-4,4);
+        
+        betterPush(posx,posy+5,4);
+        betterPush(posx-1,posx%2==1?posy+5:posy+4,4);
+        betterPush(posx+1,posx%2==1?posy+5:posy+4,4);
+        betterPush(posx-2,posy+4,4);
+        betterPush(posx+2,posy+4,4);
+        betterPush(posx-3,posx%2==1?posy+4:posy+3,4);
+        betterPush(posx+3,posx%2==1?posy+4:posy+3,4);
+    }
+    if(portée >=6){
+        betterPush(posx-5,posy,5);   
+        betterPush(posx-5,posy-1,5); 
+        betterPush(posx-5,posy+1,5); 
+        betterPush(posx-5,posy-2,5);
+        betterPush(posx-5,posy+2,5); 
+        betterPush(posx-5,posy-3,5); 
+        betterPush(posx-5,posy+3,5); 
+        betterPush(posx-5,posx%2==1?posy+4:posy-4,5); 
+        
+        betterPush(posx+5,posy,5);   
+        betterPush(posx+5,posy-1,5); 
+        betterPush(posx+5,posy+1,5); 
+        betterPush(posx+5,posy-2,5);
+        betterPush(posx+5,posy+2,5); 
+        betterPush(posx+5,posy-3,5); 
+        betterPush(posx+5,posy+3,5); 
+        betterPush(posx+5,posx%2==1?posy+4:posy-4,5); 
+
+        betterPush(posx,posy-6,5);
+        betterPush(posx-1,posx%2==1?posy-5:posy-6,5);
+        betterPush(posx+1,posx%2==1?posy-5:posy-6,5);
+        betterPush(posx-2,posy-5,5);
+        betterPush(posx+2,posy-5,5);
+        betterPush(posx-3,posx%2==1?posy-4:posy-5,5);
+        betterPush(posx+3,posx%2==1?posy-4:posy-5,5);
+        betterPush(posx-4,posy-4,5);
+        betterPush(posx+4,posy-4,5);
+
+        betterPush(posx,posy+6,5);
+        betterPush(posx-1,posx%2==1?posy+6:posy+5,5);
+        betterPush(posx+1,posx%2==1?posy+6:posy+5,5);
+        betterPush(posx-2,posy+5,5);
+        betterPush(posx+2,posy+5,5);
+        betterPush(posx-3,posx%2==1?posy+5:posy+4,5);
+        betterPush(posx+3,posx%2==1?posy+5:posy+4,5);
+        betterPush(posx-4,posy+4,5);
+        betterPush(posx+4,posy+4,5);
+    }
     return VerList(list);
 }
 
@@ -349,12 +428,13 @@ export function VerificationLineOfSight(x,y,x2,y2,grille){
                     cond2 = [{x:x2-1,y:y2-1},{x:x2-1,y:y2}]
                 } 
             }
-            if(grille.grille[cond2[0].x][cond2[0].y].unité && 
-                grille.grille[cond2[1].x][cond2[1].y].unité  ){
+            
+            if(grille.grille[cond2[0].x][cond2[0].y] && grille.grille[cond2[0].x][cond2[0].y].unité && 
+                grille.grille[cond2[1].x][cond2[1].y] && grille.grille[cond2[1].x][cond2[1].y].unité  ){
                 return false;
             }
-            if(grille.grille[cond2[0].x][cond2[0].y].case && 
-                grille.grille[cond2[1].x][cond2[1].y].case  ){
+            if(grille.grille[cond2[0].x][cond2[0].y] && grille.grille[cond2[0].x][cond2[0].y].case && 
+                grille.grille[cond2[1].x][cond2[1].y] && grille.grille[cond2[1].x][cond2[1].y].case  ){
                 return !((grille.grille[cond2[0].x][cond2[0].y].case._lineofsight && grille.grille[cond2[1].x][cond2[1].y].case._lineofsight)) 
             }
         }
