@@ -67,3 +67,20 @@ export function AirPower(grille,setGrille,x,y,action){
     localgrille2.grille[x][y] = {case:f.case,defense:f.defense,unité:f.unité,action:action,highlight:null,select:f.unité._camp == "Allies" ? new Target(2) : new Target(1)}
     setGrille(localgrille2);
 }
+export function Barrage(grille,setGrille,x,y,action){
+    let localgrille = {...grille};
+    let localgrille2 = {...grille};
+    let f = localgrille.grille[x][y];
+    let nb = 0;
+    localgrille.grille.map((e,pos)=>{
+        e.map((f,pos2)=>{
+          if(f.select){
+            nb += 1;
+          }
+        });
+      });   
+    if(nb == 0){
+        localgrille2.grille[x][y] = {case:f.case,defense:f.defense,unité:f.unité,action:action,highlight:null,select:new Target(4)}
+    }
+    setGrille(localgrille2);
+}

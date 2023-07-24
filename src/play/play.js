@@ -1,20 +1,20 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 
-import {CardGenerique, Dice, Flag, VerificationLineOfSight, showPortee} from '../divers/Generique'
+import {CardGenerique, Dice, Flag, VerificationLineOfSight, pointproche, showPortee} from '../divers/Generique'
 import { ReturnScenario, SelecteurScenario, loadScenario } from '../scenario';
 import { Scenariovide } from '../scenario/scenariovide';
 import { Assaultsurvassieuxenvercours } from '../scenario/batailleduvercors/assaultsurvassieuxenvercours';
 import { Attacking, Move, Retreat, SelectHexa, Target } from '../haxagone/highlight';
 import { AddDice, HitUnit } from '../army/army';
-import { AirPower, CampAffichage, CardSelect, RandomListCard } from '../divers/Card';
+import { AirPower, Barrage, CampAffichage, CardSelect, RandomListCard } from '../divers/Card';
 
 
 import { useParams } from 'react-router';
 
 
 export const Play =()=> {
-  const [card, setCard] = useState(new CardGenerique("Tir d'artillerie","artillery-bombard-fr","ALL","ALL","Artillerie"))
+  const [card, setCard] = useState(new CardGenerique("Combat rapproché","close-assault-fr",0,0,0,0,false,false,true))
     // new CardGenerique("Attaque centre","attack-center-fr",3,2,"ALL"),);
   const {name} = useParams();
 
@@ -71,7 +71,6 @@ export const Play =()=> {
 
   }
   function updateAttackUnit(x,y,x2,y2,unité,dicenb,star,refire){
-    console.log('refire : ', refire)
     let localgrille = {...grille};
     let dice = Dice(dicenb,unité,setAnimation,star ? true:false)
     let result = dice.LoseLife
@@ -135,13 +134,18 @@ export const Play =()=> {
         
       }
      
-      let f2 = localgrille.grille[x2][y2];
-      
-      if(card._image == "artillery-bombard-fr" && refire ){
-        localgrille.grille[x2][y2] = {case:f2.case,defense:f2.defense,unité:f2.unité,action:()=>{calculDés(x2,y2,f2.unité,false)},highlight:null,select:new Attacking()}
-      }else{
-        localgrille.grille[x2][y2] = {case:f2.case,defense:f2.defense,unité:f2.unité,action:null,highlight:null,select:null}
+      if(x2){
+        let f2 = localgrille.grille[x2][y2];
+        if(card._image == "artillery-bombard-fr" && refire ){
+          localgrille.grille[x2][y2] = {case:f2.case,defense:f2.defense,unité:f2.unité,action:()=>{calculDés(x2,y2,null,null,f2.unité,false)},highlight:null,select:new Attacking()}
+        }else if(card._image == "behind-enemy-lines-fr"){
+          localgrille.grille[x2][y2] = {case:f2.case,defense:f2.defense,unité:AddDice(f2.unité.constructor.name,f2.unité._nombre,[4,3,2],[2,2,2]),action:()=>{ShowPortéeUnit(x2,y2,AddDice(f2.unité.constructor.name,f2.unité._nombre,[4,3,2],[2,2,2]))},highlight:null,select:new SelectHexa()}
+        
+        }else{
+          localgrille.grille[x2][y2] = {case:f2.case,defense:f2.defense,unité:f2.unité,action:null,highlight:null,select:null}
+        }  
       }
+      
       
       setGrille(localgrille)
     }, 2200);
@@ -150,7 +154,6 @@ export const Play =()=> {
 
 
   function calculDés(x,y,unité,refire){
-    console.log('firsttime : ', refire)
     RemoveHighlight()
     let localgrille = {...grille};
     let localgrille2 = {...grille};
@@ -166,13 +169,20 @@ export const Play =()=> {
         }
         if(item.dés + malus > 0){
           let f = localgrille2.grille[item.x][item.y];
-          localgrille2.grille[item.x][item.y] = {case:f.case,defense:f.defense,unité:f.unité,action:()=>{updateAttackUnit(item.x,item.y,x,y,f.unité,item.dés+malus,false,refire)},highlight:new Target(item.dés + malus),select:null}
+          let cond = false;
+          if(card._image == "armor-assault-fr"){
+            let ptproche = pointproche(x,y)
+            ptproche.map(pt=>{
+              if(item.x == pt.x && item.y == pt.y){cond = true}
+            })
+          } 
+          let dice = cond ? item.dés+malus+1 : item.dés+malus
+          localgrille2.grille[item.x][item.y] = {case:f.case,defense:f.defense,unité:f.unité,action:()=>{updateAttackUnit(item.x,item.y,x,y,f.unité,dice,false,refire)},highlight:new Target(dice),select:null}
        
         }
 
       }
     })
-    let k = localgrille.grille[x][y]
     
     setGrille(localgrille2)
   }
@@ -193,7 +203,7 @@ export const Play =()=> {
             }
           })
         
-          localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:f.unité,action:()=>{calculDés(pos,pos2,f.unité,true)},highlight:f.highlight,select:cond ? new Attacking():null}
+          localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:f.unité,action:()=>{calculDés(pos,pos2,f.unité,card._image == "artillery-bombard-fr" ? true:false)},highlight:f.highlight,select:cond ? new Attacking():null}
        
         
         }    
@@ -226,7 +236,6 @@ export const Play =()=> {
     localgrille2.grille[oldposx][oldposy] = {case:f.case,defense:null,unité:null,action:null,highlight:null,select:null}
     // UnitCanAttack.push({x:posx,y:posy})
    
-    
     let cond = false;
     list.map(item=>{
       if(localgrille.grille[item.x][item.y].unité && localgrille.grille[item.x][item.y].unité._camp == camp2 && VerificationLineOfSight(posx,posy,item.x,item.y,grille)){
@@ -356,7 +365,7 @@ export const Play =()=> {
     setGrille(localgrille2);
   }
 
-  function actionCard(){
+  function selectCard(){
     let localgrille = {...grille};
     let localgrille2 = {...grille};
     let cond = true;
@@ -370,14 +379,6 @@ export const Play =()=> {
           })})
         setGrille(localgrille2);
         break;
-        case "armor-assault-fr":
-          localgrille.grille.map((e,pos)=>{
-            e.map((f,pos2)=>{
-                  if(f.unité && f.unité._camp == camp && f.unité._type == "Char"){
-                    localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité.constructor.name,f.unité._nombre,[4,4,4]),action:null,highlight:null,select:null}
-                  }
-            })})
-          setGrille(localgrille2);
       case "artillery-bombard-fr":
         localgrille.grille.map((e,pos)=>{
           e.map((f,pos2)=>{
@@ -390,8 +391,55 @@ export const Play =()=> {
         setGrille(localgrille2);
         selectedUnit(true);
         break;
-      // case "barrage-fr":
-      //   break;
+      case "barrage-fr":
+        localgrille.grille.map((e,pos)=>{
+          e.map((f,pos2)=>{
+                if(f.unité && f.unité._camp == camp2){
+                  localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:f.unité,action:()=>{Barrage(grille,setGrille,pos,pos2,()=>{updateAttackUnit(pos,pos2,null,null,f.unité,4);setStatus(5)})},highlight:null,select:null}
+              }
+          })})
+        setGrille(localgrille2);
+      
+        break;
+      case "behind-enemy-lines-fr":
+        localgrille.grille.map((e,pos)=>{
+          e.map((f,pos2)=>{
+                if(f.unité && f.unité._camp == camp && f.unité._type == "Soldat"){
+                  localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité.constructor.name,f.unité._nombre,[4,3,2],[1,1,1]),action:null,highlight:null,select:null}
+                }
+          })})
+        setGrille(localgrille2);
+        selectedUnit(true);
+        break;
+      case "close-assault-fr":
+        localgrille.grille.map((e,pos)=>{
+          e.map((f,pos2)=>{
+                if(f.unité && f.unité._camp == camp){
+                  let ptproches = pointproche(pos,pos2);
+                  let cond = false
+                  ptproches.map(pt=>{
+                    if(localgrille.grille[pt.x][pt.y].unité && localgrille.grille[pt.x][pt.y].unité._camp == camp2){
+                      cond = true
+                    }
+                  })
+                  if(cond){
+                    if(f.unité._type == "Soldat"){
+                      localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité.constructor.name,f.unité._nombre,[4,3,2],[]),action:null,highlight:null,select:new Attacking()}
+                    }else if(f.unité._type == "Char"){
+                      localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité.constructor.name,f.unité._nombre,[4,4,4],[]),action:null,highlight:null,select:new Attacking()}
+                    
+                    }
+
+                  }
+                }
+          })})
+        setGrille(localgrille2);
+        setTimeout(() => {
+          selectedAttackUnit();
+          setStatus(5);
+        }, 1500);
+        break;
+
       default:
         selectedUnit()
     }
@@ -409,7 +457,16 @@ export const Play =()=> {
                 }
           })})
         setGrille(localgrille2);
-        switchCamp()
+      case "behind-enemy-lines-fr":
+        let localgrille = {...grille};
+        let localgrille2 = {...grille};
+        localgrille.grille.map((e,pos)=>{
+          e.map((f,pos2)=>{
+                if(f.unité && f.unité._camp == camp && f.unité._type == "Soldat"){
+                  localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité.constructor.name,f.unité._nombre,[3,2,1],[1,2]),action:null,highlight:null,select:null}
+                }
+          })})
+        setGrille(localgrille2);
       default:
         switchCamp()
     }
@@ -419,7 +476,7 @@ export const Play =()=> {
       <div className='flex flex-col w-[276px] '>
         {<CardSelect onChange={setCard}/> }
         {<CampAffichage camp={camp}/>}
-        {StateButton("Selection",status == 1 ? "Commencer":"Valider",status == 2 ? true:false,status == 1 ? ()=>{setStatus(2);actionCard();}:()=>{setStatus(3);showPortéeALL();},status < 3 ? true:false)}
+        {StateButton("Selection",status == 1 ? "Commencer":"Valider",status == 2 ? true:false,status == 1 ? ()=>{setStatus(2);selectCard();}:()=>{setStatus(3);showPortéeALL();},status < 3 ? true:false)}
         {StateButton("Deplacement",status == 3 ? "Continuer":"Valider",status == 3 ? true:false,status == 4 ? ()=>{setStatus(4)}:()=>{setStatus(5);selectedAttackUnit();},status == 3 ? true:false)}
         {StateButton("Combat",status == 5 ? "Continuer":"Valider",status == 5 ? true:false,status == 4 ? ()=>{setStatus(6)}:()=>{setStatus(1);resetActionCard();},status == 5 ? true:false)}      
       </div>

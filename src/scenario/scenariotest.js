@@ -14,7 +14,7 @@ export const Scenariotest = {
     hexa:[
         {x:0,y:0,contenu:{case:new Hills(),defense:null,unité:new ArtillerieAxis(),action:null,highlight:null,select:null}},
         {x:0,y:1,contenu:{case:null,defense:null,unité:null,action:null,highlight:null,select:null}},
-        {x:0,y:2,contenu:{case:null,defense:null,unité:new CharAxis(),action:null,highlight:null,select:null}},
+        {x:0,y:2,contenu:{case:null,defense:null,unité:null,action:null,highlight:null,select:null}},
         {x:0,y:3,contenu:{case:null,defense:null,unité:new CharAxis(),action:null,highlight:null,select:null}},
         {x:0,y:4,contenu:{case:null,defense:null,unité:null,action:null,highlight:null,select:null}},
         {x:0,y:5,contenu:{case:null,defense:null,unité:new ArtillerieAxis(),action:null,highlight:null,select:null}},
@@ -67,7 +67,7 @@ export const Scenariotest = {
         {x:3,y:11,contenu:{case:null,defense:null,unité:new SoldatAxis(),action:null,highlight:null,select:null}},
 
         {x:4,y:0,contenu:{case:null,defense:null,unité:null,action:null,highlight:null,select:null}},
-        {x:4,y:1,contenu:{case:null,defense:null,unité:null,action:null,highlight:null,select:null}},
+        {x:4,y:1,contenu:{case:null,defense:null,unité:new CharAxis(),action:null,highlight:null,select:null}},
         {x:4,y:2,contenu:{case:null,defense:null,unité:null,action:null,highlight:null,select:null}},
         {x:4,y:3,contenu:{case:new Hills(),defense:null,unité:null,action:null,highlight:null,select:null}},
         {x:4,y:4,contenu:{case:new Forest(),defense:null,unité:null,action:null,highlight:null,select:null}},
@@ -91,7 +91,7 @@ export const Scenariotest = {
         {x:5,y:8,contenu:{case:new Forest(),defense:null,unité:null,action:null,highlight:null,select:null}},
         {x:5,y:9,contenu:{case:null,defense:null,unité:null,action:null,highlight:null,select:null}},
         {x:5,y:10,contenu:{case:null,defense:null,unité:null,action:null,highlight:null,select:null}},
-        {x:5,y:11,contenu:{case:null,defense:null,unité:null,action:null,highlight:null,select:null}},
+        {x:5,y:11,contenu:{case:null,defense:null,unité:new SoldatAxis(),action:null,highlight:null,select:null}},
 
         {x:6,y:0,contenu:{case:null,defense:null,unité:null,action:null,highlight:null,select:null}},
         {x:6,y:1,contenu:{case:null,defense:null,unité:null,action:null,highlight:null,select:null}},

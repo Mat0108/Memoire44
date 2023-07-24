@@ -141,25 +141,27 @@ export function test6(path,name,orientation){
     return `images/${path}/${orientation == 6 ? `${name}6`:orientation == 5 ? `${name}5` : orientation == 4 ?
     `${name}4`:orientation == 3 ? `${name}3`:orientation == 2 ? `${name}2`:`${name}1`}.png`
 }
-
+export function test4(path,name,orientation){
+    return `images/${path}/${orientation == 4 ? `${name}4`:orientation == 3 ? `${name}3`:orientation == 2 ? `${name}2` : `${name}1`}.png`
+}
 export function test3(path,name,orientation){
     return `images/${path}/${orientation == 3 ? `${name}3`:orientation == 2 ? `${name}2` : `${name}1`}.png`
 }
 export function test2(path,name,orientation){
     return `images/${path}/${orientation == 2 ? `${name}2` : `${name}1`}.png`
 }
-function calculDistance(x,y,x2,y2){
+export function calculDistance(x,y,x2,y2){
     return Math.abs(Math.sqrt(Math.pow(x-x2,2)+Math.pow(y-y2,2)))
 }
-function pointproche(x,y){
-    return [
+export function pointproche(x,y){
+    return VerList([
         {x:x-1,y: x %2  == 1 ? y : y-1},
         {x:x+1,y: x %2  == 1 ? y : y-1},
         {x:x,y:y-1},
         {x:x,y:y+1},
         {x:x-1,y:x %2  == 1 ? y+1:y},
         {x:x+1,y:x %2  == 1 ? y+1:y}
-    ]
+    ])
 }
 export function showPortee(grille,portée,posx,posy,dés,deplacement){
 
