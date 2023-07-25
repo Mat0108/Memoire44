@@ -7,7 +7,7 @@ import "./index.css"
 import { Play } from './play/play';
 const App = ()=>{
     return (
-    <div className="App w-full h-full relative bg-gray-dark  " key="main">
+    <div className="App w-screen h-screen relative bg-gray-dark  " key="main">
       {/* <div className='flex'>{SelecteurScenario(selectedScenerio,setSelectedScenario)}</div> */}
       <Router>
         <Routes>

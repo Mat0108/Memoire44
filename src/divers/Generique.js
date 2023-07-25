@@ -163,6 +163,16 @@ export function pointproche(x,y){
         {x:x+1,y:x %2  == 1 ? y+1:y}
     ])
 }
+export function isCombatRapproche(x,y,x2,y2){
+    let list = pointproche(x,y);
+    let cond = false;
+    list.map(item=>{
+        if(item.x == x2 && item.y == y2){
+            cond = true;
+        }
+    })
+    return cond;
+}
 export function showPortee(grille,portée,posx,posy,dés,deplacement){
 
     

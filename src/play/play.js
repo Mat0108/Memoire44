@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 
-import {CardGenerique, Dice, Flag, VerificationLineOfSight, pointproche, showPortee} from '../divers/Generique'
+import {CardGenerique, Dice, Flag, VerificationLineOfSight, isCombatRapproche, pointproche, showPortee} from '../divers/Generique'
 import { ReturnScenario, SelecteurScenario, loadScenario } from '../scenario';
 import { Scenariovide } from '../scenario/scenariovide';
 import { Assaultsurvassieuxenvercours } from '../scenario/batailleduvercors/assaultsurvassieuxenvercours';
@@ -14,7 +14,7 @@ import { useParams } from 'react-router';
 
 
 export const Play =()=> {
-  const [card, setCard] = useState(new CardGenerique("Combat rapproché","close-assault-fr",0,0,0,0,false,false,true))
+  const [card, setCard] = useState(new CardGenerique("Assault de blindés","armor-assault-fr",4,"ALL","Char",false,false,false,true))
     // new CardGenerique("Attaque centre","attack-center-fr",3,2,"ALL"),);
   const {name} = useParams();
 
@@ -29,7 +29,7 @@ export const Play =()=> {
   const [medalAlliés,setMedalAlliés] = useState(0)
   const [medalAxisList,setMedalAxisList] = useState(new Array(selectedScenerio.medal))
   const [medalAxis,setMedalAxis] = useState(0)
-  let UnitCanAttack = []
+  const [modal, setModal] = useState(<></>)
   
   const debug = false;
   let x = 13;
@@ -97,8 +97,7 @@ export const Play =()=> {
           medalAxisList[medalAxis] = HitUnit(f.unité.constructor.name,1);
           setMedalAxis(medalAxis+1);
         }
-      }
-      if(dice.nbflag > 0 && localgrille.grille[x][y]._ignoreflag ? dice.nbflag > 1 : true){
+      }else if(dice.nbflag > 0 && localgrille.grille[x][y]._ignoreflag ? dice.nbflag > 1 : true){
         let flaglist = Flag(x,y,dice.nbflag,camp2);
         if(!Object.keys(flaglist).length ){
           localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:f.unité._nombre - result > 0 ? HitUnit(f.unité.constructor.name,f.unité._nombre - result ):null,action:null,highlight:null,select:null}
@@ -122,19 +121,18 @@ export const Play =()=> {
             })
           
           }else{
-            localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:f.unité,action:()=>moveUnit(x,y,x,y,f.unité._nombre - result -dice.nbflag),highlight:new Retreat(0,-1*dice.nbflag),select:null}
+            localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:f.unité,action:()=>moveUnit(x,y,x,y,f.unité._nombre - result -dice.nbflag,x2,y2),highlight:new Retreat(0,-1*dice.nbflag),select:null}
             flaglist.map(item=>{
               if(!localgrille.grille[item.x][item.y].unité){
                 let g = localgrille.grille[item.x][item.y];
-                localgrille.grille[item.x][item.y] = {case:g.case,defense:g.defense,unité:g.unité,action:()=>moveUnit(x,y,item.x,item.y,f.unité._nombre - result+(item.flag-dice.nbflag)),highlight:new Retreat(item.flag,item.flag-dice.nbflag),select:null}
+                localgrille.grille[item.x][item.y] = {case:g.case,defense:g.defense,unité:g.unité,action:()=>moveUnit(x,y,item.x,item.y,f.unité._nombre - result+(item.flag-dice.nbflag),x2,y2),highlight:new Retreat(item.flag,item.flag-dice.nbflag),select:null}
               }  
             })
           }
         }
         
       }
-     
-      if(x2){
+      if(x2 >= 0){
         let f2 = localgrille.grille[x2][y2];
         if(card._image == "artillery-bombard-fr" && refire ){
           localgrille.grille[x2][y2] = {case:f2.case,defense:f2.defense,unité:f2.unité,action:()=>{calculDés(x2,y2,null,null,f2.unité,false)},highlight:null,select:new Attacking()}
@@ -212,15 +210,69 @@ export const Play =()=> {
   }
 
 
-
+  function persée(x,y,x2,y2,Refire){
+    let localgrille = {...grille};
+    let f = localgrille.grille[x][y];
+    let f2 = localgrille.grille[x2][y2];
+    let list = showPortee(grille,Object.keys(f.unité._portée).length,x2,y2,f.unité._portée,null)
+    let cond = false;
+    if(Refire){
+      list.map(item=>{
+        if(localgrille.grille[item.x][item.y].unité && localgrille.grille[item.x][item.y].unité._camp == camp2 && VerificationLineOfSight(x2,y2,item.x,item.y,grille)){
+          cond = true;
+        }
+      })  
+    }
+    if(Refire && cond){
+      localgrille.grille[x2][y2] = {case:f2.case,defense:f2.defense,unité:f.unité,action:()=>{calculDés(x2,y2,f.unité,false)},highlight:null,select:new Attacking()}
+    }else{
+      localgrille.grille[x2][y2] = {case:f2.case,defense:f2.defense,unité:f.unité,action:null,highlight:null,select:null}
+    }
+    localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:null,action:null,highlight:null,select:null}
+    setGrille(localgrille);
+    setModal(<></>)
+  }
   //Move functions 
-  function moveUnit(x,y,x2,y2,nbunit){
+  function moveUnit(x,y,x2,y2,nbunit,originx,originy){
+    
     RemoveHighlight();
     let localgrille = {...grille};
     let f = localgrille.grille[x][y];
     let f2 = localgrille.grille[x2][y2];
     localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:null,action:null,highlight:null,select:null}
     localgrille.grille[x2][y2] = {case:f2.case,defense:f2.defense,unité:HitUnit(f.unité.constructor.name,nbunit),action:null,highlight:null,select:null}
+    if(x != x2 || y != y2){
+      if(localgrille.grille[originx][originy].unité && isCombatRapproche(x,y,originx,originy) ){
+        if(localgrille.grille[originx][originy].unité._type == "Soldat"){
+          setModal(
+            <div className='relative w-screen h-screen flex center z-[350] '>
+            <div className='absolute w-[400px] h-[100px] rounded-3xl flex flex-col bg-gray z-[350]'>
+              <div className='text-center w-full h-1/2 p-4'>Voulez vous faire une prise de terrain ? </div>
+              <div className='w-full h-1/2 flex justify-around'>
+                <div className='w-[80px] h-10 p-2 bg-red text-white rounded-2xl text-center hover:cursor-pointer' onClick={()=>{setModal(<></>)}}>Annuler</div>  
+                <div className='w-[80px] h-10 p-2 bg-green text-white rounded-2xl text-center hover:cursor-pointer' onClick={()=>{persée(originx,originy,x,y,false)}}>Valider</div>  
+              
+              </div>
+            </div>
+          </div>
+          )
+        }else if(localgrille.grille[originx][originy].unité._type == "Char"){
+          setModal(
+            <div className='relative w-screen h-screen flex center z-[350] '>
+            <div className='absolute w-[400px] h-[100px] rounded-3xl flex flex-col bg-gray z-[350]'>
+              <div className='text-center w-full h-1/2 p-4'>Voulez vous faire une persée de blindés ? </div>
+              <div className='w-full h-1/2 flex justify-around'>
+                <div className='w-[80px] h-10 p-2 bg-red text-white rounded-2xl text-center hover:cursor-pointer' onClick={()=>{setModal(<></>)}}>Annuler</div>  
+                <div className='w-[80px] h-10 p-2 bg-green text-white rounded-2xl text-center hover:cursor-pointer' onClick={()=>{persée(originx,originy,x,y,true)}}>Valider</div>  
+              
+              </div>
+            </div>
+          </div>
+          )
+        }
+      }
+    }
+    
     setGrille(localgrille)
   }
 
@@ -550,7 +602,7 @@ export const Play =()=> {
         </div>
         {debug ? <div className='absolute z-[4100] top-0 left-8 text-vivid_tangerine text-[20px] font-av-bold'><span className='text-white text-[20px] font-av-bold'>posx</span> posy</div>:""}
         <div key={"terrain"}><img src={`images/${grille.terrain}.png`} alt={"terrain"} className='w-full h-full'/></div>
-        <div className="absolute flex flex-col z-[2000] top-[58px] left-[10px]">
+        <div className="absolute flex flex-col z-[200] top-[58px] left-[10px]">
           {grille.grille.map((e,pos)=>{
             return <div className={`${pos % 2 == 1 ? "ml-[45px]":""} w-full flex flex-row`} key={`ligne-${pos}`}>{
               e.map((f,pos2)=>{
@@ -576,16 +628,17 @@ export const Play =()=> {
       }
      },[grille])
 
-
+     const Modal = useMemo(() => <div className='absolute top-0 '>{modal}</div>, [modal])
      return (
       <div className="w-full h-full relative " >
-        <div className='flex flex-row'>
+        <div className='absolute top-0 flex flex-row'>
           {global} 
           <div className='flex flex-col'>
             {showingCard}
             {DiceAnimation}
           </div>
         </div>
+        {Modal}
           
-        </div>)
+      </div>)
   }
