@@ -11,10 +11,11 @@ import { AirPower, Barrage, CampAffichage, CardSelect, RandomListCard } from '..
 
 
 import { useParams } from 'react-router';
+import { SandBag } from '../haxagone/base';
 
 
 export const Play =()=> {
-  const [card, setCard] = useState(new CardGenerique("Assault de blindés","armor-assault-fr",4,"ALL","Char",false,false,false,true))
+  const [card, setCard] = useState(new CardGenerique("Fusillade","firefight-fr",4,"ALL","ALL",false,false,false,true))
     // new CardGenerique("Attaque centre","attack-center-fr",3,2,"ALL"),);
   const {name} = useParams();
 
@@ -25,9 +26,9 @@ export const Play =()=> {
   const [animationShow,setAnimationShow] = useState(false)
   const [camp, setCamp ]  = useState(selectedScenerio.camp) // false alliés true axis
   const [camp2, setCamp2 ]  = useState(selectedScenerio.camp == "Allies" ? "Axis" : "Allies")
-  const [medalAlliésList,setMedalAlliésList] = useState(new Array(selectedScenerio.medal))
+  const [medalAlliésList,setMedalAlliésList] = useState(new Array())
   const [medalAlliés,setMedalAlliés] = useState(0)
-  const [medalAxisList,setMedalAxisList] = useState(new Array(selectedScenerio.medal))
+  const [medalAxisList,setMedalAxisList] = useState(new Array())
   const [medalAxis,setMedalAxis] = useState(0)
   const [modal, setModal] = useState(<></>)
   
@@ -70,11 +71,22 @@ export const Play =()=> {
     setGrille(localgrille2)
 
   }
+  function UpdateMedal(f,nb){
+    if(nb < 1){
+      if(camp == "Allies"){
+        // let medal = {...medalAlliésList}
+        medalAlliésList.push(HitUnit(f.unité.constructor.name,1));
+        // setMedalAlliésList(medal);
+      }else{
+        medalAxisList.push(HitUnit(f.unité.constructor.name,1));
+        // setMedalAxis(medalAxis+1);
+      }
+    }
+  }
   function updateAttackUnit(x,y,x2,y2,unité,dicenb,star,refire){
     let localgrille = {...grille};
     let dice = Dice(dicenb,unité,setAnimation,star ? true:false)
     let result = dice.LoseLife
-    if(dice.nbflag > 0)
     setAnimationShow(true)
     setTimeout(() => {
       setAnimationShow(false)
@@ -86,17 +98,17 @@ export const Play =()=> {
     setTimeout(() => {
       RemoveHighlight()
       let f = localgrille.grille[x][y];
-
       if(f.unité._nombre - result <= 0){
         if(camp == "Allies"){
           // let medal = {...medalAlliésList}
-          medalAlliésList[medalAlliés] = HitUnit(f.unité.constructor.name,1);
-          setMedalAlliés(medalAlliés+1);
+          medalAlliésList.push(HitUnit(f.unité.constructor.name,1));
           // setMedalAlliésList(medal);
         }else{
-          medalAxisList[medalAxis] = HitUnit(f.unité.constructor.name,1);
-          setMedalAxis(medalAxis+1);
+          medalAxisList.push(HitUnit(f.unité.constructor.name,1));
+          // setMedalAxis(medalAxis+1);
         }
+        localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:null,action:null,highlight:null,select:null}
+        
       }else if(dice.nbflag > 0 && localgrille.grille[x][y]._ignoreflag ? dice.nbflag > 1 : true){
         let flaglist = Flag(x,y,dice.nbflag,camp2);
         if(!Object.keys(flaglist).length ){
@@ -121,11 +133,11 @@ export const Play =()=> {
             })
           
           }else{
-            localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:f.unité,action:()=>moveUnit(x,y,x,y,f.unité._nombre - result -dice.nbflag,x2,y2),highlight:new Retreat(0,-1*dice.nbflag),select:null}
+            localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:f.unité,action:()=>{moveUnit(x,y,x,y,f.unité._nombre - result -dice.nbflag,x2,y2);UpdateMedal(f,f.unité._nombre - result -dice.nbflag)},highlight:new Retreat(0,-1*dice.nbflag),select:null}
             flaglist.map(item=>{
               if(!localgrille.grille[item.x][item.y].unité){
                 let g = localgrille.grille[item.x][item.y];
-                localgrille.grille[item.x][item.y] = {case:g.case,defense:g.defense,unité:g.unité,action:()=>moveUnit(x,y,item.x,item.y,f.unité._nombre - result+(item.flag-dice.nbflag),x2,y2),highlight:new Retreat(item.flag,item.flag-dice.nbflag),select:null}
+                localgrille.grille[item.x][item.y] = {case:g.case,defense:g.defense,unité:g.unité,action:()=>{moveUnit(x,y,item.x,item.y,f.unité._nombre - result+(item.flag-dice.nbflag),x2,y2);UpdateMedal(f,f.unité._nombre - result+(item.flag-dice.nbflag))},highlight:new Retreat(item.flag,item.flag-dice.nbflag),select:null}
               }  
             })
           }
@@ -164,6 +176,10 @@ export const Play =()=> {
         if(localgrille.grille[item.x][item.y].case && localgrille.grille[item.x][item.y].case._malus){
           if(unité._type == "Soldat"){malus = localgrille.grille[item.x][item.y].case._malus.soldat}
           else if(unité._type == "Char"){malus = localgrille.grille[item.x][item.y].case._malus.tank}
+        }
+        if(localgrille.grille[item.x][item.y].defense && localgrille.grille[item.x][item.y].defense._malus){
+          if(unité._type == "Soldat"){malus = localgrille.grille[item.x][item.y].case._malus.soldat+malus}
+          else if(unité._type == "Char"){malus = localgrille.grille[item.x][item.y].case._malus.tank+malus}
         }
         if(item.dés + malus > 0){
           let f = localgrille2.grille[item.x][item.y];
@@ -329,7 +345,7 @@ export const Play =()=> {
     let localgrille2 = {...grille};
     let f = localgrille.grille[x][y];
     let nb = 0;
-    // let localUnitSelected = UnitSelected
+    let cond = true;
     if(isSelected){
       localgrille.grille.map((e,pos)=>{
         e.map((f,pos2)=>{
@@ -338,8 +354,16 @@ export const Play =()=> {
           }
         });
       });
-      if(selectOther ? nb < 1 : nb < card._nbunit){
-
+      if(card._image == "firefight-fr"){
+        let pts = pointproche(x,y);
+        pts.map(item=>{
+          if(localgrille.grille[item.x][item.y].unité && localgrille.grille[item.x][item.y].unité._camp == camp2){
+            cond = false
+          }
+        })
+      }
+      if(selectOther ? nb < 1 : nb < card._nbunit && cond){
+        
         localgrille2.grille[x][y] = {case:f.case,defense:f.defense,unité:f.unité,action:()=>{updateSelectedUnit(x,y,false)},highlight:f.highlight,select:new SelectHexa()}   
       } 
     }else{
@@ -491,12 +515,52 @@ export const Play =()=> {
           setStatus(5);
         }, 1500);
         break;
-
+      case "firefight-fr":
+        localgrille.grille.map((e,pos)=>{
+          e.map((f,pos2)=>{
+            if(f.unité && f.unité._camp == camp){
+              let cond = true;
+              let pts = pointproche(pos,pos2);
+              pts.map(item=>{
+                if(localgrille.grille[item.x][item.y].unité && localgrille.grille[item.x][item.y].unité._camp == camp2){
+                  cond = false
+                }
+              })   
+              if(cond){
+                localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité.constructor.name,f.unité._nombre,f.unité._portée.map(item=>{return item+1}),[1,1,1]),action:null,highlight:null,select:null}
+              }
+            }
+          })})
+        setGrille(localgrille2);
+        
       default:
         selectedUnit()
     }
   }
-  
+  function ValiderCard(){
+    let localgrille = {...grille};
+    let localgrille2 = {...grille};
+    switch(card._image){
+      case "dig-in-fr":
+        localgrille.grille.map((e,pos)=>{
+          e.map((f,pos2)=>{
+            if(f.select && f.select.constructor.name == "SelectHexa"){
+              localgrille2.grille[pos][pos2] = {case:f.case,defense:new SandBag(camp != "Allies"),unité:f.unité,action:null,highlight:null,select:null}
+            }
+          })})
+        setGrille(localgrille2);
+        switchCamp();
+        setStatus(1);
+        break;
+      
+    case "firefight-fr":
+      selectedAttackUnit();
+      setStatus(5);
+      break;
+    default:
+        showPortéeALL()
+    }
+  }
   function resetActionCard(){
     let localgrille = {...grille};
     let localgrille2 = {...grille};
@@ -510,8 +574,6 @@ export const Play =()=> {
           })})
         setGrille(localgrille2);
       case "behind-enemy-lines-fr":
-        let localgrille = {...grille};
-        let localgrille2 = {...grille};
         localgrille.grille.map((e,pos)=>{
           e.map((f,pos2)=>{
                 if(f.unité && f.unité._camp == camp && f.unité._type == "Soldat"){
@@ -519,6 +581,15 @@ export const Play =()=> {
                 }
           })})
         setGrille(localgrille2);
+      case "close-assault-fr":
+          localgrille.grille.map((e,pos)=>{
+            e.map((f,pos2)=>{
+                  if(f.unité && f.unité._camp == camp && (f.unité._portée == [4,3,2] || f.unité.portée == [4,4,4])){
+                    localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:HitUnit(f.unité.constructor.name,f.unité._nombre),action:null,highlight:null,select:null}
+                  }
+            })})
+          setGrille(localgrille2);
+          
       default:
         switchCamp()
     }
@@ -528,7 +599,7 @@ export const Play =()=> {
       <div className='flex flex-col w-[276px] '>
         {<CardSelect onChange={setCard}/> }
         {<CampAffichage camp={camp}/>}
-        {StateButton("Selection",status == 1 ? "Commencer":"Valider",status == 2 ? true:false,status == 1 ? ()=>{setStatus(2);selectCard();}:()=>{setStatus(3);showPortéeALL();},status < 3 ? true:false)}
+        {StateButton("Selection",status == 1 ? "Commencer":"Valider",status == 2 ? true:false,status == 1 ? ()=>{setStatus(2);selectCard();}:()=>{setStatus(3);ValiderCard();},status < 3 ? true:false)}
         {StateButton("Deplacement",status == 3 ? "Continuer":"Valider",status == 3 ? true:false,status == 4 ? ()=>{setStatus(4)}:()=>{setStatus(5);selectedAttackUnit();},status == 3 ? true:false)}
         {StateButton("Combat",status == 5 ? "Continuer":"Valider",status == 5 ? true:false,status == 4 ? ()=>{setStatus(6)}:()=>{setStatus(1);resetActionCard();},status == 5 ? true:false)}      
       </div>

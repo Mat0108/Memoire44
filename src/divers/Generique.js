@@ -232,7 +232,7 @@ export function showPortee(grille,portée,posx,posy,dés,deplacement){
         list3.push({x:posx+1,y:posx %2  == 1 ? posy-2:posy-3,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
         
         list3.map(item=>{
-            if(deplacement && Object.keys(deplacement).length && false){
+            if(deplacement && Object.keys(deplacement).length){
                 pointproche(item.x,item.y).map(ptproche=>{
                     if(ptproche.x >= 0 && ptproche.x <= 8 && ptproche.y >= 0 && ptproche.y <= 12){
                         if(!grille.grille[ptproche.x][ptproche.y].case){
