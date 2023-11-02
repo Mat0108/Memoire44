@@ -32,9 +32,14 @@ export const Play =()=> {
   const [medalAxis,setMedalAxis] = useState(0)
   const [modal, setModal] = useState(<></>)
   
+  
   const debug = false;
   let x = 13;
   let y = 9;
+  let zone1 = {min:0,max:3,min2:0,max2:3}
+  let zone2 = {min:3,max:8,min2:3,max2:8}
+  let zone3 =  {min:8,max:12,min2:8,max2:12}
+
   useEffect(() => {
     setGrille(loadScenario(selectedScenerio));
 }, [selectedScenerio])
@@ -85,7 +90,7 @@ export const Play =()=> {
   }
   function updateAttackUnit(x,y,x2,y2,unité,dicenb,star,refire){
     let localgrille = {...grille};
-    let dice = Dice(dicenb,unité,setAnimation,star ? true:false)
+    let dice = Dice(dicenb,unité,setAnimation,star ? true:false,true)
     let result = dice.LoseLife
     setAnimationShow(true)
     setTimeout(() => {
@@ -346,10 +351,33 @@ export const Play =()=> {
     let f = localgrille.grille[x][y];
     let nb = 0;
     let cond = true;
+    let zone1 = {min:0,max:3,min2:0,max2:3}
+    let zone2 = {min:3,max:8,min2:3,max2:8}
+    let zone3 =  {min:8,max:12,min2:8,max2:12}
     if(isSelected){
+
       localgrille.grille.map((e,pos)=>{
         e.map((f,pos2)=>{
+          if(card._image == "general-advance-fr" || card._image == "pincer-move-fr"){
+            if(y >= zone1.min && y <= zone1.max && pos2 >= zone1.min && pos2 <= zone1.max){
+              if(f.select && f.select.constructor.name == "SelectHexa"){
+                nb += 1;
+              }
+
+            }
+          else if(card._image != "pincer-move-fr" && y > zone2.min && y < zone2.max && pos2 > zone2.min && pos2 < zone2.max){
+
+            if(f.select && f.select.constructor.name == "SelectHexa"){
+              nb += 1;
+            }
+
+          }else if(y >= zone3.min && y <= zone3.max && pos2 >= zone3.min && pos2 <= zone3.max){
           if(f.select && f.select.constructor.name == "SelectHexa"){
+            nb += 1;
+          }
+
+          }
+        }else if(f.select && f.select.constructor.name == "SelectHexa"){
             nb += 1;
           }
         });
@@ -440,7 +468,65 @@ export const Play =()=> {
     })
     setGrille(localgrille2);
   }
+  function InfantryAssault(x,y){
+    let localgrille = {...grille};
+    let localgrille2 = {...grille};
+    localgrille.grille.map((e,pos)=>{
+      e.map((f,pos2)=>{
+        if((y>= zone1.min && y<= zone1.max && pos2>=zone1.min && pos2 <= zone1.max)||(y>= zone2.min && y<= zone2.max && pos2>=zone2.min && pos2 <= zone2.max)||(y>= zone3.min && y<= zone3.max && pos2>=zone3.min && pos2 <= zone3.max)){
+          if(f.unité && f.unité._camp == camp && f.unité._type == "Soldat"){
+            localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:f.unité,action:f.action,highlight:f.highlight,select:new SelectHexa()}
+          }
+        }else{
+          localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:f.unité,action:f.action,highlight:f.highlight,select:null}
+          
+        }
 
+      })
+    })
+    
+    setGrille(localgrille2);
+  }
+  function Heal(x,y,unité){
+    let dicenb = camp == "Allies" ? selectedScenerio.cardAllies : selectedScenerio.cardAxis;
+    let dice = Dice(dicenb,unité,setAnimation,true,false)
+    let result = dice.LoseLife
+    setAnimationShow(true)
+    setTimeout(() => {
+      setAnimationShow(false)
+    }, 2100);
+
+    setTimeout(() => {
+      setAnimation(new Array())
+    }, 6000);
+    setTimeout(() => {
+      let localgrille = {...grille};
+      let f = localgrille.grille[x][y];
+      if(result > 0){
+        if(unité._type == "Soldat"){
+          if(unité._nombre + result <=4){
+            localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:HitUnit(unité.constructor.name,unité._nombre + result),action:null,highlight:null,select:new SelectHexa()}
+          }else{
+            localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:HitUnit(unité.constructor.name,4),action:null,highlight:null,select:new SelectHexa()}
+          }
+        }else if(unité._type == "Char"){
+          if(unité._nombre + result <=3){
+            localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:HitUnit(unité.constructor.name,unité._nombre + result),action:null,highlight:null,select:new SelectHexa()}
+          }else{
+            localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:HitUnit(unité.constructor.name,4),action:null,highlight:null,select:new SelectHexa()}
+          }
+        }else if(unité._type == "Artillerie"){
+          if(unité._nombre + result <=2){
+            localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:HitUnit(unité.constructor.name,unité._nombre + result),action:null,highlight:null,select:new SelectHexa()}
+          }else{
+            localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:HitUnit(unité.constructor.name,4),action:null,highlight:null,select:new SelectHexa()}
+          }
+        }
+      }
+      setGrille(localgrille);
+    }, 2200);
+
+  }
   function selectCard(){
     let localgrille = {...grille};
     let localgrille2 = {...grille};
@@ -532,7 +618,49 @@ export const Play =()=> {
             }
           })})
         setGrille(localgrille2);
-        
+      case "infantry-assault-fr":
+        localgrille.grille.map((e,pos)=>{
+          e.map((f,pos2)=>{
+                if(f.unité && f.unité._camp == camp && f.unité._type == "Soldat"){
+                  localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:f.unité,action:()=>{InfantryAssault(pos,pos2)},highlight:null,select:null}
+                }
+          })})
+        setGrille(localgrille2);
+        break;
+      case "medics-fr":
+        localgrille.grille.map((e,pos)=>{
+          e.map((f,pos2)=>{
+                if(f.unité && f.unité._camp == camp){
+                  localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:f.unité,action:()=>{Heal(pos,pos2,f.unité)},highlight:null,select:null}
+                }
+          })})
+        setGrille(localgrille2);
+      break;
+      case "their-finest-hour-fr":
+        localgrille.grille.map((e,pos)=>{
+          e.map((f,pos2)=>{
+                if(f.unité && f.unité._camp == camp){
+                  let ptproches = pointproche(pos,pos2);
+                  let cond = false
+                  ptproches.map(pt=>{
+                    if(localgrille.grille[pt.x][pt.y].unité && localgrille.grille[pt.x][pt.y].unité._camp == camp2){
+                      cond = true
+                    }
+                  })
+                  if(cond){
+                    if(f.unité._type == "Soldat"){
+                      localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité.constructor.name,f.unité._nombre,[4,3,2],[1,2]),action:null,highlight:null,select:new Attacking()}
+                    }else if(f.unité._type == "Char"){
+                      localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité.constructor.name,f.unité._nombre,[4,4,4],[1,1,1]),action:null,highlight:null,select:new Attacking()}
+                    }else if(f.unité._type == "Artillerie"){
+                      localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité.constructor.name,f.unité._nombre,[4,4,3,3,2,2],[2]),action:null,highlight:null,select:new Attacking()}
+                    
+                    }
+
+                  }
+                }
+          })})
+        setGrille(localgrille2);
       default:
         selectedUnit()
     }

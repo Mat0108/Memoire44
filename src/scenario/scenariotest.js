@@ -11,6 +11,8 @@ export const Scenariotest = {
     terrain:"terrain0",
     medal:5,
     camp:"Axis",
+    cardAxis:5,
+    cardAllies:5,
     hexa:[
         {x:0,y:0,contenu:{case:new Hills(),defense:null,unité:new ArtillerieAxis(),action:null,highlight:null,select:null}},
         {x:0,y:1,contenu:{case:null,defense:null,unité:null,action:null,highlight:null,select:null}},
@@ -88,7 +90,7 @@ export const Scenariotest = {
         {x:5,y:5,contenu:{case:new Forest(),defense:null,unité:null,action:null,highlight:null,select:null}},
         {x:5,y:6,contenu:{case:null,defense:null,unité:null,action:null,highlight:null,select:null}},
         {x:5,y:7,contenu:{case:null,defense:null,unité:new SoldatAxis(),action:null,highlight:null,select:null}},
-        {x:5,y:8,contenu:{case:new Forest(),defense:null,unité:null,action:null,highlight:null,select:null}},
+        {x:5,y:8,contenu:{case:new Forest(),defense:null,unité:new SoldatAxis(),action:null,highlight:null,select:null}},
         {x:5,y:9,contenu:{case:null,defense:null,unité:null,action:null,highlight:null,select:null}},
         {x:5,y:10,contenu:{case:null,defense:null,unité:null,action:null,highlight:null,select:null}},
         {x:5,y:11,contenu:{case:null,defense:null,unité:new SoldatAxis(),action:null,highlight:null,select:null}},

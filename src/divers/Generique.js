@@ -455,13 +455,13 @@ export function VerificationLineOfSight(x,y,x2,y2,grille){
     return VerList(allangle);
 }
 
-export function switchResult(unité,Star){
+export function switchResult(unité,Star,Grenade){
     let ran = Math.floor(Math.random() * 6) + 1
     switch(ran){
         case 1:
             return {result:"Soldat",dice:unité._type == "Soldat"};
         case 2:
-            return {result:"Grenade",dice:true};  
+            return {result:"Grenade",dice:Grenade};  
         case 3:
             return {result:"Soldat",dice:unité._type == "Soldat"};
         case 4:
@@ -472,12 +472,12 @@ export function switchResult(unité,Star){
             return {result:"Star",dice:Star};
         }
 }
-export function Dice(nb,unité,setAnimation,Star){
+export function Dice(nb,unité,setAnimation,Star,Grenade){
     let animation = new Array(6)
     let LoseLife = 0;
     let nbflag = 0
     for (let index = 0; index < nb; index++) {
-        let dice = switchResult(unité,Star);
+        let dice = switchResult(unité,Star,Grenade);
         if(dice.dice){LoseLife += 1}
         if(dice.result == "Flag"){nbflag += 1}
         animation[index]=dice.result;

@@ -8,6 +8,8 @@ export const Marquisdemalleval = {
     terrain:"terrain0",
     medal:5,
     camp:"Axis",
+    cardAxis:5,
+    cardAllies:5,
     hexa:[
         {x:0,y:0,contenu:{case:null,defense:null,unité:new SoldatAxis(),action:null,highlight:null,select:null}},
         {x:0,y:2,contenu:{case:null,defense:null,unité:new SoldatAxis(),action:null,highlight:null,select:null}},
