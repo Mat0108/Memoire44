@@ -5,7 +5,7 @@ import {CardGenerique, Dice, Flag, VerificationLineOfSight, isCombatRapproche, p
 import { ReturnScenario, SelecteurScenario, loadScenario } from '../scenario';
 import { Scenariovide } from '../scenario/scenariovide';
 import { Assaultsurvassieuxenvercours } from '../scenario/batailleduvercors/assaultsurvassieuxenvercours';
-import { Attacking, Move, Retreat, SelectHexa, Target } from '../haxagone/highlight';
+import { Attacking, Selected, Move, Retreat, SelectHexa, Target } from '../haxagone/highlight';
 import { AddDice, HitUnit } from '../army/army';
 import { AirPower, Barrage, CampAffichage, CardSelect, RandomListCard } from '../divers/Card';
 
@@ -15,7 +15,7 @@ import { SandBag } from '../haxagone/base';
 
 
 export const Play =()=> {
-  const [card, setCard] = useState(new CardGenerique("Fusillade","firefight-fr",4,"ALL","ALL",false,false,false,true))
+  const [card, setCard] = useState(new CardGenerique("reconnaissance centre","recon-center-fr",1,2,"ALL"))
     // new CardGenerique("Attaque centre","attack-center-fr",3,2,"ALL"),);
   const {name} = useParams();
 
@@ -46,7 +46,7 @@ export const Play =()=> {
 
 
   function StateButton(text,textvalider,status,action,showvalider){
-    return <div className='mt-[20px] w-[276px] h-[50px] relative p-2 flex flex-row bg-gray rounded-lg'><div className={`w-5 h-5 rounded-full  mr-[10px] border-[5px] ${status ? "border-green":"border-red"}`}></div><div className='text-white'>{text}</div>{showvalider ? <div className="absolute right-2 top-1 text-white ml-[30px] border-2 border-black rounded-lg p-1"  onClick={action}>{textvalider}</div>:""}</div>
+    return <div className='mt-[20px] w-[276px] h-[50px] relative p-2 flex flex-row bg-gray rounded-lg'><div className={`w-5 h-5 rounded-full mt-[6px] mr-[10px] border-[5px] ${status ? "border-green":"border-red"}`}></div><div className='text-white text-[18px] '>{text}</div>{showvalider ? <div className="absolute right-2 top-[7px] text-white ml-[30px] text-[16px] border-2 border-black hover:bg-lightgrey rounded-lg p-1"  onClick={action}>{textvalider}</div>:""}</div>
   } 
   //fonction pour retirer les highlight 
   function RemoveHighlight(){
@@ -88,10 +88,10 @@ export const Play =()=> {
       }
     }
   }
-  function updateAttackUnit(x,y,x2,y2,unité,dicenb,star,refire){
+  function updateAttackUnit(x,y,x2,y2,unité,dicenb,star,refire,ambuscade){
     let localgrille = {...grille};
     let dice = Dice(dicenb,unité,setAnimation,star ? true:false,true)
-    let result = dice.LoseLife
+    let result = dice.LoseLife;
     setAnimationShow(true)
     setTimeout(() => {
       setAnimationShow(false)
@@ -117,7 +117,7 @@ export const Play =()=> {
       }else if(dice.nbflag > 0 && localgrille.grille[x][y]._ignoreflag ? dice.nbflag > 1 : true){
         let flaglist = Flag(x,y,dice.nbflag,camp2);
         if(!Object.keys(flaglist).length ){
-          localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:f.unité._nombre - result > 0 ? HitUnit(f.unité.constructor.name,f.unité._nombre - result ):null,action:null,highlight:null,select:null}
+          localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:f.unité._nombre - result > 0 ? HitUnit(f.unité.constructor.name,f.unité._nombre - result ):null,action:ambuscade ? ()=>{calculDés(x,y,grille.grille[x][y].unité,false)}:null,highlight:null,select:ambuscade ? new Attacking() : null}
         }else{
           let chooseflag = 0
           flaglist.map(item=>{
@@ -150,6 +150,7 @@ export const Play =()=> {
         
       }
       if(x2 >= 0){
+        console.log(x2,y2)
         let f2 = localgrille.grille[x2][y2];
         if(card._image == "artillery-bombard-fr" && refire ){
           localgrille.grille[x2][y2] = {case:f2.case,defense:f2.defense,unité:f2.unité,action:()=>{calculDés(x2,y2,null,null,f2.unité,false)},highlight:null,select:new Attacking()}
@@ -202,7 +203,13 @@ export const Play =()=> {
 
       }
     })
-    
+    localgrille.grille.map((e,pos)=>{
+      e.map((f,pos2)=>{
+        if(f.select && (f.select.constructor.name == "Selected" )){
+          localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:f.unité,action:()=>{calculDés(pos,pos2,f.unité,card._image == "artillery-bombard-fr" ? true:false)},highlight:f.highlight,select:new Attacking()}
+        }})})
+    let g = localgrille.grille[x][y]; 
+    localgrille.grille[x][y] = {case:g.case,defense:g.defense,unité:g.unité,action:g.action,highlight:null,select:new Selected()};
     setGrille(localgrille2)
   }
   //fonction pour montrer les unités pouvant attacker une untié adverse
@@ -382,14 +389,14 @@ export const Play =()=> {
           }
         });
       });
-      if(card._image == "firefight-fr"){
-        let pts = pointproche(x,y);
-        pts.map(item=>{
-          if(localgrille.grille[item.x][item.y].unité && localgrille.grille[item.x][item.y].unité._camp == camp2){
-            cond = false
-          }
-        })
-      }
+      // if(card._image == "firefight-fr"){
+      //   let pts = pointproche(x,y);
+      //   pts.map(item=>{
+      //     if(localgrille.grille[item.x][item.y].unité && localgrille.grille[item.x][item.y].unité._camp == camp2){
+      //       cond = false
+      //     }
+      //   })
+      // }
       if(selectOther ? nb < 1 : nb < card._nbunit && cond){
         
         localgrille2.grille[x][y] = {case:f.case,defense:f.defense,unité:f.unité,action:()=>{updateSelectedUnit(x,y,false)},highlight:f.highlight,select:new SelectHexa()}   
@@ -613,11 +620,12 @@ export const Play =()=> {
                 }
               })   
               if(cond){
-                localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité.constructor.name,f.unité._nombre,f.unité._portée.map(item=>{return item+1}),[1,1,1]),action:null,highlight:null,select:null}
+                localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité.constructor.name,f.unité._nombre,f.unité._portée.map(item=>{return item+1}),[1,1,1]),action:()=>{updateSelectedUnit(pos,pos2,true,false)},highlight:null,select:null}
               }
             }
           })})
         setGrille(localgrille2);
+        break;
       case "infantry-assault-fr":
         localgrille.grille.map((e,pos)=>{
           e.map((f,pos2)=>{
@@ -722,14 +730,66 @@ export const Play =()=> {
         switchCamp()
     }
   }
+
+  function Embuscade(){
+    let localgrille = {...grille};
+    let localgrille2 = {...grille};
+    localgrille.grille.map((e,pos)=>{
+      e.map((f,pos2)=>{
+        if(f.select && f.select.constructor.name == "Selected" ){
+          let ptproches = pointproche(pos,pos2);
+          console.log(ptproches)
+          let cond = false
+          let malus = 0;
+          let localx = 0;
+          let localy = 0;
+          ptproches.map(pt=>{
+            if(localgrille.grille[pt.x][pt.y].unité && localgrille.grille[pt.x][pt.y].unité._camp == camp2){
+              
+              if(localgrille.grille[pos][pos2].case && localgrille.grille[pos][pos2].case._malus){
+                if(localgrille.grille[pt.x][pt.y].unité._type == "Soldat"){malus = localgrille.grille[pos][pos2].case._malus.soldat}
+                else if(localgrille.grille[pt.x][pt.y].unité._type == "Char"){malus = localgrille.grille[pos][pos2].case._malus.tank}
+              }
+              if(localgrille.grille[pos][pos2].defense && localgrille.grille[pos][pos2].defense._malus){
+                if(localgrille.grille[pt.x][pt.y].unité._type == "Soldat"){malus = localgrille.grille[pos][pos2].case._malus.soldat+malus}
+                else if(localgrille.grille[pt.x][pt.y].unité._type == "Char"){malus = localgrille.grille[pos][pos2].case._malus.tank+malus}
+              }
+              cond = true;
+              localx = pt.x;
+              localy = pt.y;
+            }
+          })
+          
+              console.log(pos,pos2,localx,localy)
+          if(cond){
+            let g = localgrille2.grille[localx][localy]
+            
+            let f = localgrille2.grille[pos][pos2]
+           console.log(g)
+            localgrille2.grille[localx][localy] = {case:g.case,defense:g.defense,unité:g.unité,action:()=>{updateAttackUnit(pos,pos2,localx,localy,f.unité,3,false,false,true)},highlight:null,select:new Attacking()}
+              // console.log(pos,pos2,x,y)
+              // let g = localgrille.grille[x][x]
+              // let h = localgrille.grille[pos][pos2]
+              // console.log(h.unité._portée[0])
+              
+              // localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:f.unité,action:null,highlight:null,select:null}
+          }
+        } 
+        
+      })})
+    setGrille(localgrille2);
+  }
   const showingCard = useMemo(() => {
-    return <div className='h-[350px] ml-8 flex flex-row'>
+    return <div className='h-[430px] ml-8 flex flex-row'>
       <div className='flex flex-col w-[276px] '>
         {<CardSelect onChange={setCard}/> }
         {<CampAffichage camp={camp}/>}
         {StateButton("Selection",status == 1 ? "Commencer":"Valider",status == 2 ? true:false,status == 1 ? ()=>{setStatus(2);selectCard();}:()=>{setStatus(3);ValiderCard();},status < 3 ? true:false)}
         {StateButton("Deplacement",status == 3 ? "Continuer":"Valider",status == 3 ? true:false,status == 4 ? ()=>{setStatus(4)}:()=>{setStatus(5);selectedAttackUnit();},status == 3 ? true:false)}
-        {StateButton("Combat",status == 5 ? "Continuer":"Valider",status == 5 ? true:false,status == 4 ? ()=>{setStatus(6)}:()=>{setStatus(1);resetActionCard();},status == 5 ? true:false)}      
+        {StateButton("Combat",status == 5 ? "Continuer":"Valider",status == 5 ? true:false,status == 4 ? ()=>{setStatus(6)}:()=>{setStatus(1);resetActionCard();},status == 5 ? true:false)}
+        <div className='mt-[20px] w-[276px] h-[50px] relative p-2 flex bg-gray rounded-lg text-[20px] text-white flex center border-2 border-black hover:bg-lightgrey ' onClick={()=>Embuscade()}>
+          <div>Embuscade</div>
+        </div>
       </div>
       <div className="w-fit h-fit m-[20px]"> <img src={`images/cards/commandement/${card._image}-large.png`} alt={card._titre} className="w-[278px] h-[432px] ml-[20px] "/></div>
     
@@ -743,7 +803,7 @@ export const Play =()=> {
 
   
   const DiceAnimation = useMemo(()=>{
-    return <div className='flex flex-col gap-4 w-[276px] h-[422px] p-2 bg-gray ml-8 rounded-xl'>
+    return <div className='flex flex-col gap-4 w-[276px] h-[418px] p-2 bg-gray ml-8 rounded-xl'>
       {animationShow ? <>
       <div className='w-full flex flex-row'>
         <div className={`w-[128px] h-[128px]  ${`Dice${animation[0]}`}`}></div>
@@ -783,7 +843,7 @@ export const Play =()=> {
   },[animation,animationShow])
   
 
-  
+
   const global = useMemo(()=>{
     {
       
@@ -809,14 +869,14 @@ export const Play =()=> {
 
                   if(pos2 != (pos % 2 == 1 ? x-1 : x)){
                       
-                      return <div className={`relative w-[91px] h-[78px] border-0 border-white ${f.action ? "hover:cursor-pointer":""}`} onClick={f.action} key={`${pos}${pos2}`}>
+                      return <div className={`relative w-[91px] h-[78px] border-0 border-white ${f.action ? "hover:cursor-pointer":""}`} onClick={f.action}  key={`${pos}${pos2}`} id={`${pos}${pos2}`} >
                         {debug ? <div className='absolute z-50 bottom-0 left-8 text-vivid_tangerine text-[24px] font-av-bold'><span className='text-white text-[24px] font-av-bold'>{pos}</span> {pos2}</div> :""}
                         <div className='absolute z-10 w-full h-full'>{f.case ? f.case.render(): ""}</div>
                         <div className='absolute z-20 w-full h-full'>{f.defense ? f.defense.render(): ""}</div>
                         <div className='absolute z-30 w-full h-full'>{f.unité ? f.unité.render(): ""}</div>
                         <div className='absolute z-40 w-full h-full'>{f.highlight ? f.highlight.render(): ""}</div>
                         <div className='absolute z-[50] w-full h-full'>{f.select ? f.select.render(): ""}</div>
-                        
+
                         </div>
                   
               }})

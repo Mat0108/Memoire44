@@ -7,11 +7,11 @@ export const ListCard = [
     new CardGenerique("Attaque aérienne","air-power-fr",0,0,0,0,true,true,false),
     new CardGenerique("Assault de blindés","armor-assault-fr",4,"ALL","Char",false,false,false,true),
     new CardGenerique("Tir d'artillerie","artillery-bombard-fr","ALL","ALL","Artillerie"),
-    new CardGenerique("Assaut centre","assault-center-fr","ALL",2,"ALL"),
     new CardGenerique("Assaut gauche","assault-left-fr","ALL",1,"ALL"),
+    new CardGenerique("Assaut centre","assault-center-fr","ALL",2,"ALL"),
     new CardGenerique("Assaut droite","assault-right-fr","ALL",3,"ALL"),
-    new CardGenerique("Attaque centre","attack-center-fr",3,2,"ALL"),
     new CardGenerique("Attaque gauche","attack-left-fr",3,1,"ALL"),
+    new CardGenerique("Attaque centre","attack-center-fr",3,2,"ALL"),
     new CardGenerique("Attaque droite","attack-right-fr",3,3,"ALL"),
     new CardGenerique("Tir de barrage","barrage-fr",1,"ALL","ALL",false,true,false,false),
     new CardGenerique("Infiltration","behind-enemy-lines-fr",1,"ALL","Soldat",false),
@@ -24,8 +24,8 @@ export const ListCard = [
     new CardGenerique("Médecins & Mécaniciens","medics-fr"),
     new CardGenerique("A l'assault","move-out-fr",4,"ALL","Soldat"),
     new CardGenerique("Encerclement","pincer-move-fr",2,4,"ALL"),
-    new CardGenerique("Accrochage centrer","probe-center-fr",2,2,"ALL"),
     new CardGenerique("Accrochage gauche","probe-left-fr",2,1,"ALL"),
+    new CardGenerique("Accrochage centrer","probe-center-fr",2,2,"ALL"),
     new CardGenerique("Accrochage droite","probe-right-fr",2,3,"ALL"),
     new CardGenerique("reconnaissance gauche","recon-left-fr",1,1,"ALL"),
     new CardGenerique("reconnaissance centre","recon-center-fr",1,2,"ALL"),
@@ -40,9 +40,9 @@ export function RandomListCard(){
 
 export const CardSelect = ({onChange}) =>{
     let list = ListCard;
-    return <select onChange={(e)=>{onChange(ListCard[e.target.value])}} className="w-[276px] mt-[20px]" >
+    return <select onChange={(e)=>{onChange(ListCard[e.target.value])}} className="w-[276px] mt-[10px] h-[50px] bg-gray text-[20px] font-av-bold text-white rounded-lg" >
         {list.map((item,pos)=>{
-            return <option value={pos} key={pos}>{item._titre}</option>
+            return <option value={pos} key={pos} className="">{item._titre}</option>
         })}
     </select>
         

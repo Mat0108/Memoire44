@@ -15,6 +15,11 @@ export class Attacking extends CaseGenerique {
         super("images/divers/attacking.png")
     }
 }
+export class Selected extends CaseGenerique {
+    constructor(){
+        super("images/divers/attacking_selected.png")
+    }
+}
 export class Target extends CaseGenerique{
     constructor(nb){
         super(nb ? test4("divers","target-",nb):"images/divers/target.png")
