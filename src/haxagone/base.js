@@ -55,3 +55,13 @@ export class RiversCurve extends CaseGenerique{
         super(test6("base","h_curve",orientation))
            }
 }
+export function returnHexagone(text){
+    switch(text){
+        case "Hills":
+            return new Hills();
+        case "Forest":
+            return new Forest();
+        case "Village":
+            return new Village();
+    }
+}

@@ -2,6 +2,8 @@ import { Scenariovide } from "./scenariovide";
 import { loadScenario } from './index';
 import { useMemo, useState } from "react";
 
+import { returnHexagone } from "../haxagone/base";
+
 export const CreateScenario = () =>{
 
     const [selectedScenerio,setSelectedScenario] = useState(Scenariovide);
@@ -11,25 +13,24 @@ export const CreateScenario = () =>{
     const debug = false;
     let x = 13;
     let y = 9;
+    let listHexagone = [
+      "Hills",
+      "Forest",
+      "Village"
+    ]
     const showingCard = useMemo(() => {
-      return <div className='h-[430px] ml-8 flex flex-row'>
-        <div className='flex flex-col w-[276px] '>
-          {<CardSelect onChange={setCard}/> }
-          {<CampAffichage camp={camp}/>}
-          {StateButton("Selection",status == 1 ? "Commencer":"Valider",status == 2 ? true:false,status == 1 ? ()=>{setStatus(2);selectCard();}:()=>{setStatus(3);ValiderCard();},status < 3 ? true:false)}
-          {StateButton("Deplacement",status == 3 ? "Continuer":"Valider",status == 3 ? true:false,status == 4 ? ()=>{setStatus(4)}:()=>{setStatus(5);selectedAttackUnit();},status == 3 ? true:false)}
-          {StateButton("Combat",status == 5 ? "Continuer":"Valider",status == 5 ? true:false,status == 4 ? ()=>{setStatus(6)}:()=>{setStatus(1);resetActionCard();},status == 5 ? true:false)}
-          <div className='mt-[20px] w-[276px] h-[50px] relative p-2 flex bg-gray rounded-lg text-[20px] text-white flex center border-2 border-black hover:bg-lightgrey ' onClick={()=>Embuscade()}>
-            <div>Embuscade</div>
+      return <div className='h-[430px] ml-8 mt-8 flex flex-row'>
+        <div className='flex flex-col '>
+          <h1 className="text-[24px] text-white"> Choissiez l'hexagone : </h1>
+          <div className="flex flex-row">
+            {listHexagone.map(item=>{return <div>{returnHexagone(item).render()}</div>})}
           </div>
         </div>
-        <div className="w-fit h-fit m-[20px]"> <img src={`images/cards/commandement/${card._image}-large.png`} alt={card._titre} className="w-[278px] h-[432px] ml-[20px] "/></div>
-      
       </div>
   
     }
       
-      , [card,status])
+      , [status])
   
     const global = useMemo(()=>{
         {
@@ -65,8 +66,9 @@ export const CreateScenario = () =>{
          },[grille])
     return <div className="w-full h-full relative " >
     <div className='absolute top-0 flex flex-row'>
-      
-      {global} 
+        {global} 
+        {showingCard}
+        
     </div>
       
   </div>
