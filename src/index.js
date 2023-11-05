@@ -5,6 +5,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import {Route,Routes} from 'react-router';
 import "./index.css"
 import { Play } from './play/play';
+import { CreateScenario } from './scenario/createScenario';
 const App = ()=>{
     return (
     <div className="App w-screen h-screen relative bg-gray-dark  " key="main">
@@ -13,6 +14,7 @@ const App = ()=>{
         <Routes>
           <Route path="/" element={<SelecteurScenario/>}></Route>
           <Route path="/scenario/:name" element={<Play />}></Route>
+          <Route path="/create" element={<CreateScenario/>}></Route>
         </Routes>
  
       </Router>   

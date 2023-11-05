@@ -886,7 +886,7 @@ export const Play =()=> {
       </div>)
       }
      },[grille])
-
+     
      const Modal = useMemo(() => <div className='absolute top-0 '>{modal}</div>, [modal])
      return (
       <div className="w-full h-full relative " >
