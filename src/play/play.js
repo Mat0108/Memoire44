@@ -15,7 +15,7 @@ import { SandBag } from '../haxagone/base';
 
 
 export const Play =()=> {
-  const [card, setCard] = useState(new CardGenerique("reconnaissance centre","recon-center-fr",1,2,"ALL"))
+  const [card, setCard] = useState(new CardGenerique("Choisir une carte","back-fr"))
     // new CardGenerique("Attaque centre","attack-center-fr",3,2,"ALL"),);
   const {name} = useParams();
 
@@ -765,7 +765,6 @@ export const Play =()=> {
             let g = localgrille2.grille[localx][localy]
             
             let f = localgrille2.grille[pos][pos2]
-           console.log(g)
             localgrille2.grille[localx][localy] = {case:g.case,defense:g.defense,unité:g.unité,action:()=>{updateAttackUnit(pos,pos2,localx,localy,f.unité,3,false,false,true)},highlight:null,select:new Attacking()}
               // console.log(pos,pos2,x,y)
               // let g = localgrille.grille[x][x]

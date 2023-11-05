@@ -1,3 +1,4 @@
+import { Country } from "../haxagone/base";
 import { ArtillerieAllies, CharAllies, SoldatAllies } from "./allies";
 import { ArtillerieAxis, CharAxis, SoldatAxis } from "./axis"
 
@@ -26,6 +27,7 @@ export function HitUnit(unit,nb){
 
 export function AddDice(unit,nb,portée,deplacement){
     switch(unit){
+
         case "SoldatAxis":
             return new SoldatAxis(nb,portée,deplacement);
         case "CharAxis":
@@ -42,3 +44,21 @@ export function AddDice(unit,nb,portée,deplacement){
     }
 }
 
+export function ReturnArmy(unit){
+    switch(unit){
+        case "Country":
+            return {hexagone:new Country(),orientation:0}
+        case "SoldatAxis":
+            return {hexagone:new SoldatAxis(),orientation:0}
+        case "CharAxis":
+            return {hexagone:new CharAxis(),orientation:0}    
+        case "ArtillerieAxis":
+            return {hexagone:new ArtillerieAxis(),orientation:0}  
+        case "SoldatAllies":
+            return {hexagone:new SoldatAllies(),orientation:0}    
+        case "CharAllies":
+            return {hexagone:new CharAllies(),orientation:0}
+        case "ArtillerieAllies":
+            return {hexagone:new ArtillerieAllies(),orientation:0}                                        
+    }
+}
