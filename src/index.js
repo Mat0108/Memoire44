@@ -8,7 +8,7 @@ import { Play } from './play/play';
 import { CreateScenario } from './scenario/createScenario';
 const App = ()=>{
     return (
-    <div className="App w-screen h-screen relative bg-gray-dark  " key="main">
+    <div className="App w-screen h-screen bg-gray-dark " key="main">
       {/* <div className='flex'>{SelecteurScenario(selectedScenerio,setSelectedScenario)}</div> */}
       <Router>
         <Routes>

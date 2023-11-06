@@ -874,9 +874,9 @@ export const Play =()=> {
                         <div className='absolute z-20 w-full h-full'>{f.defense ? f.defense.render(): ""}</div>
                         <div className='absolute z-30 w-full h-full'>{f.bunker ? f.bunker.render(): ""}</div>
                         <div className='absolute z-40 w-full h-full'>{f.unité ? f.unité.render(): ""}</div>
-                        <div className='absolute z-[50] w-full h-full'>{f.highlight ? f.highlight.render(): ""}</div>
-                        <div className='absolute z-[60] w-full h-full'>{f.select ? f.select.render(): ""}</div>
-
+                        <div className='absolute z-[50] w-full h-full'>{f.medal ? f.medal.render(): ""}</div>
+                        <div className='absolute z-[60] w-full h-full'>{f.highlight ? f.highlight.render(): ""}</div>
+                        <div className='absolute z-[70] w-full h-full'>{f.select ? f.select.render(): ""}</div>
                         </div>
                   
               }})

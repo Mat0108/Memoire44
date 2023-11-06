@@ -1,6 +1,6 @@
 import { CaseGenerique, test3, test6 } from "../divers/Generique";
-import { SelectHexa } from "./highlight";
-import { AirField, Church, Mountain, RiverBranch, RiverY, RoadBranch, RoadCurve, RoadHillCurve, RoadHillRight, RoadRight, RoadX, RoadY } from "./terrain";
+import { Medal, SelectHexa } from "./highlight";
+import { AirField, AirFieldX, Barracks, Camp, Casemate, Cemetery, Church, Dam, Depot, Factory, Ford, Fortress, LakeA, LakeB, LakeC, LightHouse, Loco, Marshes, Mountain, Pond, Pontoon, RailBridge, RiverBranchLeft, RiverBranchRight, RiverY, RoadBlock, RoadBranchLeft, RoadBranchRight, RoadCurve, RoadHillCurve, RoadHillRight, RoadRight, RoadX, RoadY, Station, TrainBranchLeft, TrainBranchRight, TrainCurve, TrainRight, TrainX, TrainXRoad, Wagon } from "./terrain";
 
 export class Country extends CaseGenerique {
     constructor(){
@@ -30,19 +30,19 @@ export class Bunker extends CaseGenerique{
 
 export class Hills extends CaseGenerique {
     constructor (){
-        super("images/base/h_hills.png",null,{soldat:-1,tank:-1},false,false,true,true,"images/cards/base/hill-fr.png")
+        super("images/base/h_hills.png",null,{soldat:-1,tank:-1},false,false,true,true,"images/cards/base/hill-fr.png",false,"brightness-[1.20] saturate-[0.6] ")
     }
 }
 
 export class Forest extends CaseGenerique {
     constructor (hover){
-        super("images/base/h_forest.png",null,{soldat:-1,tank:-2},true,false,true,false,"images/cards/base/forest-fr.png")
+        super("images/base/h_forest.png",null,{soldat:-1,tank:-2},true,false,true,false,"images/cards/base/forest-fr.png",false,"brightness-[1.40] saturate-[0.4]")
     }
 }
 
 export class Village extends CaseGenerique{
-    constructor(hover) {
-        super("images/base/h_village.png",null,{soldat:-1,tank:-2},true,false,true,true,"images/cards/base/village-fr.png",hover)
+    constructor() {
+        super("images/base/h_village.png",null,{soldat:-1,tank:-2},true,false,true,true,"images/cards/base/village-fr.png",false,"")
     }
 }
 
@@ -54,12 +54,12 @@ export class Bridge extends CaseGenerique{
 
 export class RiversRight extends CaseGenerique{
     constructor(orientation){
-        super(test3("base","h_river",orientation),orientation,false,false,false,false,false,false,false,"brightness-[1.40] saturate-[0.4]")   
+        super(test3("base","h_river",orientation),orientation,false,false,false,false,false,false,false,"")   
     }
 }
 export class RiversCurve extends CaseGenerique{
     constructor(orientation){
-        super(test6("base","h_curve",orientation),orientation,false,false,false,false,false,false,false,"brightness-[1.40] saturate-[0.4] ")
+        super(test6("base","h_curve",orientation),orientation,false,false,false,false,false,false,false," ")
            }
 }
 export class Mine extends CaseGenerique{
@@ -99,25 +99,94 @@ export function returnHexagone(text,orientation){
             return {hexagone: new RoadHillRight(orientation),orientation:3}
         case "RoadHillCurve":
             return {hexagone: new RoadHillCurve(orientation),orientation:6}
-        case "RoadBranch":
-            return {hexagone: new RoadBranch(orientation),orientation:6}
+        case "RoadBranchLeft":
+            return {hexagone: new RoadBranchLeft(orientation),orientation:6}
+        case "RoadBranchRight":
+            return {hexagone: new RoadBranchRight(orientation),orientation:6}
         case "RoadX":
             return {hexagone: new RoadX(orientation),orientation:6}
         case "RoadY":
             return {hexagone: new RoadY(orientation),orientation:2}
-        case "RiverBranch":
-            return {hexagone: new RiverBranch(orientation),orientation:6}
+        case "RiverBranchLeft":
+            return {hexagone: new RiverBranchLeft(orientation),orientation:6}
+        case "RiverBranchRight":
+            return {hexagone: new RiverBranchRight(orientation),orientation:6}
         case "RiverY":
             return {hexagone: new RiverY(orientation),orientation:2}
         case "AirField":
             return {hexagone: new AirField(orientation),orientation:3}
+        case "AirFieldX":
+            return {hexagone: new AirFieldX(orientation),orientation:3}
         case "Church":
             return {hexagone: new Church(),orientation:0}      
         case "Mine":
             return {hexagone: new Mine(),orientation:0} 
         case "Mountain":
             return {hexagone: new Mountain(),orientation:0} 
+        case "MedalAxe":
+            return {hexagone: new Medal(true),orientation:0} 
+        case "MedalAllies":
+            return {hexagone: new Medal(false),orientation:0} 
+        case "Barracks":
+            return {hexagone: new Barracks(),orientation:0}
+        case "Camp":
+            return {hexagone: new Camp(),orientation:0}
+        case "Cemetery":
+            return {hexagone: new Cemetery(),orientation:0}
+        case "Dam":
+            return {hexagone: new Dam(orientation),orientation:6}
+        case "LakeA":
+            return {hexagone: new LakeA(orientation),orientation:6}
+        case "LakeB":
+            return {hexagone: new LakeB(orientation),orientation:6}
+        case "LakeC":
+            return {hexagone: new LakeC(orientation),orientation:6}
+        case "Pond":
+            return {hexagone: new Pond(orientation),orientation:6}
+        case "Depot":
+            return {hexagone: new Depot(),orientation:0}
+        case "Factory":
+            return {hexagone: new Factory(),orientation:0}
+        case "Fortress":
+            return {hexagone: new Fortress(),orientation:0}
+        case "LightHouse":
+            return {hexagone: new LightHouse(),orientation:0}
+        case "Marshes":
+            return {hexagone: new Marshes(),orientation:0}
+        case "TrainRight":
+            return {hexagone: new TrainRight(orientation),orientation:3}
+        case "TrainCurve":
+            return {hexagone: new TrainCurve(orientation),orientation:6}
+        case "TrainBranchLeft":
+            return {hexagone: new TrainBranchLeft(orientation),orientation:6}
+        case "TrainBranchRight":
+            return {hexagone: new TrainBranchRight(orientation),orientation:6}
+        case "TrainX":
+            return {hexagone: new TrainX(orientation),orientation:3}
+        case "TrainXRoad":
+            return {hexagone: new TrainXRoad(orientation),orientation:3}
+        case "Station":
+            return {hexagone: new Station(orientation),orientation:3}
+        case "Pontoon":
+            return {hexagone: new Pontoon(orientation),orientation:6}
+        case "RailBridge":
+            return {hexagone: new RailBridge(orientation),orientation:6}
+        case "Loco":
+            return {hexagone: new Loco(orientation),orientation:6}
+        case "Wagon":
+            return {hexagone: new Wagon(orientation),orientation:6}
+        case "Ford":
+            return {hexagone: new Ford(orientation),orientation:6}
+        case "RoadBlock":
+            return {hexagone: new RoadBlock(orientation),orientation:6}
+        case "Casemate":
+            return {hexagone: new Casemate(),orientation:0}
+        case "":
+            return {hexagone: null,orientation:0}
         default:
             return null;
     }
 }
+
+//        case "":
+// return {hexagone: null,orientation:0}

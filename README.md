@@ -1,70 +1,19 @@
-# Getting Started with Create React App
+# Mémoire 44 Fan Game - Avis de non-propriété
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Ce fan game basé sur le jeu de société "Mémoire 44" de Days of Wonder. Il est important de noter que ce projet est entièrement non officiel et n'est pas approuvé ni soutenu par Days of Wonder, l'éditeur du jeu "Mémoire 44". Je tiens à souligner que je n'ai aucun droit ni aucune autorisation pour utiliser la propriété intellectuelle de "Mémoire 44" dans ce fan game.
 
-## Available Scripts
+## Objectif du projet
 
-In the project directory, you can run:
+Le but de ce projet n'est en aucun cas de distribuer, partager ou commercialiser le fan game basé sur "Mémoire 44". Il a été créé à des fins de loisir personnel et de passion pour le jeu "Mémoire 44". Je ne gagne aucun revenu ni bénéfice financier en rapport avec ce projet, et je ne permets pas sa distribution publique ou sa monétisation.
 
-### `npm start`
+## Respect des droits d'auteur
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Je respecte pleinement les droits d'auteur de Days of Wonder et de tout autre détenteur de droits sur "Mémoire 44". Si vous êtes le titulaire des droits de "Mémoire 44" ou un représentant de Days of Wonder et que vous souhaitez que ce fan game soit retiré ou modifié de quelque manière que ce soit, veuillez me contacter directement à matthieubarnab@gmail.com.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Utilisation personnelle
 
-### `npm test`
+Ce fan game est destiné uniquement à un usage personnel, privé et non commercial. Il ne doit pas être partagé publiquement, vendu, ni utilisé à des fins commerciales. Il ne doit pas non plus être présenté comme une création officielle de Days of Wonder ou être associé de quelque manière que ce soit à la marque "Mémoire 44".
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Avertissement
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+L'utilisation de ce fan game est entièrement à vos propres risques. Je ne prends aucune responsabilité quant à son utilisation, à d'éventuelles violations de droits d'auteur ou à des problèmes liés à son utilisation. Assurez-vous de respecter les lois sur les droits d'auteur et les droits de propriété intellectuelle de Days of Wonder et de toute autre partie concernée.

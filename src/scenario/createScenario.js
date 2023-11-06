@@ -14,40 +14,73 @@ export const CreateScenario = () =>{
   const [grille, setGrille ] = useState(loadScenario(Scenariovide));
   const [delta, setDelta] = useState(1)
   const [orientation, setOrientation ] = useState(1);
-  const [mouse,setMouse] = useState({case:null,bunker:null,defense:null,unité:null});
-  const [final,setFinal] = useState({case:null,bunker:null,defense:null,unité:null});
+  const [mouse,setMouse] = useState({case:null,bunker:null,defense:null,unité:null,medal:null});
+  const [final,setFinal] = useState({case:null,bunker:null,defense:null,unité:null,medal:null});
   const [actualx,setActualX]  = useState(0);
   const [actualy,setActualY] = useState(0);
   const debug = false;
   const [modal, setModal] = useState(<></>)
+  const screenwidth = document.getElementById("maindiv") ? document.getElementById("maindiv").clientWidth : null;
 
-  let nbItemByLigne = 10;
+  let nbItemByLigne = screenwidth < 2000 ? 12 : 18;
+  let wheel = 1;
   let listHexagone = [
     "Country",
     "Hills",
     "Mountain",
     "Forest",
-    "Village",
     "RiversRight",
     "RiversCurve",
-    "RiverBranch",
+    "RiverBranchLeft",
+    "RiverBranchRight",
     "RiverY",
+    "Dam",
+    "Pond",
+    "LakeA",
+    "LakeB",
+    "LakeC",
     "RoadRight",
     "RoadCurve",
-    "RoadBranch",
+    "RoadBranchLeft",
+    "RoadBranchRight",
     "RoadX",
     "RoadY",
     "RoadHillRight",
     "RoadHillCurve",
     "AirField",
-    "Church"
+    "AirFieldX",
+    "Village",
+    "Church",
+    "Barracks",
+    "Camp",
+    "Cemetery",
+    "Depot",
+    "Factory",
+    "Fortress",
+    "LightHouse",
+    "Marshes",
+    "TrainRight",
+    "TrainCurve",
+    "TrainBranchLeft",
+    "TrainBranchRight",
+    "TrainX",
+    "TrainXRoad",
+    "Station"
 
   ]
   let listDivers = [
     "Country",
     "Bunker",
+    "Casemate",
     "Bridge",
+    "Ford",
+    "RoadBlock",
+    "Pontoon",
+    "RailBridge",
+    "Loco",
+    "Wagon",
     "Mine"
+    
   ]
   let listDefense = [
     "Country",
@@ -64,18 +97,43 @@ export const CreateScenario = () =>{
     "CharAllies",
     "ArtillerieAllies"
   ]
+  let listmodal = [
+    "Country",
+    "MedalAllies",
+    "MedalAxe"
+  ]
   window.addEventListener("wheel", event => {
       let delta2 = Math.sign(event.deltaY);
 
       setDelta(delta2 >0? delta+1 : delta-1);
   });
-  useEffect(() => {
-    console.log(delta)
-  }, [delta])
+  // useEffect(() => {
+  //   console.log(delta)
+  // }, [delta])
+
+  var pressed = false;
+  var deltatime = 500; // time interval since the last keyup event
+  var lastKeypressTime = 0; 
+  window.addEventListener("keydown", (event)=>{
+    if(!pressed){
+      pressed = true;
+      if(event.key.toLowerCase() == "d"){setActualY(actualx % 2 == 1 ? (actualy == 11 ? 0 : actualy+1):(actualy == 12 ? 0 : actualy+1))}
+      if(event.key.toLowerCase() == "q"){setActualY(actualx % 2 == 1 ? (actualy == 0 ? 11 : actualy-1):(actualy == 0 ? 12 : actualy-1));}
+      // if(event.key.toLowerCase() == "s"){setActualX(actualx == 8 ? 0 : actualx+1)}
+      // if(event.key.toLowerCase() == "z"){setActualX(actualx == 0 ? 8 : actualx-1)}
+      event.preventDefault();
+    }
+  })
+  
+  window.addEventListener("keyup", ()=>{
+   pressed = false;
+  })
+
+  
   
   useEffect(() => {
     // console.log('orientation : ', orientation,delta,orientation <= 1)
-    if(Math.abs(delta) > 12){
+    if(Math.abs(delta) > wheel){
       setDelta(0);
       let localgrille = {...grille}
       if(mouse.case && mouse.case.orientation){
@@ -154,9 +212,32 @@ export const CreateScenario = () =>{
           setGrille(localgrille)
         }
       }
+      console.log("mouse.medal",mouse.medal)
+      if(mouse.medal && mouse.medal.orientation){
+        if(delta > 0 ){
+          if(orientation >= mouse.medal.orientation){
+            setOrientation(1);
+          }else{
+            setOrientation(orientation+1);
+          }
+        }else{
+          if(orientation <= 1){
+            setOrientation(mouse.medal.orientation);
+          }else{
+            setOrientation(orientation+1);
+          }
+        }
+        if(mouse.medal.hexagone.constructor.name){
+          localgrille.grille[actualx][actualy].medal = returnHexagone(mouse.medal.hexagone.constructor.name,orientation).hexagone;
+          setGrille(localgrille)
+        }
+      }
     }
   }, [delta,mouse])
-
+  useEffect(() => {
+    console.log("mouse : ",mouse)
+  }, [mouse])
+  
 
   function UpdateGrille(type,object){
     let localgrille = {...grille}
@@ -165,25 +246,30 @@ export const CreateScenario = () =>{
       switch(type){
         case "case":
           if(!final.case){
-            setMouse({case:object,bunker:null,defense:null,unité:null});
+            setMouse({case:object,bunker:null,defense:null,unité:null,medal:null});
             setOrientation(1);
             localgrille.grille[actualx][actualy].case = object.hexagone;
           }
           break;
         case "bunker":
-          setMouse({case:null,bunker:object,defense:null,unité:null});
+          setMouse({case:null,bunker:object,defense:null,unité:null,medal:null});
           setOrientation(1);
           localgrille.grille[actualx][actualy].bunker = object.hexagone;
           break;
         case "defense":
-          setMouse({case:null,bunker:null,defense:object,unité:null});
+          setMouse({case:null,bunker:null,defense:object,unité:null,medal:null});
           setOrientation(1);
           localgrille.grille[actualx][actualy].defense = object.hexagone;
           break;
         case "unité":
-          setMouse({case:null,bunker:null,defense:null,unité:object});
-          setOrientation(0);
+          setMouse({case:null,bunker:null,defense:null,unité:object,medal:null});
+          setOrientation(1);
           localgrille.grille[actualx][actualy].unité = object.hexagone;
+          break;
+        case "medal":
+          setMouse({case:null,bunker:null,defense:null,unité:null,medal:object});
+          setOrientation(1);
+          localgrille.grille[actualx][actualy].medal = object.hexagone;
           break;
       }
     }else{
@@ -202,15 +288,20 @@ export const CreateScenario = () =>{
         case "unité":
           localgrille.grille[actualx][actualy].unité = null
           break;
+        case "medal":
+          localgrille.grille[actualx][actualy].medal = null
+          break;
       }
       
     }
     
     setGrille(localgrille)
   }
+
   function Valider(cond){
-    setFinal({case:null,bunker:null,defense:null,unité:null})
-    setMouse({case:null,bunker:null,defense:null,unité:null})
+    setFinal({case:null,bunker:null,defense:null,unité:null,medal:null})
+    setMouse({case:null,bunker:null,defense:null,unité:null,medal:null})
+    
     if((actualx % 2 == 1 ? actualy == 11 : actualy == 12) || cond){
       setActualX(actualx+1);
       setActualY(0);
@@ -219,11 +310,12 @@ export const CreateScenario = () =>{
     }
   }
   function Reculer(cond){
-    setFinal({case:null,bunker:null,defense:null,unité:null})
-    setMouse({case:null,bunker:null,defense:null,unité:null})
-    if( actualy == 0 || cond){
+
+    setFinal({case:null,bunker:null,defense:null,unité:null,medal:null})
+    setMouse({case:null,bunker:null,defense:null,unité:null,medal:null})
+    if( actualy == 0 ){
       setActualX(actualx-1);
-      setActualY(cond ? 0 : actualx % 2 == 1 ? 11 :12);
+      setActualY(actualx % 2 == 1 ? 11 :12);
     }else{
       setActualY(actualy-1);
     }
@@ -231,11 +323,20 @@ export const CreateScenario = () =>{
  
   const showingCard = useMemo(() => {
     let listHexagoneFinal = [];
+    let listDiversFinal = [];
     for(let i = 0;i<=parseInt(Object.keys(listHexagone).length/nbItemByLigne);i++){
       let local = listHexagone.slice(i*nbItemByLigne,(i+1)*nbItemByLigne)
       listHexagoneFinal.push(
-        <div className={`flex flew-row mb-[50px]`} key={`1-${i}`}>
-        {local.map((item,pos)=>{return <div className={`w-[91px] h-[78px] relative`} key={item} onMouseEnter={()=>{UpdateGrille("case",item == "Country" ? null : returnHexagone(item,orientation))}}   onClick={()=>{setFinal({...final,case:final.case ? null : returnHexagone(item,0)})}} >{returnHexagone(item,0).hexagone.render()}</div>})}
+        <div className={`flex flew-row mb-[20px]`} key={`hexagone-${i}`}>
+        {local.map((item,pos)=>{return <div className={`${screenwidth < 2000 ? "w-[50px]" : "w-[65px]"} relative`} key={item} onMouseEnter={()=>{UpdateGrille("case",item == "Country" ? null : returnHexagone(item,orientation))}}   onClick={()=>{setFinal({...final,case:final.case ? null : returnHexagone(item,0)})}} >{returnHexagone(item,0).hexagone.render()}</div>})}
+      </div> 
+      ) 
+    }  
+    for(let i = 0;i<=parseInt(Object.keys(listDivers).length/nbItemByLigne);i++){
+      let local = listDivers.slice(i*nbItemByLigne,(i+1)*nbItemByLigne)
+      listDiversFinal.push(
+        <div className={`flex flew-row mb-[20px]`} key={`bunker-${i}`}>
+        {local.map((item,pos)=>{return <div className={`${screenwidth < 2000 ? "w-[50px]" : "w-[65px]"} relative`} key={item} onMouseEnter={()=>{UpdateGrille("bunker",item == "Country" ? null : returnHexagone(item,orientation))}}   onClick={()=>{setFinal({...final,case:final.case ? null : returnHexagone(item,0)})}} >{returnHexagone(item,0).hexagone.render()}</div>})}
       </div> 
       ) 
     }  
@@ -244,21 +345,24 @@ export const CreateScenario = () =>{
         <h1 className="text-[24px] text-white mb-[10px] "> Choissiez l'hexagone : </h1>
         <div className="flex flex-col ">
           {listHexagoneFinal}
-          {/* {listHexagone.map((item,pos)=>{return <div className={`w-[91px] h-[78px]`} key={item} onMouseEnter={()=>{UpdateGrille("case",item == "Country" ? null : returnHexagone(item,orientation))}} >{returnHexagone(item,0).hexagone.render()}</div>})} */}
         </div>
         <h1 className="text-[24px] text-white mb-[10px]"> Choissiez l'item : </h1>
         <div className="flex flex-row " >
-          {listDivers.map(item=>{return <div className="w-[91px] h-[78px] relative" key={item} onMouseEnter={()=>{UpdateGrille("bunker",item == "Country" ? null :returnHexagone(item,orientation))}}  onClick={()=>{setFinal({...final,bunker:final.bunker ? null : returnHexagone(item,0)})}}>{returnHexagone(item,0).hexagone.render()}</div>})}
+          {listDiversFinal}
+          {/* {listDivers.map(item=>{return <div className="w-[70px] relative" key={item} onMouseEnter={()=>{UpdateGrille("bunker",item == "Country" ? null :returnHexagone(item,orientation))}}  onClick={()=>{setFinal({...final,bunker:final.bunker ? null : returnHexagone(item,0)})}}>{returnHexagone(item,0).hexagone.render()}</div>})} */}
         </div>
-        <h1 className="text-[24px] text-white mt-[30px] mb-[10px] "> Choissiez l'item de défense : </h1>
+        <h1 className="text-[24px] text-white mt-[20px] mb-[10px] "> Choissiez l'item de défense : </h1>
         <div className="flex flex-row ">
-          {listDefense.map(item=>{return <div className="w-[91px] h-[78px] relative" key={item} onMouseEnter={()=>{UpdateGrille("defense",item == "Country" ? null :returnHexagone(item,orientation))}}  onClick={()=>{setFinal({...final,defense:final.defense ? null : returnHexagone(item,0)})}}>{returnHexagone(item,0).hexagone.render()}</div>})}
+          {listDefense.map(item=>{return <div className={`${screenwidth < 2000 ? "w-[50px]" : "w-[65px]"} relative`} key={item} onMouseEnter={()=>{UpdateGrille("defense",item == "Country" ? null :returnHexagone(item,orientation))}}  onClick={()=>{setFinal({...final,defense:final.defense ? null : returnHexagone(item,0)})}}>{returnHexagone(item,0).hexagone.render()}</div>})}
         </div>
-        <h1 className="text-[24px] text-white mt-[30px] mb-[10px] " > Choissiez l'unité : </h1>
+        <h1 className="text-[24px] text-white mt-[20px] mb-[10px] " > Choissiez l'unité : </h1>
         <div className="flex flex-row ">
-          {listunité.map(item=>{return <div className="w-[91px] h-[78px] relative" key={item} onMouseEnter={()=>{UpdateGrille("unité",item == "Country" ? null :ReturnArmy(item,0))}} onClick={()=>{setFinal({...final,unité:final.unité ? null : ReturnArmy(item,1)})}} >{ReturnArmy(item,0).hexagone.render()}</div>})}
+          {listunité.map(item=>{return <div className={`w-[70px] relative`} key={item} onMouseEnter={()=>{UpdateGrille("unité",item == "Country" ? null :ReturnArmy(item,0))}} onClick={()=>{setFinal({...final,unité:final.unité ? null : ReturnArmy(item,1)})}} >{ReturnArmy(item,0).hexagone.render()}</div>})}
         </div>
-
+        <h1 className="text-[24px] text-white mt-[20px] mb-[10px] " > Choissiez la medaille : </h1>
+        <div className="flex flex-row ">
+          {listmodal.map(item=>{return <div className={`${screenwidth < 2000 ? "w-[50px]" : "w-[65px]"} relative`} key={item} onMouseEnter={()=>{UpdateGrille("medal",item == "Country" ? null :returnHexagone(item,0))}} onClick={()=>{setFinal({...final,medal:final.medal ? null : returnHexagone(item,0)})}} >{returnHexagone(item,0).hexagone.render()}</div>})}
+        </div>
       </div>
     </div>
 
@@ -284,10 +388,11 @@ export const CreateScenario = () =>{
                         return <div className={`relative w-[91px] h-[78px] border-0 border-white ${f.action ? "hover:cursor-pointer":""}`} onClick={f.action}  key={`${pos}${pos2}`} id={`${pos}${pos2}`} >
                           {debug ? <div className='absolute z-50 bottom-0 left-8 text-vivid_tangerine text-[24px] font-av-bold'><span className='text-white text-[24px] font-av-bold'>{pos}</span> {pos2}</div> :""}
                           <div className='absolute z-10 w-full h-full'>{f.case ? f.case.render(): ""}</div>
-                          <div className='absolute z-10 w-full h-full'>{f.bunker ? f.bunker.render(): ""}</div>
-                          <div className='absolute z-20 w-full h-full'>{f.defense ? f.defense.render(): ""}</div>
-                          <div className='absolute z-30 w-full h-full'>{f.unité ? f.unité.render(): ""}</div>
-                          {pos == actualx && pos2 == actualy && <div className='absolute z-40 w-full h-full'>{new SelectHexa().render()}</div>}
+                        <div className='absolute z-20 w-full h-full'>{f.defense ? f.defense.render(): ""}</div>
+                        <div className='absolute z-30 w-full h-full'>{f.bunker ? f.bunker.render(): ""}</div>
+                        <div className='absolute z-40 w-full h-full'>{f.unité ? f.unité.render(): ""}</div>
+                        <div className='absolute z-[50] w-full h-full'>{f.medal ? f.medal.render(): ""}</div>
+                          {pos == actualx && pos2 == actualy && <div className='absolute z-[60] w-full h-full'>{new SelectHexa().render()}</div>}
                           {/* <div className='absolute z-40 w-full h-full'>{f.highlight ? f.highlight.render(): ""}</div>
                           <div className='absolute z-[50] w-full h-full'>{f.select ? f.select.render(): ""}</div> */}
   
@@ -309,12 +414,9 @@ export const CreateScenario = () =>{
         </div>)
         }
         },[grille,actualx,actualy])
-    return <div className="w-full h-full relative " >
-    <div className='absolute top-0 flex flex-row'>
-        {global} 
-        {showingCard}
-        
-    </div>
+    return <div className="w-full h-fit relative flex flex-row bg-gray-dark" id={"maindiv"} >
+    {global} 
+    {showingCard}
     {Modal}
       
   </div>
