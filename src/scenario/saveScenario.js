@@ -9,13 +9,14 @@ export const SaveScenario = (props)=>{
 
 
 function save(){
-      let data=[`export const ${text}= {\n`,`name:${text},\n`,`terrain:${document.getElementById("terrain").value},\n`,`medal:${document.getElementById("medal").value},\n`,`camp:${document.getElementById("camp").value},\n`,`cardAxis:${document.getElementById("allies").value},\n`,`cardAllies:${document.getElementById("axe").value},\n`,"hexa:[\n"]
+      let data=[`export const ${text}= {\n`,`name:${text},\n`,`terrain:${document.getElementById("terrain").value},\n`,`medalAllies:${document.getElementById("medal").value},\n`,`medalAxe:${document.getElementById("medalAxe").value},\n`,`camp:${document.getElementById("camp").value},\n`,`cardAxis:${document.getElementById("allies").value},\n`,`cardAllies:${document.getElementById("axe").value},\n`,"hexa:[\n"]
       props.grille.map((e,pos)=>{
         e.map((f,pos2)=>{
-          data.push(`{x:${pos},y:${pos2},contenu:{case:${f.case ? f.case.constructor.name:null},defense:${f.defense ? f.defense.constructor.name:null},unité:${f.unité ? f.unité.constructor.name:null},action:null,highlight:null,select:null}} \n`)
+          data.push(`{x:${pos},y:${pos2},contenu:{case: ${f.case ? `new ${f.case.constructor.name}(${f.case._orientation?f.case._orientation:""})`:null},bunker: ${f.bunker ? `new ${f.bunker.constructor.name}(${f.bunker._orientation ? f.bunker._orientation : "" })`:null},defense: ${f.defense ? `new ${f.defense.constructor.name}(${f.defense._orientation?f.defense._orientation:""})`:null}, unité:${f.unité ? `new ${f.unité.constructor.name}(${f.unité._nombre?f.unité._nombre:""})`:null},action:null,highlight:null,select:null}} \n`)
         })
         data.push('\n')
       })
+      data.push("   ]\n}\n")
       const file = new Blob(data, { type: 'text/plain;charset=utf-8' });
       saveAs(file, 'data.txt');
     }
@@ -25,7 +26,8 @@ function save(){
           <div className='text-center w-full h-1/2 p-4'>Voulez vous sauvegarder ? </div>
           <div className="w-full relative flex flex-row">
           <div className="w-4/5 flex flex-col">
-            <div className="text-[18px] mr-[30px]">Nombre de médaille : </div> 
+            <div className="text-[18px] mr-[30px]">médaille Alliés: </div>
+            <div className="text-[18px] mr-[30px]">médaille Axe: </div> 
             <div className="text-[17px] mr-[30px]">Camp qui commence en premier : </div> 
             <div className="text-[17px] mr-[30px]">Quelle type de terrain : </div>
             <div className="text-[17px] mr-[30px]">Nombre de cartes Allies : </div>
@@ -36,7 +38,9 @@ function save(){
               <select id={"medal"} className="h-[27px]">
                 {modal.map(item=>{return item == 6 ? <option value={item} selected >{item}</option> : <option value={item} >{item}</option>})}
               </select>
-
+              <select id={"medalAxe"} className="h-[27px]">
+                {modal.map(item=>{return item == 6 ? <option value={item} selected >{item}</option> : <option value={item} >{item}</option>})}
+              </select>
 
               <select id={"camp"} className="h-[27px]">
                 <option value={"Allies"} selected >{"Allies"}</option>

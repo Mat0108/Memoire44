@@ -6,6 +6,7 @@ import { Scenariovide } from "./scenariovide";
 
 import { Link } from 'react-router-dom';
 import { Scenariotest } from './scenariotest';
+import { SacrificeàValchevrière } from "./batailleduvercors/SacrificeaValchevrière";
 export function loadScenario(scenario){
     let x = 13;
     let y = 9;
@@ -24,6 +25,7 @@ const listScenario = [
     {name:"Bataille de Saint-Nizier",value:"Batailledesaintnizier"},
     {name:"Marquis de Malleval",value:"Marquisdemalleval"},
     {name:"Assault sur Vassieux en Vercors",value:"Assaultsurvassieuxenvercours"},
+    {name:"Sacrifice à Valchevrière",value:"SacrificeaValchevrière"},
     {name:"Bataille du débarquement",value:"Scenariovide"},
     {name:"Scenario test",value:"Scenariotest"}
 
@@ -57,6 +59,8 @@ export function ReturnScenario(scenarioname){
             return Batailledesaintnizier;
         case "Marquisdemalleval":
             return Marquisdemalleval; 
+        case "SacrificeaValchevrière":
+            return SacrificeàValchevrière
         case "Scenariotest":
             return Scenariotest;
         default:

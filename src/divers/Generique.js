@@ -103,7 +103,8 @@ export class SoldatGenerique  {
 }
 
 export class CaseGenerique {
-    constructor(image,malus,deplacmentmax,ignoreflag,lineofsight,byentering,imageexplicatif,hover,className ) {
+    constructor(image,orientation,malus,deplacmentmax,ignoreflag,lineofsight,byentering,imageexplicatif,hover,className ) {
+        this._orientation = orientation;
         this._image = image;
         this._malus = malus ? malus :null;
         this._deplacmentmax = deplacmentmax ? deplacmentmax : null;

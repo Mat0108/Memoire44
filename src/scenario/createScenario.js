@@ -21,10 +21,11 @@ export const CreateScenario = () =>{
   const debug = false;
   const [modal, setModal] = useState(<></>)
 
-  let nbItemByLigne = 6;
+  let nbItemByLigne = 10;
   let listHexagone = [
     "Country",
     "Hills",
+    "Mountain",
     "Forest",
     "Village",
     "RiversRight",
@@ -65,85 +66,93 @@ export const CreateScenario = () =>{
   ]
   window.addEventListener("wheel", event => {
       let delta2 = Math.sign(event.deltaY);
+
       setDelta(delta2 >0? delta+1 : delta-1);
   });
   useEffect(() => {
+    console.log(delta)
+  }, [delta])
+  
+  useEffect(() => {
     // console.log('orientation : ', orientation,delta,orientation <= 1)
-    let localgrille = {...grille}
-    if(mouse.case && mouse.case.orientation){
-      if(delta > 0 ){
-        if(orientation >= mouse.case.orientation){
-          setOrientation(1);
+    if(Math.abs(delta) > 12){
+      setDelta(0);
+      let localgrille = {...grille}
+      if(mouse.case && mouse.case.orientation){
+        if(delta > 0 ){
+          if(orientation >= mouse.case.orientation){
+            setOrientation(1);
+          }else{
+            setOrientation(orientation+1);
+          }
         }else{
-          setOrientation(orientation+1);
+          if(orientation <= 1){
+            setOrientation(mouse.case.orientation);
+          }else{
+            setOrientation(orientation+1);
+          }
         }
-      }else{
-        if(orientation <= 1){
-          setOrientation(mouse.case.orientation);
-        }else{
-          setOrientation(orientation+1);
-        }
-      }
-      if(mouse.case.hexagone.constructor.name){
-        localgrille.grille[actualx][actualy].case = returnHexagone(mouse.case.hexagone.constructor.name,orientation).hexagone;
-        setGrille(localgrille)
-      }
-    }
-    if(mouse.bunker && mouse.bunker.orientation){
-      if(delta > 0 ){
-        if(orientation >= mouse.bunker.orientation){
-          setOrientation(1);
-        }else{
-          setOrientation(orientation+1);
-        }
-      }else{
-        if(orientation <= 1){
-          setOrientation(mouse.bunker.orientation);
-        }else{
-          setOrientation(orientation+1);
+        if(mouse.case.hexagone.constructor.name){
+          localgrille.grille[actualx][actualy].case = returnHexagone(mouse.case.hexagone.constructor.name,orientation).hexagone;
+          setGrille(localgrille)
         }
       }
-      if(mouse.bunker.hexagone.constructor.name){
-        localgrille.grille[actualx][actualy].bunker = returnHexagone(mouse.bunker.hexagone.constructor.name,orientation).hexagone;
-        setGrille(localgrille)
-      }
-    }
-    if(mouse.defense && mouse.defense.orientation){
-      if(delta > 0 ){
-        if(orientation >= mouse.defense.orientation){
-          setOrientation(1);
+      if(mouse.bunker && mouse.bunker.orientation){
+        if(delta > 0 ){
+          if(orientation >= mouse.bunker.orientation){
+            setOrientation(1);
+          }else{
+            setOrientation(orientation+1);
+          }
         }else{
-          setOrientation(orientation+1);
+          if(orientation <= 1){
+            setOrientation(mouse.bunker.orientation);
+          }else{
+            setOrientation(orientation+1);
+          }
         }
-      }else{
-        if(orientation <= 1){
-          setOrientation(mouse.defense.orientation);
-        }else{
-          setOrientation(orientation+1);
-        }
-      }
-      if(mouse.defense.hexagone.constructor.name){
-        localgrille.grille[actualx][actualy].defense = returnHexagone(mouse.defense.hexagone.constructor.name,mouse.defense.hexagone.constructor.name ? orientation == 1 : orientation).hexagone;
-        setGrille(localgrille)
-      }
-    }
-    if(mouse.unité && mouse.unité.orientation){
-      if(delta > 0 ){
-        if(orientation >= mouse.unité.orientation){
-          setOrientation(1);
-        }else{
-          setOrientation(orientation+1);
-        }
-      }else{
-        if(orientation <= 1){
-          setOrientation(mouse.unité.orientation);
-        }else{
-          setOrientation(orientation+1);
+        if(mouse.bunker.hexagone.constructor.name){
+          localgrille.grille[actualx][actualy].bunker = returnHexagone(mouse.bunker.hexagone.constructor.name,orientation).hexagone;
+          setGrille(localgrille)
         }
       }
-      if(mouse.defense.hexagone.constructor.name){
-        localgrille.grille[actualx][actualy].unité = ReturnArmy(mouse.unité.hexagone.constructor.name,orientation).hexagone;
-        setGrille(localgrille)
+      if(mouse.defense && mouse.defense.orientation){
+        if(delta > 0 ){
+          if(orientation >= mouse.defense.orientation){
+            setOrientation(1);
+          }else{
+            setOrientation(orientation+1);
+          }
+        }else{
+          if(orientation <= 1){
+            setOrientation(mouse.defense.orientation);
+          }else{
+            setOrientation(orientation+1);
+          }
+        }
+        if(mouse.defense.hexagone.constructor.name){
+          localgrille.grille[actualx][actualy].defense = returnHexagone(mouse.defense.hexagone.constructor.name,mouse.defense.hexagone.constructor.name ? orientation == 1 : orientation).hexagone;
+          setGrille(localgrille)
+        }
+      }
+      if(mouse.unité && mouse.unité.orientation){
+        if(delta > 0 ){
+          if(orientation >= mouse.unité.orientation){
+            setOrientation(1);
+          }else{
+            setOrientation(orientation+1);
+          }
+        }else{
+          if(orientation <= 1){
+            setOrientation(mouse.unité.orientation);
+          }else{
+            setOrientation(orientation+1);
+          }
+        }
+        if(mouse.unité.hexagone.constructor.name){
+          localgrille.grille[actualx][actualy].unité = ReturnArmy(mouse.unité.hexagone.constructor.name,orientation).hexagone;
+          setGrille(localgrille)
+        }
       }
     }
   }, [delta,mouse])
@@ -151,6 +160,7 @@ export const CreateScenario = () =>{
 
   function UpdateGrille(type,object){
     let localgrille = {...grille}
+    setDelta(0)
     if(object){
       switch(type){
         case "case":
@@ -172,7 +182,7 @@ export const CreateScenario = () =>{
           break;
         case "unité":
           setMouse({case:null,bunker:null,defense:null,unité:object});
-          setOrientation(1);
+          setOrientation(0);
           localgrille.grille[actualx][actualy].unité = object.hexagone;
           break;
       }
@@ -219,10 +229,6 @@ export const CreateScenario = () =>{
     }
   }
  
-  useEffect(() => {
-    console.log('final : ', final)
-    console.log('mouse : ', mouse)
-  }, [final,mouse])
   const showingCard = useMemo(() => {
     let listHexagoneFinal = [];
     for(let i = 0;i<=parseInt(Object.keys(listHexagone).length/nbItemByLigne);i++){
@@ -250,7 +256,7 @@ export const CreateScenario = () =>{
         </div>
         <h1 className="text-[24px] text-white mt-[30px] mb-[10px] " > Choissiez l'unité : </h1>
         <div className="flex flex-row ">
-          {listunité.map(item=>{return <div className="w-[91px] h-[78px] relative" key={item} onMouseEnter={()=>{UpdateGrille("unité",item == "Country" ? null :ReturnArmy(item,orientation))}} onClick={()=>{setFinal({...final,unité:final.unité ? null : ReturnArmy(item,0)})}} >{ReturnArmy(item,0).hexagone.render()}</div>})}
+          {listunité.map(item=>{return <div className="w-[91px] h-[78px] relative" key={item} onMouseEnter={()=>{UpdateGrille("unité",item == "Country" ? null :ReturnArmy(item,0))}} onClick={()=>{setFinal({...final,unité:final.unité ? null : ReturnArmy(item,1)})}} >{ReturnArmy(item,0).hexagone.render()}</div>})}
         </div>
 
       </div>
@@ -292,11 +298,11 @@ export const CreateScenario = () =>{
           })}
           </div>
           <div className="w-full mt-[20px] flex justify-around " id={"menu"}>
-          <div className="w-fit p-4 bg-gray rounded-full text-[18px] text-white hover:cursor-pointer" onClick={()=>{setActualX(actualx+1);setFinal({case:null,bunker:null,defense:null,unité:null})}}>Ligne suivant</div>
-          <div className="w-fit p-4 bg-gray rounded-full text-[18px] text-white hover:cursor-pointer"  onClick={()=>{Valider(false)}}>Avancer</div>
-          <div className="w-fit p-4 bg-gray rounded-full text-[18px] text-white hover:cursor-pointer" onClick={()=>{setFinal({case:null,bunker:null,defense:null,unité:null})}}>Reset Selection</div>
-          <div className="w-fit p-4 bg-gray rounded-full text-[18px] text-white hover:cursor-pointer" onClick={()=>{Reculer(false)}}>Reculer</div>
           <div className="w-fit p-4 bg-gray rounded-full text-[18px] text-white hover:cursor-pointer" onClick={()=>{setActualX(actualx-1);setFinal({case:null,bunker:null,defense:null,unité:null})}}>Ligne précédente </div>
+          <div className="w-fit p-4 bg-gray rounded-full text-[18px] text-white hover:cursor-pointer" onClick={()=>{Reculer(false)}}>Reculer</div>
+          <div className="w-fit p-4 bg-gray rounded-full text-[18px] text-white hover:cursor-pointer" onClick={()=>{setFinal({case:null,bunker:null,defense:null,unité:null})}}>Reset Selection</div>
+          <div className="w-fit p-4 bg-gray rounded-full text-[18px] text-white hover:cursor-pointer"  onClick={()=>{Valider(false)}}>Avancer</div>
+          <div className="w-fit p-4 bg-gray rounded-full text-[18px] text-white hover:cursor-pointer" onClick={()=>{setActualX(actualx+1);setFinal({case:null,bunker:null,defense:null,unité:null})}}>Ligne suivant</div>
           <div className="w-fit p-4 bg-white border-2 border-green rounded-full text-[18px] text-green hover:cursor-pointer" onClick={()=>{setModal(<SaveScenario close={()=>{setModal(<></>)}} grille={grille.grille}/>)}}>Sauvegarder </div>
           
         </div>

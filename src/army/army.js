@@ -44,21 +44,22 @@ export function AddDice(unit,nb,portée,deplacement){
     }
 }
 
-export function ReturnArmy(unit){
+export function ReturnArmy(unit,nb){
+
     switch(unit){
         case "Country":
             return {hexagone:new Country(),orientation:0}
         case "SoldatAxis":
-            return {hexagone:new SoldatAxis(),orientation:0}
+            return {hexagone:new SoldatAxis(nb),orientation:4}
         case "CharAxis":
-            return {hexagone:new CharAxis(),orientation:0}    
+            return {hexagone:new CharAxis(nb),orientation:3}    
         case "ArtillerieAxis":
-            return {hexagone:new ArtillerieAxis(),orientation:0}  
+            return {hexagone:new ArtillerieAxis(nb),orientation:2}  
         case "SoldatAllies":
-            return {hexagone:new SoldatAllies(),orientation:0}    
+            return {hexagone:new SoldatAllies(nb),orientation:4}    
         case "CharAllies":
-            return {hexagone:new CharAllies(),orientation:0}
+            return {hexagone:new CharAllies(nb),orientation:3}
         case "ArtillerieAllies":
-            return {hexagone:new ArtillerieAllies(),orientation:0}                                        
+            return {hexagone:new ArtillerieAllies(nb),orientation:2}                                        
     }
 }

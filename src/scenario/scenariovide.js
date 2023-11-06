@@ -5,7 +5,7 @@ import { Mountain, RoadCurve, RoadHillCurve, RoadRight } from "../haxagone/terra
 
 export const Scenariovide = {
     name:"Scenariovide",
-    terrain:"terrain0",
+    terrain:"background",
     medal:6,
     camp:"Axis",
     hexa:[

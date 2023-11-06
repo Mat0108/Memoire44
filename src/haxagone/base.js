@@ -4,17 +4,17 @@ import { AirField, Church, Mountain, RiverBranch, RiverY, RoadBranch, RoadCurve,
 
 export class Country extends CaseGenerique {
     constructor(){
-        super(`images/base/h_country-1-1.png`,{soldat:-1,tank:-1},false,true,false,false)
+        super(`images/base/h_country-1-1.png`,null,{soldat:-1,tank:-1},false,true,false,false)
     }
 }
 export class SandBag extends CaseGenerique {
     constructor(orientation){
-        super(`images/base/${orientation ?"o_sand1":"o_sand2"}.png`,{soldat:-1,tank:-1},false,true,false,false,"images/cards/base/sandbags-fr.png")
+        super(`images/base/${orientation ?"o_sand1":"o_sand2"}.png`,orientation,{soldat:-1,tank:-1},false,true,false,false,"images/cards/base/sandbags-fr.png")
     }
 }
 export class Wire extends CaseGenerique{
     constructor (){
-        super("images/base/o_wire.png",{soldat:-1},false,false,false,false,)
+        super("images/base/o_wire.png",null,{soldat:-1},false,false,false,false,)
     }
 }
 export class Hedgehow extends CaseGenerique{
@@ -24,47 +24,47 @@ export class Hedgehow extends CaseGenerique{
 }
 export class Bunker extends CaseGenerique{
     constructor (){
-        super("images/base/o_bunker.png",{soldat:-1,tank:-2},true,true,true)
+        super("images/base/o_bunker.png",null,{soldat:-1,tank:-2},true,true,true)
     }
 }
 
 export class Hills extends CaseGenerique {
     constructor (){
-        super("images/base/h_hills.png",{soldat:-1,tank:-1},false,false,true,true,"images/cards/base/hill-fr.png")
+        super("images/base/h_hills.png",null,{soldat:-1,tank:-1},false,false,true,true,"images/cards/base/hill-fr.png")
     }
 }
 
 export class Forest extends CaseGenerique {
     constructor (hover){
-        super("images/base/h_forest.png",{soldat:-1,tank:-2},true,false,true,false,"images/cards/base/forest-fr.png")
+        super("images/base/h_forest.png",null,{soldat:-1,tank:-2},true,false,true,false,"images/cards/base/forest-fr.png")
     }
 }
 
 export class Village extends CaseGenerique{
     constructor(hover) {
-        super("images/base/h_village.png",{soldat:-1,tank:-2},true,false,true,true,"images/cards/base/village-fr.png",hover)
+        super("images/base/h_village.png",null,{soldat:-1,tank:-2},true,false,true,true,"images/cards/base/village-fr.png",hover)
     }
 }
 
 export class Bridge extends CaseGenerique{
     constructor(orientation){
-        super(test6("base","o_bridge",orientation))
+        super(test6("base","o_bridge",orientation),orientation)
     }
 }
 
 export class RiversRight extends CaseGenerique{
     constructor(orientation){
-        super(test3("base","h_river",orientation),false,false,false,false,false,false,false,"brightness-[1.40] saturate-[0.4]")   
+        super(test3("base","h_river",orientation),orientation,false,false,false,false,false,false,false,"brightness-[1.40] saturate-[0.4]")   
     }
 }
 export class RiversCurve extends CaseGenerique{
     constructor(orientation){
-        super(test6("base","h_curve",orientation),false,false,false,false,false,false,false,"brightness-[1.40] saturate-[0.4] ")
+        super(test6("base","h_curve",orientation),orientation,false,false,false,false,false,false,false,"brightness-[1.40] saturate-[0.4] ")
            }
 }
 export class Mine extends CaseGenerique{
-    constructor(hover) {
-        super("images/terrain/mine.png",false,true,false,true,true,"",hover)
+    constructor() {
+        super("images/terrain/mine.png",false,true,false,true,true,"")
     }
 }
 export function returnHexagone(text,orientation){
@@ -115,6 +115,8 @@ export function returnHexagone(text,orientation){
             return {hexagone: new Church(),orientation:0}      
         case "Mine":
             return {hexagone: new Mine(),orientation:0} 
+        case "Mountain":
+            return {hexagone: new Mountain(),orientation:0} 
         default:
             return null;
     }

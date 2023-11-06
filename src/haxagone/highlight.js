@@ -7,7 +7,7 @@ export class SelectHexa extends CaseGenerique {
 }
 export class Move extends CaseGenerique {
     constructor(item){
-        super(`images/divers/move_${item ? item : 1}.png`,false,false,false,false,false,false,false,"opacity-60")
+        super(`images/divers/move_${item ? item : 1}.png`,false,null,false,false,false,false,false,false,false,"opacity-60")
     }
 }
 export class Attacking extends CaseGenerique {
@@ -22,12 +22,12 @@ export class Selected extends CaseGenerique {
 }
 export class Target extends CaseGenerique{
     constructor(nb){
-        super(nb ? test4("divers","target-",nb):"images/divers/target.png")
+        super(nb ? test4("divers","target-",nb):"images/divers/target.png",nb)
     }
 }
 export class Retreat extends CaseGenerique{
     constructor(nb,nb2){
-        super(nb == 0 ? "images/divers/retreat_0.png" : test3("divers","retreat_",nb))
+        super(nb == 0 ? "images/divers/retreat_0.png" : test3("divers","retreat_",nb),nb)
         this._nb = nb2;
     }
     render(){
