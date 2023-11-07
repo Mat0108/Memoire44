@@ -48,18 +48,18 @@ export function ReturnArmy(unit,nb){
 
     switch(unit){
         case "Country":
-            return {hexagone:new Country(),orientation:0}
+            return {hexagone:new Country(),orientation:0,max:0}
         case "SoldatAxis":
-            return {hexagone:new SoldatAxis(nb),orientation:4}
+            return {hexagone:new SoldatAxis(nb),orientation:4,max:4}
         case "CharAxis":
-            return {hexagone:new CharAxis(nb),orientation:3}    
+            return {hexagone:new CharAxis(nb),orientation:3,max:4}    
         case "ArtillerieAxis":
-            return {hexagone:new ArtillerieAxis(nb),orientation:2}  
+            return {hexagone:new ArtillerieAxis(nb),orientation:2,max:2}  
         case "SoldatAllies":
-            return {hexagone:new SoldatAllies(nb),orientation:4}    
+            return {hexagone:new SoldatAllies(nb),orientation:4,max:4}    
         case "CharAllies":
-            return {hexagone:new CharAllies(nb),orientation:3}
+            return {hexagone:new CharAllies(nb),orientation:3,max:4}
         case "ArtillerieAllies":
-            return {hexagone:new ArtillerieAllies(nb),orientation:2}                                        
+            return {hexagone:new ArtillerieAllies(nb),orientation:2,max:4}                                        
     }
 }

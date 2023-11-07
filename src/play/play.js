@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom/client';
 import {CardGenerique, Dice, Flag, VerificationLineOfSight, isCombatRapproche, pointproche, showPortee} from '../divers/Generique'
 import { ReturnScenario, SelecteurScenario, loadScenario } from '../scenario';
 import { Scenariovide } from '../scenario/scenariovide';
-import { Assaultsurvassieuxenvercours } from '../scenario/batailleduvercors/assaultsurvassieuxenvercours';
 import { Attacking, Selected, Move, Retreat, SelectHexa, Target } from '../haxagone/highlight';
 import { AddDice, HitUnit } from '../army/army';
 import { AirPower, Barrage, CampAffichage, CardSelect, RandomListCard } from '../divers/Card';

@@ -22,6 +22,11 @@ export class Hedgehow extends CaseGenerique{
         super("images/base/o_hedgehog.png",false,true,false,false,false)
     }
 }
+export class Hedgerow extends CaseGenerique{
+    constructor (){
+        super("images/base/h_hedgerow.png",false,true,false,false,false)
+    }
+}
 export class Bunker extends CaseGenerique{
     constructor (){
         super("images/base/o_bunker.png",null,{soldat:-1,tank:-2},true,true,true)
@@ -75,6 +80,8 @@ export function returnHexagone(text,orientation){
             return {hexagone: new Hills(),orientation:0}
         case "Forest":
             return {hexagone: new Forest(),orientation:0}
+        case "Hedgerow":
+            return {hexagone: new Hedgerow(),orientation:0}
         case "Village":
             return {hexagone: new Village(),orientation:0}
         case "RiversRight":

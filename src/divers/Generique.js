@@ -36,17 +36,16 @@ export class SoldatGenerique  {
     render(){
         let elem = <img src={this._image} alt={"Soldat"} className={this._taille}/>
             
-        if(this._nombre == 4){
-                        
+        if(this._nombre == 4){ 
             return (
             <div className="flex  w-full">
-                <div className="absolute top-0 w-full">
+                <div className={`absolute ${this._type == "Char"?"top-2":"top-0"} w-full`}>
                     <div className="flex flex-row center">
                         {elem}
                         {elem}
                     </div>
                 </div>
-                <div className="absolute top-9 z-[40]">
+                <div className={`absolute ${this._type == "Char"?"top-11":"top-9"}  z-[40]`}>
                     <div className="flex flex-row center">                    
                         {elem}
                         {elem}

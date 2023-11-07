@@ -7,6 +7,7 @@ import { SelectHexa } from './../haxagone/highlight';
 import { ReturnArmy } from "../army/army";
 import Select from 'react-select'
 import { SaveScenario } from './saveScenario';
+import keyboardjs from "keyboardjs";
 
 export const CreateScenario = () =>{
 
@@ -24,11 +25,13 @@ export const CreateScenario = () =>{
 
   let nbItemByLigne = screenwidth < 2000 ? 12 : 18;
   let wheel = 1;
+  let layoutPetitEcran = false;
   let listHexagone = [
     "Country",
     "Hills",
     "Mountain",
     "Forest",
+    "Hedgerow",
     "RiversRight",
     "RiversCurve",
     "RiverBranchLeft",
@@ -79,14 +82,16 @@ export const CreateScenario = () =>{
     "RailBridge",
     "Loco",
     "Wagon",
-    "Mine"
+    "Mine",
+    "Country"
     
   ]
   let listDefense = [
     "Country",
     "SandBag",
     "Hedgehow",
-    "Wire"
+    "Wire",
+    "Country"
   ]
   let listunité = [
     "Country",
@@ -114,21 +119,14 @@ export const CreateScenario = () =>{
   var pressed = false;
   var deltatime = 500; // time interval since the last keyup event
   var lastKeypressTime = 0; 
-  window.addEventListener("keydown", (event)=>{
-    if(!pressed){
-      pressed = true;
-      if(event.key.toLowerCase() == "d"){setActualY(actualx % 2 == 1 ? (actualy == 11 ? 0 : actualy+1):(actualy == 12 ? 0 : actualy+1))}
-      if(event.key.toLowerCase() == "q"){setActualY(actualx % 2 == 1 ? (actualy == 0 ? 11 : actualy-1):(actualy == 0 ? 12 : actualy-1));}
-      // if(event.key.toLowerCase() == "s"){setActualX(actualx == 8 ? 0 : actualx+1)}
-      // if(event.key.toLowerCase() == "z"){setActualX(actualx == 0 ? 8 : actualx-1)}
-      event.preventDefault();
-    }
+  keyboardjs.bind('d',(e)=>{
+    e.preventRepeat();
+    Valider();
   })
-  
-  window.addEventListener("keyup", ()=>{
-   pressed = false;
+  keyboardjs.bind('q',(e)=>{
+    e.preventRepeat();
+    Reculer();
   })
-
   
   
   useEffect(() => {
@@ -193,16 +191,16 @@ export const CreateScenario = () =>{
           setGrille(localgrille)
         }
       }
-      if(mouse.unité && mouse.unité.orientation){
+      if(mouse.unité && mouse.unité.max){
         if(delta > 0 ){
-          if(orientation >= mouse.unité.orientation){
+          if(orientation >= mouse.unité.max){
             setOrientation(1);
           }else{
             setOrientation(orientation+1);
           }
         }else{
           if(orientation <= 1){
-            setOrientation(mouse.unité.orientation);
+            setOrientation(mouse.unité.max);
           }else{
             setOrientation(orientation+1);
           }
@@ -212,7 +210,6 @@ export const CreateScenario = () =>{
           setGrille(localgrille)
         }
       }
-      console.log("mouse.medal",mouse.medal)
       if(mouse.medal && mouse.medal.orientation){
         if(delta > 0 ){
           if(orientation >= mouse.medal.orientation){
@@ -234,10 +231,17 @@ export const CreateScenario = () =>{
       }
     }
   }, [delta,mouse])
-  useEffect(() => {
-    console.log("mouse : ",mouse)
-  }, [mouse])
-  
+  // useEffect(() => {
+  //   console.log("mouse : ",mouse)
+  // }, [mouse])
+  function Reset(){
+    setFinal({case:null,bunker:null,defense:null,unité:null,medal:null});
+    setMouse({case:null,bunker:null,defense:null,unité:null,medal:null});
+    let localgrille = {...grille}
+    setDelta(0);
+    localgrille.grille[actualx][actualy] = {case:null,bunker:null,defense:null,unité:null,medal:null}
+    setGrille(localgrille)
+  }
 
   function UpdateGrille(type,object){
     let localgrille = {...grille}
@@ -313,10 +317,21 @@ export const CreateScenario = () =>{
 
     setFinal({case:null,bunker:null,defense:null,unité:null,medal:null})
     setMouse({case:null,bunker:null,defense:null,unité:null,medal:null})
+    console.log(actualx,actualy)
     if( actualy == 0 ){
-      setActualX(actualx-1);
-      setActualY(actualx % 2 == 1 ? 11 :12);
+      if(actualx == 0){
+        setActualX(8);
+        setActualY(12);
+      }else{
+        setActualX(actualx-1);
+        setActualY(actualx % 2 == 1 ? 12 :11);
+      }
+
     }else{
+      if(actualy == 0){
+        setActualX(actualx-1);
+        setActualY(actualx % 2 == 1 ? 12 :11);
+      }
       setActualY(actualy-1);
     }
   }
@@ -351,18 +366,37 @@ export const CreateScenario = () =>{
           {listDiversFinal}
           {/* {listDivers.map(item=>{return <div className="w-[70px] relative" key={item} onMouseEnter={()=>{UpdateGrille("bunker",item == "Country" ? null :returnHexagone(item,orientation))}}  onClick={()=>{setFinal({...final,bunker:final.bunker ? null : returnHexagone(item,0)})}}>{returnHexagone(item,0).hexagone.render()}</div>})} */}
         </div>
-        <h1 className="text-[24px] text-white mt-[20px] mb-[10px] "> Choissiez l'item de défense : </h1>
-        <div className="flex flex-row ">
-          {listDefense.map(item=>{return <div className={`${screenwidth < 2000 ? "w-[50px]" : "w-[65px]"} relative`} key={item} onMouseEnter={()=>{UpdateGrille("defense",item == "Country" ? null :returnHexagone(item,orientation))}}  onClick={()=>{setFinal({...final,defense:final.defense ? null : returnHexagone(item,0)})}}>{returnHexagone(item,0).hexagone.render()}</div>})}
+        <div className="w-full h-full flex flex-row gap-8">
+          <div className={`${layoutPetitEcran ? "w-full" : "w-1/2" }`}>
+          <h1 className="text-[24px] text-white mt-[20px] mb-[10px] "> Choissiez l'item de défense : </h1>
+            <div className="flex flex-row ">
+              {listDefense.map(item=>{return <div className={`${screenwidth < 2000 ? "w-[50px]" : "w-[65px]"} relative`} key={item} onMouseEnter={()=>{UpdateGrille("defense",item == "Country" ? null :returnHexagone(item,orientation))}}  onClick={()=>{setFinal({...final,defense:final.defense ? null : returnHexagone(item,0)})}}>{returnHexagone(item,0).hexagone.render()}</div>})}
+            </div>
+            <h1 className="text-[24px] text-white mt-[20px] mb-[10px] " > Choissiez l'unité : </h1>
+            <div className="flex flex-row ">
+              {listunité.map(item=>{return <div className={`w-[70px] relative`} key={item} onMouseEnter={()=>{UpdateGrille("unité",item == "Country" ? null :ReturnArmy(item,0))}} onClick={()=>{setFinal({...final,unité:final.unité ? null : ReturnArmy(item,1)})}} >{ReturnArmy(item,0).hexagone.render()}</div>})}
+            </div>
+            <h1 className="text-[24px] text-white mt-[20px] mb-[10px] " > Choissiez la medaille : </h1>
+            <div className="flex flex-row ">
+              {listmodal.map(item=>{return <div className={`${screenwidth < 2000 ? "w-[50px]" : "w-[65px]"} relative`} key={item} onMouseEnter={()=>{UpdateGrille("medal",item == "Country" ? null :returnHexagone(item,0))}} onClick={()=>{setFinal({...final,medal:final.medal ? null : returnHexagone(item,0)})}} >{returnHexagone(item,0).hexagone.render()}</div>})}
+            </div>
+          </div>
+          {!layoutPetitEcran && <div className="w-1/2">
+            <div className="w-full mt-[20px] grid grid-cols-2 gap-4 " id={"menu"}>
+            <div className="w-fit p-4 bg-gray rounded-full text-[18px] text-white hover:cursor-pointer"  onClick={()=>{Valider(false)}}>Avancer</div>
+            <div className="w-fit p-4 bg-gray rounded-full text-[18px] text-white hover:cursor-pointer" onClick={()=>{Reculer(false)}}>Reculer</div>
+            
+            
+            <div className="w-fit p-4 bg-gray rounded-full text-[18px] text-white hover:cursor-pointer" onClick={()=>{setActualX(actualx+1);setFinal({case:null,bunker:null,defense:null,unité:null})}}>Ligne suivant</div>
+            <div className="w-fit p-4 bg-gray rounded-full text-[18px] text-white hover:cursor-pointer" onClick={()=>{setActualX(actualx-1);setFinal({case:null,bunker:null,defense:null,unité:null})}}>Ligne précédente </div>
+            <div className="w-fit p-4 bg-gray rounded-full text-[18px] text-white hover:cursor-pointer" onClick={()=>{Reset()}}>Reset Selection</div>
+            
+            <div className="w-fit p-4 bg-white border-2 border-green rounded-full text-[18px] text-green hover:cursor-pointer" onClick={()=>{setModal(<SaveScenario close={()=>{setModal(<></>)}} grille={grille.grille}/>)}}>Sauvegarder </div>
+          
+          </div>
+          </div>}
         </div>
-        <h1 className="text-[24px] text-white mt-[20px] mb-[10px] " > Choissiez l'unité : </h1>
-        <div className="flex flex-row ">
-          {listunité.map(item=>{return <div className={`w-[70px] relative`} key={item} onMouseEnter={()=>{UpdateGrille("unité",item == "Country" ? null :ReturnArmy(item,0))}} onClick={()=>{setFinal({...final,unité:final.unité ? null : ReturnArmy(item,1)})}} >{ReturnArmy(item,0).hexagone.render()}</div>})}
-        </div>
-        <h1 className="text-[24px] text-white mt-[20px] mb-[10px] " > Choissiez la medaille : </h1>
-        <div className="flex flex-row ">
-          {listmodal.map(item=>{return <div className={`${screenwidth < 2000 ? "w-[50px]" : "w-[65px]"} relative`} key={item} onMouseEnter={()=>{UpdateGrille("medal",item == "Country" ? null :returnHexagone(item,0))}} onClick={()=>{setFinal({...final,medal:final.medal ? null : returnHexagone(item,0)})}} >{returnHexagone(item,0).hexagone.render()}</div>})}
-        </div>
+        
       </div>
     </div>
 
@@ -402,15 +436,15 @@ export const CreateScenario = () =>{
             }</div>
           })}
           </div>
-          <div className="w-full mt-[20px] flex justify-around " id={"menu"}>
+          {layoutPetitEcran && <div className="w-full mt-[20px] flex justify-around " id={"menu"}>
           <div className="w-fit p-4 bg-gray rounded-full text-[18px] text-white hover:cursor-pointer" onClick={()=>{setActualX(actualx-1);setFinal({case:null,bunker:null,defense:null,unité:null})}}>Ligne précédente </div>
           <div className="w-fit p-4 bg-gray rounded-full text-[18px] text-white hover:cursor-pointer" onClick={()=>{Reculer(false)}}>Reculer</div>
-          <div className="w-fit p-4 bg-gray rounded-full text-[18px] text-white hover:cursor-pointer" onClick={()=>{setFinal({case:null,bunker:null,defense:null,unité:null})}}>Reset Selection</div>
+          <div className="w-fit p-4 bg-gray rounded-full text-[18px] text-white hover:cursor-pointer" onClick={()=>{Reset()}}>Reset Selection</div>
           <div className="w-fit p-4 bg-gray rounded-full text-[18px] text-white hover:cursor-pointer"  onClick={()=>{Valider(false)}}>Avancer</div>
           <div className="w-fit p-4 bg-gray rounded-full text-[18px] text-white hover:cursor-pointer" onClick={()=>{setActualX(actualx+1);setFinal({case:null,bunker:null,defense:null,unité:null})}}>Ligne suivant</div>
           <div className="w-fit p-4 bg-white border-2 border-green rounded-full text-[18px] text-green hover:cursor-pointer" onClick={()=>{setModal(<SaveScenario close={()=>{setModal(<></>)}} grille={grille.grille}/>)}}>Sauvegarder </div>
           
-        </div>
+        </div>}
         </div>)
         }
         },[grille,actualx,actualy])
