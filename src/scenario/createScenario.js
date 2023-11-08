@@ -68,7 +68,9 @@ export const CreateScenario = () =>{
     "TrainBranchRight",
     "TrainX",
     "TrainXRoad",
-    "Station"
+    "Station",
+    "SnowTrainRight",
+    "SnowTrainCurve"
 
   ]
   let listDivers = [

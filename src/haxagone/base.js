@@ -1,5 +1,6 @@
 import { CaseGenerique, test3, test6 } from "../divers/Generique";
 import { Medal, SelectHexa } from "./highlight";
+import { SnowTrainCurve, SnowTrainRight } from "./snow";
 import { AirField, AirFieldX, Barracks, Camp, Casemate, Cemetery, Church, Dam, Depot, Factory, Ford, Fortress, LakeA, LakeB, LakeC, LightHouse, Loco, Marshes, Mountain, Pond, Pontoon, RailBridge, RiverBranchLeft, RiverBranchRight, RiverY, RoadBlock, RoadBranchLeft, RoadBranchRight, RoadCurve, RoadHillCurve, RoadHillRight, RoadRight, RoadX, RoadY, Station, TrainBranchLeft, TrainBranchRight, TrainCurve, TrainRight, TrainX, TrainXRoad, Wagon } from "./terrain";
 
 export class Country extends CaseGenerique {
@@ -188,6 +189,10 @@ export function returnHexagone(text,orientation){
             return {hexagone: new RoadBlock(orientation),orientation:6}
         case "Casemate":
             return {hexagone: new Casemate(),orientation:0}
+        case "SnowTrainRight":
+            return {hexagone:new SnowTrainRight(orientation),orientation:3}
+        case "SnowTrainCurve":
+            return {hexagone:new SnowTrainCurve(orientation),orientation:6}
         case "":
             return {hexagone: null,orientation:0}
         default:
@@ -197,3 +202,4 @@ export function returnHexagone(text,orientation){
 
 //        case "":
 // return {hexagone: null,orientation:0}
+
