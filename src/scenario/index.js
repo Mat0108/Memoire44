@@ -2,7 +2,7 @@ import { useState,useMemo } from "react";
 import { Scenariovide } from "./scenariovide";
 import { Scenariotest } from './scenariotest';
 
-import {Assaultsurvassieuxenvercours,Batailledesaintnizier,Marquisdemalleval,SacrificeàValchevrière,Défensedespas} from "./batailleduvercors/index"
+import {Assaultsurvassieuxenvercours,Batailledesaintnizier,Marquisdemalleval,SacrificeaValchevrière,Défensedespas} from "./batailleduvercors/index"
 import {PegasusBridge,PointeDuHoc,SainteMereEglise,SwordBearch,OmahaBeach,MontMouchet } from "./batailledebarquement/index"
 
 import { Link } from 'react-router-dom';
@@ -69,7 +69,7 @@ export function ReturnScenario(scenarioname){
         case "Marquisdemalleval":
             return Marquisdemalleval; 
         case "SacrificeaValchevrière":
-            return SacrificeàValchevrière;
+            return SacrificeaValchevrière;
         case "Défensedespas":
             return Défensedespas;
         case "PegasusBridge":

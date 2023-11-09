@@ -19,13 +19,15 @@ export const CreateScenario = () =>{
   const [final,setFinal] = useState({case:null,bunker:null,defense:null,unité:null,medal:null});
   const [actualx,setActualX]  = useState(0);
   const [actualy,setActualY] = useState(0);
-  const debug = false;
   const [modal, setModal] = useState(<></>)
+  const [typeHexagone,setTypeHexagone] = useState(0)
   const screenwidth = document.getElementById("maindiv") ? document.getElementById("maindiv").clientWidth : null;
-
+  
+  const debug = false;
   let nbItemByLigne = screenwidth < 2000 ? 12 : 18;
-  let wheel = 1;
+  let wheel = 10;
   let layoutPetitEcran = false;
+
   let listHexagone = [
     "Country",
     "Hills",
@@ -68,9 +70,52 @@ export const CreateScenario = () =>{
     "TrainBranchRight",
     "TrainX",
     "TrainXRoad",
-    "Station",
+    "Station"
+
+  ]
+  let SnowlistHexagone = [
+    "Country",
+    "SnowHill",
+    "Mountain",
+    "SnowForest",
+    "Hedgerow",
+    "SnowRiversRight",
+    "SnowRiversCurve",
+    "RiverBranchLeft",
+    "RiverBranchRight",
+    "RiverY",
+    "Dam",
+    "Pond",
+    "LakeA",
+    "LakeB",
+    "LakeC",
+    "RoadRight",
+    "RoadCurve",
+    "RoadBranchLeft",
+    "RoadBranchRight",
+    "RoadX",
+    "RoadY",
+    "RoadHillRight",
+    "RoadHillCurve",
+    "SnowAirField",
+    "SnowAirFieldX",
+    "SnowVillage",
+    "Church",
+    "Barracks",
+    "Camp",
+    "Cemetery",
+    "Depot",
+    "SnowFactory",
+    "Fortress",
+    "LightHouse",
+    "Marshes",
     "SnowTrainRight",
-    "SnowTrainCurve"
+    "SnowTrainCurve",
+    "SnowTrainBranchLeft",
+    "SnowTrainBranchRight",
+    "TrainX",
+    "TrainXRoad",
+    "SnowStation",
 
   ]
   let listDivers = [
@@ -341,8 +386,9 @@ export const CreateScenario = () =>{
   const showingCard = useMemo(() => {
     let listHexagoneFinal = [];
     let listDiversFinal = [];
-    for(let i = 0;i<=parseInt(Object.keys(listHexagone).length/nbItemByLigne);i++){
-      let local = listHexagone.slice(i*nbItemByLigne,(i+1)*nbItemByLigne)
+    let listHexagone2 = typeHexagone == 0 ? listHexagone : SnowlistHexagone;
+    for(let i = 0;i<=parseInt(Object.keys(listHexagone2).length/nbItemByLigne);i++){
+      let local = listHexagone2.slice(i*nbItemByLigne,(i+1)*nbItemByLigne)
       listHexagoneFinal.push(
         <div className={`flex flew-row mb-[20px]`} key={`hexagone-${i}`}>
         {local.map((item,pos)=>{return <div className={`${screenwidth < 2000 ? "w-[50px]" : "w-[65px]"} relative`} key={item} onMouseEnter={()=>{UpdateGrille("case",item == "Country" ? null : returnHexagone(item,orientation))}}   onClick={()=>{setFinal({...final,case:final.case ? null : returnHexagone(item,0)})}} >{returnHexagone(item,0).hexagone.render()}</div>})}
@@ -359,6 +405,16 @@ export const CreateScenario = () =>{
     }  
     return <div className='ml-8 mt-8 flex flex-row'>
       <div className='flex flex-col '>
+        <div className="flex flex-row gap-8"> 
+          <div className="bg-lightgrey w-fit p-2 rounded-full flex flex-row gap-4 hover:cursor-pointer" onClick={()=>{setTypeHexagone(0)}}>
+            <div className="flex center"><div className={`w-4 h-4 rounded-full ${typeHexagone == 0 ? "bg-white border-4 border-green":"bg-gray"}`}></div></div>
+            <label> Plaine</label>
+          </div>
+          <div className="bg-lightgrey w-fit p-2 rounded-full flex flex-row gap-4 hover:cursor-pointer" onClick={()=>{setTypeHexagone(1)}}>
+            <div className="flex center"><div className={`w-4 h-4 rounded-full ${typeHexagone == 1 ? "bg-white border-4 border-green":"bg-gray"}`}></div></div>
+            <label> Snow</label>
+          </div>
+        </div>
         <h1 className="text-[24px] text-white mb-[10px] "> Choissiez l'hexagone : </h1>
         <div className="flex flex-col ">
           {listHexagoneFinal}
@@ -403,7 +459,7 @@ export const CreateScenario = () =>{
     </div>
 
   }
-  , [status,actualx,actualy,final,mouse])
+  , [status,actualx,actualy,final,mouse,typeHexagone])
   const Modal = useMemo(() => <div className='absolute top-0 '>{modal}</div>, [modal]);
 
   const global = useMemo(()=>{

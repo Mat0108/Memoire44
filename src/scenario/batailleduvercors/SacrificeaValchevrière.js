@@ -5,7 +5,7 @@ import { Forest, Hills, Mine, RiversCurve, RiversRight, SandBag, Village } from 
 import { Medal } from "../../haxagone/highlight";
 import { AirField, Church, Mountain, RiverBranch, RiverY, RoadCurve, RoadHillCurve, RoadRight } from "../../haxagone/terrain";
 
-export const SacrificeàValchevrière= {
+export const SacrificeaValchevrière= {
    name:"Sacrifice a Valchevrière",
    terrain:"terrain0",
    medalAllies:6,

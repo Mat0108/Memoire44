@@ -1,6 +1,6 @@
 import { CaseGenerique, test3, test6 } from "../divers/Generique";
 import { Medal, SelectHexa } from "./highlight";
-import { SnowTrainCurve, SnowTrainRight } from "./snow";
+import { SnowAirField, SnowAirFieldX, SnowFactory, SnowForest, SnowHill, SnowRiversCurve, SnowRiversRight, SnowStation, SnowTrainBranchLeft, SnowTrainBranchRight, SnowTrainCurve, SnowTrainRight, SnowVillage } from "./snow";
 import { AirField, AirFieldX, Barracks, Camp, Casemate, Cemetery, Church, Dam, Depot, Factory, Ford, Fortress, LakeA, LakeB, LakeC, LightHouse, Loco, Marshes, Mountain, Pond, Pontoon, RailBridge, RiverBranchLeft, RiverBranchRight, RiverY, RoadBlock, RoadBranchLeft, RoadBranchRight, RoadCurve, RoadHillCurve, RoadHillRight, RoadRight, RoadX, RoadY, Station, TrainBranchLeft, TrainBranchRight, TrainCurve, TrainRight, TrainX, TrainXRoad, Wagon } from "./terrain";
 
 export class Country extends CaseGenerique {
@@ -193,6 +193,28 @@ export function returnHexagone(text,orientation){
             return {hexagone:new SnowTrainRight(orientation),orientation:3}
         case "SnowTrainCurve":
             return {hexagone:new SnowTrainCurve(orientation),orientation:6}
+        case "SnowTrainBranchLeft":
+            return {hexagone: new SnowTrainBranchLeft(orientation),orientation:6}
+        case "SnowTrainBranchRight":
+            return {hexagone: new SnowTrainBranchRight(orientation),orientation:6}
+        case "SnowStation":
+            return {hexagone: new SnowStation(orientation),orientation:3}
+        case "SnowForest":
+            return {hexagone: new SnowForest(),orientation:0}
+        case "SnowHill":
+            return {hexagone: new SnowHill(),orientation:0}
+        case "SnowVillage":
+            return {hexagone: new SnowVillage(),orientation:0}
+        case "SnowRiversRight":
+            return {hexagone: new SnowRiversRight(orientation),orientation:3}
+        case "SnowRiversCurve":
+            return {hexagone: new SnowRiversCurve(orientation),orientation:6}
+        case "SnowFactory":
+            return {hexagone: new SnowFactory(),orientation:0}
+        case "SnowAirField":
+            return {hexagone: new SnowAirField(orientation),orientation:3}
+        case "SnowAirFieldX":
+            return {hexagone: new SnowAirFieldX(orientation),orientation:3}
         case "":
             return {hexagone: null,orientation:0}
         default:
