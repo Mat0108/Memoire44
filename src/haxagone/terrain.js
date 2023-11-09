@@ -43,7 +43,7 @@ export class RoadBranchRight extends CaseGenerique{
 
 export class RoadX extends CaseGenerique{
     constructor(orientation){
-        super(test6("terrain","h_roadX",orientation),orientation,false,false,false,false,false,false,false,"darker")
+        super(test3("terrain","h_roadX",orientation),orientation,false,false,false,false,false,false,false,"darker")
     }
 }
 export class RoadY extends CaseGenerique{

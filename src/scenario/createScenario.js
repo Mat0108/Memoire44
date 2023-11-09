@@ -25,7 +25,7 @@ export const CreateScenario = () =>{
   
   const debug = false;
   let nbItemByLigne = screenwidth < 2000 ? 12 : 18;
-  let wheel = 10;
+  let wheel = 1;
   let layoutPetitEcran = false;
 
   let listHexagone = [
@@ -81,20 +81,20 @@ export const CreateScenario = () =>{
     "Hedgerow",
     "SnowRiversRight",
     "SnowRiversCurve",
-    "RiverBranchLeft",
-    "RiverBranchRight",
-    "RiverY",
+    "SnowRiverBranchLeft",
+    "SnowRiverBranchRight",
+    "SnowRiverY",
     "Dam",
     "Pond",
     "LakeA",
     "LakeB",
     "LakeC",
-    "RoadRight",
-    "RoadCurve",
-    "RoadBranchLeft",
-    "RoadBranchRight",
-    "RoadX",
-    "RoadY",
+    "SnowRoadRight",
+    "SnowRoadCurve",
+    "SnowRoadBranchLeft",
+    "SnowRoadBranchRight",
+    "SnowRoadX",
+    "SnowRoadY",
     "RoadHillRight",
     "RoadHillCurve",
     "SnowAirField",
@@ -113,8 +113,8 @@ export const CreateScenario = () =>{
     "SnowTrainCurve",
     "SnowTrainBranchLeft",
     "SnowTrainBranchRight",
-    "TrainX",
-    "TrainXRoad",
+    "SnowTrainX",
+    "SnowTrainXRoad",
     "SnowStation",
 
   ]
@@ -468,7 +468,7 @@ export const CreateScenario = () =>{
         return (
         <div className="relative w-fit h-fit">
           {debug ? <div className='absolute z-[4100] top-0 left-8 text-vivid_tangerine text-[20px] font-av-bold'><span className='text-white text-[20px] font-av-bold'>posx</span> posy</div>:""}
-          <div key={"terrain"}><img src={`images/${grille.terrain}.png`} alt={"terrain"} className='w-full h-full'/></div>
+          <div key={"terrain"} className="mt-[1px] ml-[1px]"><img src={`images/terrain3.png`} alt={"terrain"} className='w-full h-full'/></div>
           <div className="absolute flex flex-col z-[200] top-[58px] left-[10px]">
             {grille.grille.map((e,pos)=>{
               return <div className={`${pos % 2 == 1 ? "ml-[45px]":""} w-full flex flex-row`} key={`ligne-${pos}`}>{
