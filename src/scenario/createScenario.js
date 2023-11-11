@@ -22,9 +22,9 @@ export const CreateScenario = () =>{
   const [modal, setModal] = useState(<></>)
   const [typeHexagone,setTypeHexagone] = useState(0)
   const screenwidth = document.getElementById("maindiv") ? document.getElementById("maindiv").clientWidth : null;
-  
+  console.log(screenwidth)
   const debug = false;
-  let nbItemByLigne = screenwidth < 2000 ? 12 : 18;
+  let nbItemByLigne = screenwidth < 2500 ? 14 : 18;
   let wheel = 1;
   let layoutPetitEcran = false;
 
@@ -76,9 +76,9 @@ export const CreateScenario = () =>{
   let SnowlistHexagone = [
     "Country",
     "SnowHill",
-    "Mountain",
+    "SnowMountain",
     "SnowForest",
-    "Hedgerow",
+    "SnowHedgerow",
     "SnowRiversRight",
     "SnowRiversCurve",
     "SnowRiverBranchLeft",
@@ -95,8 +95,8 @@ export const CreateScenario = () =>{
     "SnowRoadBranchRight",
     "SnowRoadX",
     "SnowRoadY",
-    "RoadHillRight",
-    "RoadHillCurve",
+    "SnowRoadHillRight",
+    "SnowRoadHillCurve",
     "SnowAirField",
     "SnowAirFieldX",
     "SnowVillage",
@@ -469,7 +469,7 @@ export const CreateScenario = () =>{
         <div className="relative w-fit h-fit">
           {debug ? <div className='absolute z-[4100] top-0 left-8 text-vivid_tangerine text-[20px] font-av-bold'><span className='text-white text-[20px] font-av-bold'>posx</span> posy</div>:""}
           <div key={"terrain"} className="mt-[1px] ml-[1px]"><img src={`images/terrain3.png`} alt={"terrain"} className='w-full h-full'/></div>
-          <div className="absolute flex flex-col z-[200] top-[58px] left-[10px]">
+          <div className="absolute w-full flex flex-col z-[200] top-[58px] left-[10px]">
             {grille.grille.map((e,pos)=>{
               return <div className={`${pos % 2 == 1 ? "ml-[45px]":""} w-full flex flex-row`} key={`ligne-${pos}`}>{
                 e.map((f,pos2)=>{

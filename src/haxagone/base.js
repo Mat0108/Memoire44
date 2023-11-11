@@ -1,6 +1,6 @@
 import { CaseGenerique, test3, test6 } from "../divers/Generique";
 import { Medal, SelectHexa } from "./highlight";
-import { SnowAirField, SnowAirFieldX, SnowFactory, SnowForest, SnowHill, SnowRiverBranchLeft, SnowRiverBranchRight, SnowRiverY, SnowRiversCurve, SnowRiversRight, SnowRoadBranchLeft, SnowRoadBranchRight, SnowRoadCurve, SnowRoadRight, SnowRoadX, SnowRoadY, SnowStation, SnowTrainBranchLeft, SnowTrainBranchRight, SnowTrainCurve, SnowTrainRight, SnowTrainX, SnowTrainXRoad, SnowVillage } from "./snow";
+import { SnowAirField, SnowAirFieldX, SnowFactory, SnowForest, SnowHedgerow, SnowHill, SnowMountain, SnowRiverBranchLeft, SnowRiverBranchRight, SnowRiverY, SnowRiversCurve, SnowRiversRight, SnowRoadBranchLeft, SnowRoadBranchRight, SnowRoadCurve, SnowRoadHillCurve, SnowRoadHillRight, SnowRoadRight, SnowRoadX, SnowRoadY, SnowStation, SnowTrainBranchLeft, SnowTrainBranchRight, SnowTrainCurve, SnowTrainRight, SnowTrainX, SnowTrainXRoad, SnowVillage } from "./snow";
 import { AirField, AirFieldX, Barracks, Camp, Casemate, Cemetery, Church, Dam, Depot, Factory, Ford, Fortress, LakeA, LakeB, LakeC, LightHouse, Loco, Marshes, Mountain, Pond, Pontoon, RailBridge, RiverBranchLeft, RiverBranchRight, RiverY, RoadBlock, RoadBranchLeft, RoadBranchRight, RoadCurve, RoadHillCurve, RoadHillRight, RoadRight, RoadX, RoadY, Station, TrainBranchLeft, TrainBranchRight, TrainCurve, TrainRight, TrainX, TrainXRoad, Wagon } from "./terrain";
 
 export class Country extends CaseGenerique {
@@ -74,7 +74,7 @@ export class Mine extends CaseGenerique{
     }
 }
 export function returnHexagone(text,orientation){
-console.log('text : ', text)
+// console.log('text : ', text)
 
     switch(text){
         case "Country":
@@ -239,6 +239,14 @@ console.log('text : ', text)
             return {hexagone: new SnowRoadX(orientation),orientation:3} 
         case "SnowRoadY":
             return {hexagone: new SnowRoadY(orientation),orientation:3} 
+        case "SnowMountain":
+            return {hexagone: new SnowMountain(),orientation:0} 
+        case "SnowHedgerow":
+            return {hexagone: new SnowHedgerow(),orientation:0} 
+        case "SnowRoadHillRight":
+            return {hexagone: new SnowRoadHillRight(orientation),orientation:3}  
+        case "SnowRoadHillCurve":
+            return {hexagone: new SnowRoadHillCurve(orientation),orientation:6}
         case "":
             return {hexagone: null,orientation:0}
         default:

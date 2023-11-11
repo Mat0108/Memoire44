@@ -126,6 +126,27 @@ export class SnowRoadBranchRight extends CaseGenerique{
         super(test6("snow","h_snowroadFR",orientation),orientation,false,false,false,false,false,false,false,"")
     }
 }
+export class SnowMountain extends CaseGenerique{
+    constructor(orientation){
+        super(`images/snow/h_snowmountain.png`,null,{soldat:-2,tank:-2},true,false,true,false,false,false," ")
+    }
+}
+export class SnowHedgerow extends CaseGenerique{
+    constructor(orientation){
+        super(`images/snow/h_snowhedgerow.png`,null,{soldat:-2,tank:-2},true,false,true,false,false,false," ")
+    }
+}
+
+export class SnowRoadHillRight extends CaseGenerique{
+    constructor(orientation){
+        super(test3("snow","h_snowhillroad",orientation),orientation,false,false,false,false,false,false,false,"")
+    }
+}
+export class SnowRoadHillCurve extends CaseGenerique{
+    constructor(orientation){
+        super(test6("snow","h_snowhillcurve",orientation),orientation,false,false,false,false,false,false,false,"")
+    }
+}
 
 //how edit snow image
 // saturation -16 87 0
