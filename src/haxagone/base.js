@@ -42,7 +42,7 @@ export class Hills extends CaseGenerique {
 
 export class Forest extends CaseGenerique {
     constructor (hover){
-        super("images/base/h_forest.png",null,{soldat:-1,tank:-2},true,false,true,false,"images/cards/base/forest-fr.png",false,"brightness-[1.40] saturate-[0.4]")
+        super("images/base/h_forest.png",null,{soldat:-1,tank:-2},true,false,true,true,"images/cards/base/forest-fr.png",false,"brightness-[1.40] saturate-[0.4]")
     }
 }
 

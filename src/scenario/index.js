@@ -35,7 +35,8 @@ const listScenario = [
     {name:"Pointe du hoc",url:"Pointeduhoc",image:"batailledebarquement/Pointeduhoc"},
     {name:"Omaha Beach",url:"OmahaBeach",image:"batailledebarquement/omahabeach"},
     {name:"Mount Mouchet",url:"MontMouchet",image:"batailledebarquement/montmouchet"},
-    {name:"Scenario test",url:"Scenariotest",image:"Scenariovide"}
+    {name:"Scenario de test",url:"Scenariotest",image:"Scenariovide"},
+    {name:<div className="text-center">Go</div>,url:"Scenariotest",image:"Scenariotest"}
 
 ]
 export const SelecteurScenario = ()=>{
@@ -53,7 +54,7 @@ export const SelecteurScenario = ()=>{
         </div>
         <div className="w-[1200px] h-full bg-gray px-4  flex flex-col center space-2">
             {LoadImage}  
-            {image == "Scenariovide" ? <div className="w-[180px] h-[60px] mt-[30px]"></div>: <Link  to={`/scenario/${url}`} className="w-[180px] h-[60px] mt-[30px] p-2 rounded-3xl text-white bg-green text-2xl text-center">Play</Link>}
+            {image === "Scenariovide" ? <div className="w-[180px] h-[60px] mt-[30px]"></div>: <Link  to={`/scenario/${url}`} className="w-[180px] h-[60px] mt-[30px] p-2 rounded-3xl text-white bg-green text-2xl text-center">Play</Link>}
           
         </div>  
         

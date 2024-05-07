@@ -32,7 +32,7 @@ export const Play =()=> {
   const [modal, setModal] = useState(<></>)
   
   
-  const debug = false;
+  const debug = true;
   let x = 13;
   let y = 9;
   let zone1 = {min:0,max:3,min2:0,max2:3}
@@ -332,7 +332,6 @@ export const Play =()=> {
     
     let list = showPortee(grille,Object.keys(unité._deplacement).length,posx,posy,null,unité._deplacement)
 
-    
     let localgrille = {...grille};
     let localgrille2 = {...grille};
 
@@ -340,7 +339,7 @@ export const Play =()=> {
     localgrille.grille.map((e,pos)=>{
       e.map((f,pos2)=>{
         list.map(item=>{
-          if(item.x == pos && item.y == pos2 && !debug ? !f.unité :item.x == pos && item.y == pos2){  
+          if(item.x == pos && item.y == pos2 && !debug ? !f.unité :item.x == pos && item.y == pos2 && !f.unité){  
             localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:f.unité,action:()=>{MoveAction(posx,posy,pos,pos2,item.deplacement)},highlight: new Move(item.deplacement),select:f.select}
             
           }
@@ -868,7 +867,7 @@ export const Play =()=> {
                   if(pos2 != (pos % 2 == 1 ? x-1 : x)){
                       
                       return <div className={`relative w-[91px] h-[78px] border-0 border-white ${f.action ? "hover:cursor-pointer":""}`} onClick={f.action}  key={`${pos}${pos2}`} id={`${pos}${pos2}`} >
-                        {debug ? <div className='absolute z-50 bottom-0 left-8 text-vivid_tangerine text-[24px] font-av-bold'><span className='text-white text-[24px] font-av-bold'>{pos}</span> {pos2}</div> :""}
+                        {debug ? <div className='absolute z-[1000] bottom-0 left-8 text-vivid_tangerine text-[28px] font-av-bold'><span className='text-white'>{pos}</span> {pos2}</div> :""}
                         <div className='absolute z-10 w-full h-full'>{f.case ? f.case.render(): ""}</div>
                         <div className='absolute z-20 w-full h-full'>{f.defense ? f.defense.render(): ""}</div>
                         <div className='absolute z-30 w-full h-full'>{f.bunker ? f.bunker.render(): ""}</div>

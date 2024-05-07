@@ -1,4 +1,6 @@
 import React from "react";
+import { MultipleAStar } from "../PathFinding/PathFinding";
+import BiasedAStar from "../PathFinding/BiasedAStar";
 
 export class Position{
     constructor(posx,posy){
@@ -173,6 +175,7 @@ export function isCombatRapproche(x,y,x2,y2){
     })
     return cond;
 }
+
 export function showPortee(grille,portée,posx,posy,dés,deplacement){
 
     
@@ -184,10 +187,11 @@ export function showPortee(grille,portée,posx,posy,dés,deplacement){
         {x:posx-1,y:posx %2  == 1 ? posy+1:posy,dés:dés ? dés[0] : 0,deplacement:deplacement ? deplacement[0]:null},
         {x:posx+1,y:posx %2  == 1 ? posy+1:posy,dés:dés ? dés[0] : 0,deplacement:deplacement ? deplacement[0]:null}
     ]
-    function betterPush(x,y,nb,){
-        list.push({x:x,y:y,dés:dés ? dés[nb]:null,deplacement:deplacement ? deplacement[nb]:null})
+    function betterPush(x,y,nb,local){
+        let locallist = local ? local : list;
+        locallist.push({x:x,y:y,dés:dés ? dés[nb]:null,deplacement:deplacement ? deplacement[nb]:null})
     }
-    if(portée >= 2){
+    if(portée >= 2){        
         betterPush(posx-2,posy,1);
         betterPush(posx-2,posy-1,1);
         betterPush(posx-2,posy+1,1); //partie gauche du cercle
@@ -202,6 +206,7 @@ export function showPortee(grille,portée,posx,posy,dés,deplacement){
         betterPush(posx+2,posy,1); //partie droite du cercle
         betterPush(posx+2,posy-1,1);
         betterPush(posx+2,posy+1,1);
+
     }
     if(portée >= 3){
         let list3 = [];
@@ -236,7 +241,7 @@ export function showPortee(grille,portée,posx,posy,dés,deplacement){
                 pointproche(item.x,item.y).map(ptproche=>{
                     if(ptproche.x >= 0 && ptproche.x <= 8 && ptproche.y >= 0 && ptproche.y <= 12){
                         if(!grille.grille[ptproche.x][ptproche.y].case){
-                            if(calculDistance(ptproche.x,ptproche.y,posx,posy) <= 2.4){
+                            if(calculDistance(ptproche.x,ptproche.y,posx,posy) <= (deplacement === 3 ? 2.4 : 2) && VerificationLineOfSight(ptproche.x,ptproche.y,posx,posy,grille)){
                                 list.push(item)
                             }
                     }
@@ -354,6 +359,23 @@ export function showPortee(grille,portée,posx,posy,dés,deplacement){
         betterPush(posx-4,posy+4,5);
         betterPush(posx+4,posy+4,5);
     }
+    let list2 = [{x:7,y:8}]
+
+    let localgrille = {...grille};
+    localgrille.grille.map((row,pos) => row.map((col,pos2)=>{
+        
+        let cond = (localgrille.grille[pos][pos2].case ? localgrille.grille[pos][pos2].case._byentering : false) ||( !!localgrille.grille[pos][pos2].unité ?? false )? true : false;
+        localgrille.grille[pos][pos2].isWall = cond;
+    }))
+    localgrille.grille.start = [posx,posy]
+    localgrille.grille[posx][posy].isStart = true;
+    
+    list2.map(item=>{
+        localgrille.grille.end = [item.x,item.y]
+        localgrille.grille[item.x][item.y].isEnd = true;
+        console.log(item,new BiasedAStar(localgrille.grille));
+    
+    })
     return VerList(list);
 }
 
@@ -394,10 +416,9 @@ export function VerificationLineOfSight(x,y,x2,y2,grille){
         if(Object.keys(cond1).length>0){
             let cond = true;
             cond1.map(item=>{
-                if(grille.grille[item.x][item.y].case && grille.grille[item.x][item.y].case._lineofsight){
+                if((grille.grille[item.x][item.y].case && grille.grille[item.x][item.y].case._lineofsight) || grille.grille[item.x][item.y].unité){
                     cond = false
                 } 
-                if(grille.grille[item.x][item.y].unité){cond = false}
             })
             return cond;
         }else{
