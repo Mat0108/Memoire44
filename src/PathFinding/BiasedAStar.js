@@ -14,7 +14,6 @@ export default class BiasedAStar {
     this.noPath = false;
     this.minDist = []; // Ordered list of nodes with the node of minimum
     // distance at position zero.
-
     this.BIAS = 100;
     this.graph[this.graph.start[0]][
       this.graph.start[1]
@@ -22,6 +21,7 @@ export default class BiasedAStar {
     this.graph[this.graph.start[0]][this.graph.start[1]].d =
       this.graph[this.graph.start[0]][this.graph.start[1]].dEnd * this.BIAS;
     this.addToMinDist(this.graph[this.graph.start[0]][this.graph.start[1]]);
+    this.solve();
   }
 
   /**
@@ -32,7 +32,7 @@ export default class BiasedAStar {
     if (this.pathFound) {
       return false;
     }
-
+    console.log(this.minDist)
     if (this.minDist.length === 0) {
       // No path exists
       this.noPath = true;
@@ -40,7 +40,8 @@ export default class BiasedAStar {
       return false;
     }
 
-    let currentNode = this.minDist.shift();
+    let currentNode = this.minDist.shift()
+    console.log(currentNode);
     const checkedNodes = [];
 
     if (currentNode.isEnd) {
@@ -94,6 +95,8 @@ export default class BiasedAStar {
   }
 
   addToMinDist(node) {
+    console.log("adding to minDist",node)
+    
     for (let i = 0; i < this.minDist.length; i += 1) {
       if (node.d < this.minDist[i].d) {
         this.minDist.splice(i, 0, node);

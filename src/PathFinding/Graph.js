@@ -31,13 +31,13 @@ export default class Graph extends Array {
       }
       this.push(graphRow);
     }
-
+    console.log(this.length)
     // Assign neighbours to all nodes
     for (let i = 0; i < this.length; i += 1) {
       const row = this[i];
       for (let j = 0; j < row.length; j += 1) {
         const node = row[j];
-        node.getNeighbours();
+      node.getNeighbours();
       }
     }
   }

@@ -1,7 +1,8 @@
 import React from "react";
 import { MultipleAStar } from "../PathFinding/PathFinding";
 import BiasedAStar from "../PathFinding/BiasedAStar";
-
+import hexDistanceBetween from "../PathFinding/hexDistanceBetween";
+import jkstra from "jkstra";
 export class Position{
     constructor(posx,posy){
         this._posx = posx;
@@ -359,23 +360,102 @@ export function showPortee(grille,portée,posx,posy,dés,deplacement){
         betterPush(posx-4,posy+4,5);
         betterPush(posx+4,posy+4,5);
     }
-    let list2 = [{x:7,y:8}]
+    const hexBoardGraph = {
+        graph: new jkstra.Graph(),
+        vertexMap: new Map(),
+    };
+    function addVertex(hexBoardGraph, id) {
+        hexBoardGraph.vertexMap.set(id, hexBoardGraph.graph.addVertex(id));
+    }
+    // Add node for each cell on the board
+    grille.grille.forEach((row, y) => {
+        row.forEach((_cell, x) => {
+            addVertex(hexBoardGraph, `${y}-${x}`);
+        });
+    });
 
-    let localgrille = {...grille};
-    localgrille.grille.map((row,pos) => row.map((col,pos2)=>{
+    addVertex(hexBoardGraph, 'black-start');
+    addVertex(hexBoardGraph, 'black-end');
+    addVertex(hexBoardGraph, 'white-start');
+    addVertex(hexBoardGraph, 'white-end');
+
+    function addBidirectionalEdge(
+        hexBoardGraph,
+        vertex1,
+        vertex2,
+    ) {
+        hexBoardGraph.graph.addEdgePair(
+            hexBoardGraph.vertexMap.get(vertex1),
+            hexBoardGraph.vertexMap.get(vertex2),
+            1,
+        );
+    }
+    grille.grille.forEach((row, y) => {
+        row.forEach((cell, x) => {
+            if (cell.value == stoneColor) {
+                const currentCell = { y: y, x: x };
+                let neighbor = [];
+                // 1st possible neighbor
+                neighbor = { y: y, x: x + 1 };
+                createEdgePairForNeighbor(
+                    grille,
+                    hexBoardGraph,
+                    stoneColor,
+                    currentCell,
+                    neighbor,
+                );
+                // 2nd possible neighbor
+                neighbor = { y: y + 1, x: x };
+                createEdgePairForNeighbor(
+                    gameState,
+                    hexBoardGraph,
+                    stoneColor,
+                    currentCell,
+                    neighbor,
+                );
+                // 3rd possible neighbor
+                neighbor = { y: y + 1, x: x - 1 };
+                createEdgePairForNeighbor(
+                    gameState,
+                    hexBoardGraph,
+                    stoneColor,
+                    currentCell,
+                    neighbor,
+                );
+            }
+        });
+    });
+    // let list2 = [{x:7,y:9}]
+
+    // let localgrille = {...grille};
+
+    // localgrille.grille.start = [posx,posy]
+    // localgrille.grille[posx][posy].isStart = true;
+    
+    // list2.map(item=>{
+    //     localgrille.grille.end = [item.x,item.y]
+    //     localgrille.grille[item.x][item.y].isEnd = true;
+
+    //     localgrille.grille[item.x][item.y].ne = false;
+    //     localgrille.grille.map((row,pos) => row.map((col,pos2)=>{
         
-        let cond = (localgrille.grille[pos][pos2].case ? localgrille.grille[pos][pos2].case._byentering : false) ||( !!localgrille.grille[pos][pos2].unité ?? false )? true : false;
-        localgrille.grille[pos][pos2].isWall = cond;
-    }))
-    localgrille.grille.start = [posx,posy]
-    localgrille.grille[posx][posy].isStart = true;
+    //         let cond = (localgrille.grille[pos][pos2].case ? localgrille.grille[pos][pos2].case._byentering : false) ||( !!localgrille.grille[pos][pos2].unité ?? false )? true : false;
+    //         localgrille.grille[pos][pos2].isWall = cond;
+    //         localgrille.grille[pos][pos2].isStart = false;
+    //         localgrille.grille[pos][pos2].isEnd = false;
+    //         localgrille.grille[pos][pos2].d = hexDistanceBetween([pos,item.x],[pos2,item.y])
+    //     }))
+
+    //     let path = new BiasedAStar(localgrille.grille)
+        
+    //     console.log(item,path);
+    //     for(let i = 0;i< portée-1;i++){
+    //         path.step();
+            
+    //     console.log(item,path);
+    //     }
     
-    list2.map(item=>{
-        localgrille.grille.end = [item.x,item.y]
-        localgrille.grille[item.x][item.y].isEnd = true;
-        console.log(item,new BiasedAStar(localgrille.grille));
-    
-    })
+    // })
     return VerList(list);
 }
 
