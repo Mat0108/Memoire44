@@ -27,7 +27,7 @@ export class Target extends CaseGenerique{
 }
 export class Retreat extends CaseGenerique{
     constructor(nb,nb2){
-        super(nb == 0 ? "images/divers/retreat_0.png" : test3("divers","retreat_",nb),nb)
+        super(nb === 0 ? "images/divers/retreat_0.png" : test3("divers","retreat_",nb),nb)
         this._nb = nb2;
     }
     render(){

@@ -48,7 +48,7 @@ export const SelecteurScenario = ()=>{
     return (
     <div className="h-screen w-screen flex flex-row bg-gray">
         <div className="w-[500px] h-full  bg-gray border-r-4 border-black">{listScenario.map((e,pos)=>{
-        return <div key={pos} onMouseEnter={()=>{setImage(e.image);setUrl(e.url)}}  className={`text-left p-2 w-full bg-gray  h-[50px] text-2xl ${e.image == "Scenariovide" ? "text-center":"bg-lightgrey px-8"}`}>{e.name}</div>})}
+        return <div key={pos} onMouseEnter={()=>{setImage(e.image);setUrl(e.url)}}  className={`text-left p-2 w-full bg-gray  h-[50px] text-2xl ${e.image === "Scenariovide" ? "text-center":"bg-lightgrey px-8"}`}>{e.name}</div>})}
         <div onMouseEnter={()=>{setImage("Scenariovide")}} className={`text-left p-2 w-full bg-gray  h-[50px] text-2xl text-center`}>Createur de scenario</div>
         <div onMouseEnter={()=>{setImage("Scenariovide")}} className={`text-left p-2 w-full bg-gray  h-[50px] text-2xl bg-lightgrey px-8 text-center`}><Link to={"/create"}>Go</Link></div>
         </div>

@@ -126,7 +126,7 @@ export const Scenariotest = {
         {x:8,y:1,contenu:{case:new Forest(),defense:null,unité:new SoldatAllies(3),action:null,highlight:null,select:null}},
         {x:8,y:2,contenu:{case:null,defense:null,unité:null,action:null,highlight:null,select:null}},
         {x:8,y:3,contenu:{case:null,defense:null,unité:null,action:null,highlight:null,select:null}},
-        {x:8,y:4,contenu:{case:null,defense:null,unité:null,action:null,highlight:null,select:null}},
+        {x:8,y:4,contenu:{case:null,defense:null,unité:new CharAllies(),action:null,highlight:null,select:null}},
         {x:8,y:5,contenu:{case:new Forest(),defense:null,unité:null,action:null,highlight:null,select:null}},
         {x:8,y:6,contenu:{case:new Village(),defense:null,unité:new SoldatAllies(3),action:null,highlight:null,select:null}},
         {x:8,y:7,contenu:{case:null,defense:null,unité:null,action:null,highlight:null,select:null}},

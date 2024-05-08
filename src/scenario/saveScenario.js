@@ -36,10 +36,10 @@ function save(){
           </div>
             <div className="w-fit flex flex-col" >
               <select id={"medal"} className="h-[27px]">
-                {modal.map(item=>{return item == 6 ? <option value={item} selected >{item}</option> : <option value={item} >{item}</option>})}
+                {modal.map(item=>{return item === 6 ? <option value={item} selected >{item}</option> : <option value={item} >{item}</option>})}
               </select>
               <select id={"medalAxe"} className="h-[27px]">
-                {modal.map(item=>{return item == 6 ? <option value={item} selected >{item}</option> : <option value={item} >{item}</option>})}
+                {modal.map(item=>{return item === 6 ? <option value={item} selected >{item}</option> : <option value={item} >{item}</option>})}
               </select>
 
               <select id={"camp"} className="h-[27px]">
@@ -53,10 +53,10 @@ function save(){
                 <option value={"terrain3"} >{"Toundra"}</option>
               </select>
               <select id={"allies"} className="h-[27px]">
-                {card.map(item=>{return item == 6 ? <option value={item} selected >{item}</option> : <option value={item} >{item}</option>})}
+                {card.map(item=>{return item === 6 ? <option value={item} selected >{item}</option> : <option value={item} >{item}</option>})}
               </select>
               <select id={"axe"} className="h-[27px]">
-                {card.map(item=>{return item == 6 ? <option value={item} selected >{item}</option> : <option value={item} >{item}</option>})}
+                {card.map(item=>{return item === 6 ? <option value={item} selected >{item}</option> : <option value={item} >{item}</option>})}
               </select>
             </div>
           </div>
