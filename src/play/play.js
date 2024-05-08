@@ -9,13 +9,14 @@ import { AirPower, Barrage, CampAffichage, CardSelect} from '../divers/Card';
 
 import { useParams } from 'react-router';
 import { SandBag } from '../haxagone/base';
+import { FormControlLabel, Switch } from '@mui/material';
 
 
 export const Play =()=> {
   const [card, setCard] = useState(new CardGenerique("Choisir une carte","back-fr"))
     // new CardGenerique("Attaque centre","attack-center-fr",3,2,"ALL"),);
-  const {name} = useParams();
-
+  const { name , debug: enabledebug} = useParams();
+  
   const [selectedScenerio,setSelectedScenario] = useState(ReturnScenario(name));
   const [status,setStatus ] = useState(1)
   const [grille, setGrille ] = useState(loadScenario(ReturnScenario(name)));
@@ -26,9 +27,8 @@ export const Play =()=> {
   const medalAlliésList = []
   const medalAxisList  = []
   const [modal, setModal] = useState(<></>)
+  const [debug, setDebug] = useState(enabledebug === "debug" ? true : false);
   
-  
-  const debug = false;
   let x = 13;
   let zone1 = {min:0,max:3,min2:0,max2:3}
   let zone2 = {min:3,max:8,min2:3,max2:8}
@@ -63,7 +63,9 @@ export const Play =()=> {
     let localgrille2 = {...grille};
     localgrille.grille.forEach((e,pos)=>{
       e.forEach((f,pos2)=>{
-        if(f.highlight && (f.highlight.constructor.name === "Move" || f.highlight.constructor.name === "Target" || f.highlight.constructor.name === "Retreat")){
+        console.log(f.select !== null)
+        if(f.select !== null | f.highlight !== null | f.action !== null){    
+          console.log('here')
           localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:f.unité,action:null,highlight:null,select:null}
         }
       })})
@@ -302,7 +304,7 @@ export const Play =()=> {
     
 
     let f = localgrille.grille[oldposx][oldposy]
-    let list = showPortee(grille,Object.keys(f.unité._deplacement).length,posx,posy,f.unité._portée,null)
+    let list = showPortee(grille,Object.keys(f.unité._portée).length,posx,posy,f.unité._portée,null)
     localgrille2.grille[oldposx][oldposy] = {case:f.case,defense:null,unité:null,action:null,highlight:null,select:null}
     // UnitCanAttack.push({x:posx,y:posy})
    
@@ -321,7 +323,7 @@ export const Play =()=> {
   function ShowPortéeUnit(posx,posy,unité){
     RemoveHighlight();
     
-    let list = showPortee(grille,Object.keys(unité._deplacement).length,posx,posy,null,unité._deplacement)
+    let list = showPortee(grille,Object.keys(unité._deplacement).length,posx,posy,null,unité._deplacement,true)
 
     let localgrille = {...grille};
     let localgrille2 = {...grille};
@@ -679,6 +681,7 @@ export const Play =()=> {
     }
   }
   function resetActionCard(){
+    RemoveHighlight();
     let localgrille = {...grille};
     let localgrille2 = {...grille};
     switch(card._image){
@@ -690,6 +693,7 @@ export const Play =()=> {
                 }
           })})
         setGrille(localgrille2);
+        switchCamp()
         break;
       case "behind-enemy-lines-fr":
         localgrille.grille.forEach((e,pos)=>{
@@ -699,6 +703,7 @@ export const Play =()=> {
                 }
           })})
         setGrille(localgrille2);
+        switchCamp()
         break;
         case "close-assault-fr":
             function arraysEqual(arr1, arr2) {
@@ -718,7 +723,8 @@ export const Play =()=> {
                     localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:HitUnit(f.unité.constructor.name,f.unité._nombre),action:null,highlight:null,select:null}
                   }
             })})
-          setGrille(localgrille2);
+          setGrille(localgrille2);        
+          switchCamp()
           break;
       default:
         switchCamp()
@@ -781,13 +787,23 @@ export const Play =()=> {
           <div>Embuscade</div>
         </div>
       </div>
-      <div className="w-fit h-fit m-[20px]"> <img src={`images/cards/commandement/${card._image}-large.png`} alt={card._titre} className="w-[278px] h-[432px] ml-[20px] "/></div>
+      <div className="w-fit h-fit m-[20px]">
+        {enabledebug && <div className='flex center'><FormControlLabel
+          control={
+            <Switch checked={debug} onChange={()=>{setDebug(!debug)}} name={'debug'} className={'text-white '}/>
+          }
+          label="Debug"
+          className='text-white text-[20px]'
+        /></div>}
+            
+         <img src={`images/cards/commandement/${card._image}-large.png`} alt={card._titre} className="w-[278px] h-[432px] ml-[20px] "/>
+      </div>
     
     </div>
 
   }
     
-    , [card,status])
+    , [card,status,debug,camp,grille])
 
 
 
@@ -835,6 +851,7 @@ export const Play =()=> {
 
 
   const global = useMemo(()=>{
+    console.log(grille.grille[6][8].select)
     {
       return (
       <div className="relative w-fit h-fit">
@@ -863,7 +880,7 @@ export const Play =()=> {
                         <div className='absolute z-30 w-full h-full'>{f.bunker ? f.bunker.render(): ""}</div>
                         <div className='absolute z-40 w-full h-full'>{f.unité ? f.unité.render(): ""}</div>
                         <div className='absolute z-[50] w-full h-full'>{f.medal ? f.medal.render(): ""}</div>
-                        <div className='absolute z-[60] w-full h-full opacity-50'>{f.highlight ? f.highlight.render(): ""}</div>
+                        <div className={`absolute z-[60] w-full h-full ${f.highlight && f.highlight.constructor.name !== "Target" ? "opacity-50":""}`}>{f.highlight ? f.highlight.render(): ""}</div>
                         <div className='absolute z-[70] w-full h-full '>{f.select ? f.select.render(): ""}</div>
                         </div>
                   
@@ -873,7 +890,7 @@ export const Play =()=> {
         </div>
       </div>)
       }
-     },[grille])
+     },[grille,debug])
      
      const Modal = useMemo(() => <div className='absolute top-0 '>{modal}</div>, [modal])
      return (

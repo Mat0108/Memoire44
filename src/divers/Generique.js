@@ -174,8 +174,7 @@ export function isCombatRapproche(x,y,x2,y2){
     return cond;
 }
 
-export function showPortee(grille,portée,posx,posy,dés,deplacement){
-
+export function showPortee(grille,portée,posx,posy,dés,deplacement,pathFinding){
     
     let list = [
         {x:posx-1,y: posx %2  === 1 ? posy : posy-1,dés: dés ? dés[0] : 0,deplacement:deplacement ? deplacement[0]:null}, //partie haut gauche
@@ -207,51 +206,51 @@ export function showPortee(grille,portée,posx,posy,dés,deplacement){
 
     }
     if(portée >= 3){
-        let list3 = [];
-        list3.push({x:posx-3,y:posy,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null}); //partie gauche du cercle
-        list3.push({x:posx-3,y:posy-1,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
-        list3.push({x:posx-3,y:posy+1,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
-        list3.push({x:posx-3,y:posx %2  === 1 ? posy+2 : posy-2,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
+        list.push({x:posx-3,y:posy,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null}); //partie gauche du cercle
+        list.push({x:posx-3,y:posy-1,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
+        list.push({x:posx-3,y:posy+1,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
+        list.push({x:posx-3,y:posx %2  === 1 ? posy+2 : posy-2,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
 
 
-        list3.push({x:posx-2,y:posy-2,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
-        list3.push({x:posx-2,y:posy+2,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
-        list3.push({x:posx+2,y:posy-2,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
-        list3.push({x:posx+2,y:posy+2,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
+        list.push({x:posx-2,y:posy-2,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
+        list.push({x:posx-2,y:posy+2,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
+        list.push({x:posx+2,y:posy-2,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
+        list.push({x:posx+2,y:posy+2,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
 
-        list3.push({x:posx+3,y:posy,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null}); //partie droite du cercle
-        list3.push({x:posx+3,y:posy-1,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
-        list3.push({x:posx+3,y:posy+1,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
-        list3.push({x:posx+3,y:posx %2  === 1 ? posy+2 :posy-2,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
+        list.push({x:posx+3,y:posy,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null}); //partie droite du cercle
+        list.push({x:posx+3,y:posy-1,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
+        list.push({x:posx+3,y:posy+1,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
+        list.push({x:posx+3,y:posx %2  === 1 ? posy+2 :posy-2,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
 
         
 
-        list3.push({x:posx-1,y:posx %2  === 1 ? posy+3:posy+2,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
-        list3.push({x:posx,y:posy+3,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
-        list3.push({x:posx+1,y:posx %2  === 1 ? posy+3:posy+2,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
+        list.push({x:posx-1,y:posx %2  === 1 ? posy+3:posy+2,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
+        list.push({x:posx,y:posy+3,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
+        list.push({x:posx+1,y:posx %2  === 1 ? posy+3:posy+2,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
 
-        list3.push({x:posx-1,y:posx %2  === 1 ? posy-2:posy-3,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
-        list3.push({x:posx,y:posy-3,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
-        list3.push({x:posx+1,y:posx %2  === 1 ? posy-2:posy-3,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
+        list.push({x:posx-1,y:posx %2  === 1 ? posy-2:posy-3,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
+        list.push({x:posx,y:posy-3,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
+        list.push({x:posx+1,y:posx %2  === 1 ? posy-2:posy-3,dés:dés ? dés[2] : 0,deplacement:deplacement ? deplacement[2]:null});
         
-        list3.forEach(item=>{
-            if(deplacement && Object.keys(deplacement).length){
-                pointproche(item.x,item.y).forEach(ptproche=>{
-                    if(ptproche.x >= 0 && ptproche.x <= 8 && ptproche.y >= 0 && ptproche.y <= 12){
-                        if(!grille.grille[ptproche.x][ptproche.y].case){
-                            if(calculDistance(ptproche.x,ptproche.y,posx,posy) <= (deplacement === 3 ? 2.4 : 2) && VerificationLineOfSight(ptproche.x,ptproche.y,posx,posy,grille)){
-                                list.push(item)
-                            }
-                    }
-                    }
+        
+        // list3.forEach(item=>{
+        //     if(deplacement && Object.keys(deplacement).length){
+        //         pointproche(item.x,item.y).forEach(ptproche=>{
+        //             if(ptproche.x >= 0 && ptproche.x <= 8 && ptproche.y >= 0 && ptproche.y <= 12){
+        //                 if(!grille.grille[ptproche.x][ptproche.y].case){
+        //                     if(calculDistance(ptproche.x,ptproche.y,posx,posy) <= (deplacement === 3 ? 2.4 : 2) && VerificationLineOfSight(ptproche.x,ptproche.y,posx,posy,grille)){
+        //                         list.push(item)
+        //                     }
+        //             }
+        //             }
                     
-                })
-            }else{
-                list.push(item)
-            }
+        //         })
+        //     }else{
+        //         list.push(item)
+        //     }
             
         
-        })
+        // })
     
     }
     if(portée >=4){
@@ -357,12 +356,11 @@ export function showPortee(grille,portée,posx,posy,dés,deplacement){
         betterPush(posx-4,posy+4,5);
         betterPush(posx+4,posy+4,5);
     }
-    
+    if(!pathFinding){return VerList(list)}
     let list2 = []
     VerList(list).forEach(item=>{
-        console.log(item)
-        let path = jkstraPathFinding(grille.grille,{x:posx,y:posy},{x:item.x,y:item.y})
-        if(path.length <= portée){
+        let path = jkstraPathFinding(grille.grille,{x:posx,y:posy},item)
+        if(path !== null && path.length <= portée){
             list2.push(item)
         }
     }) 
@@ -370,7 +368,7 @@ export function showPortee(grille,portée,posx,posy,dés,deplacement){
 }
 
 
-function VerList(list){
+export function VerList(list){
     let newlist = [];
     list.forEach(e=>{
         if(e.x >= 0 && e.x <= 8 && e.y >= 0 && e.y <=(e.x % 2 === 1 ?  11 : 12)){

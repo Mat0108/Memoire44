@@ -13,7 +13,8 @@ const App = ()=>{
       <Router>
         <Routes>
           <Route path="/" element={<SelecteurScenario/>}></Route>
-          <Route path="/scenario/:name" element={<Play />}></Route>
+          <Route path="/scenario/:name/" element={<Play />}></Route>
+          <Route path="/scenario/:name/:debug" element={<Play />}></Route>
           <Route path="/create" element={<CreateScenario/>}></Route>
         </Routes>
  
