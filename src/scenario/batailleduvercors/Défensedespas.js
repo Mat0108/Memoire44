@@ -1,9 +1,9 @@
 import { SoldatAllies } from "../../army/allies";
 import { SoldatAxis } from "../../army/axis";
 
-import { Forest, Hills, Mine, RiversCurve, RiversRight, SandBag, Village } from "../../haxagone/base";
+import { Forest, Hills, Mine, SandBag, Village } from "../../haxagone/base";
 import { Medal } from "../../haxagone/highlight";
-import { AirField, Barracks, Church, Mountain, RiverBranch, RiverY, RoadCurve, RoadHillCurve, RoadRight } from "../../haxagone/terrain";
+import { Barracks, Mountain } from "../../haxagone/terrain";
 export const Défensedespas= {
     name:"Défense des pas",
     terrain:"terrain0",

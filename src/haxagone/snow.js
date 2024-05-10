@@ -147,6 +147,77 @@ export class SnowRoadHillCurve extends CaseGenerique{
         super(test6("snow","h_snowhillcurve",orientation),orientation,false,false,false,false,false,false,false,"")
     }
 }
+export class SnowFortress extends CaseGenerique {
+    constructor(){
+        super(`images/snow/h_snowfortress.png`,null,false,false,false,false,false,false,false," ")
+    }
+}
+export class SnowLightHouse extends CaseGenerique {
+    constructor(){
+        super(`images/snow/h_snowlighthouse.png`,null,false,false,false,false,false,false,false,"")
+    }
+}
+export class SnowMarshes extends CaseGenerique {
+    constructor(){
+        super(`images/snow/h_snowmarshes.png`,null,false,false,false,false,false,false,false,"")
+    }
+}
+export class SnowChurch extends CaseGenerique {
+    constructor(){
+        super(`images/snow/h_snowchurch.png`,null,false,false,false,false,false,false,false,"")
+    }
+}
+
+export class SnowBarracks extends CaseGenerique {
+    constructor(){
+        super(`images/snow/h_snowbarracks.png`,null,false,false,false,false,false,false,false,"")
+    }
+}
+
+export class SnowCamp extends CaseGenerique {
+    constructor(){
+        super(`images/snow/h_snowcamp.png`,null,false,false,false,false,false,false,false,"")
+    }
+}
+
+export class SnowCemetery extends CaseGenerique {
+    constructor(){
+        super(`images/snow/h_snowcemetery.png`,null,false,false,false,false,false,false,false,"")
+    }
+}
+
+export class SnowDepot extends CaseGenerique {
+    constructor(){
+        super(`images/snow/h_snowdepot.png`,null,false,false,false,false,false,false,false,"")
+    }
+}
+
+export class SnowDam extends CaseGenerique {
+    constructor(orientation){
+        super(test6('snow',"h_snowdam",orientation),null,false,false,false,false,false,false,false,"")
+    }
+}
+
+export class SnowLakeA extends CaseGenerique {
+    constructor(orientation){
+        super(test6('snow',"h_snowlakeA",orientation),null,false,false,false,false,false,false,false,"")
+    }
+}
+export class SnowLakeB extends CaseGenerique {
+    constructor(orientation){
+        super(test6('snow',"h_snowlakeB",orientation),null,false,false,false,false,false,false,false," ")
+    }
+}
+export class SnowLakeC extends CaseGenerique {
+    constructor(orientation){
+        super(test6('snow',"h_snowlakeC",orientation),null,false,false,false,false,false,false,false,"")
+    }
+}
+export class SnowPond extends CaseGenerique {
+    constructor(orientation){
+        super(test6('snow',"h_snowpond",orientation),null,false,false,false,false,false,false,false," ")
+    }
+}
 
 //how edit snow image
 // saturation -16 87 0

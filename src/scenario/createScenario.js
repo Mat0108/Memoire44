@@ -5,13 +5,12 @@ import { useEffect, useMemo, useState } from "react";
 import { returnHexagone } from "../haxagone/base";
 import { SelectHexa } from './../haxagone/highlight';
 import { ReturnArmy } from "../army/army";
-import Select from 'react-select'
 import { SaveScenario } from './saveScenario';
 import keyboardjs from "keyboardjs";
 
 export const CreateScenario = () =>{
 
-  const [status,setStatus ] = useState(1);
+  const status = useState(1);
   const [grille, setGrille ] = useState(loadScenario(Scenariovide));
   const [delta, setDelta] = useState(1)
   const [orientation, setOrientation ] = useState(1);
@@ -22,7 +21,6 @@ export const CreateScenario = () =>{
   const [modal, setModal] = useState(<></>)
   const [typeHexagone,setTypeHexagone] = useState(0)
   const screenwidth = document.getElementById("maindiv") ? document.getElementById("maindiv").clientWidth : null;
-  console.log(screenwidth)
   const debug = false;
   let nbItemByLigne = screenwidth < 2500 ? 14 : 18;
   let wheel = 1;
@@ -84,11 +82,11 @@ export const CreateScenario = () =>{
     "SnowRiverBranchLeft",
     "SnowRiverBranchRight",
     "SnowRiverY",
-    "Dam",
-    "Pond",
-    "LakeA",
-    "LakeB",
-    "LakeC",
+    "SnowDam",
+    "SnowPond",
+    "SnowLakeA",
+    "SnowLakeB",
+    "SnowLakeC",
     "SnowRoadRight",
     "SnowRoadCurve",
     "SnowRoadBranchLeft",
@@ -100,15 +98,15 @@ export const CreateScenario = () =>{
     "SnowAirField",
     "SnowAirFieldX",
     "SnowVillage",
-    "Church",
-    "Barracks",
-    "Camp",
-    "Cemetery",
-    "Depot",
+    "SnowChurch",
+    "SnowBarracks",
+    "SnowCamp",
+    "SnowCemetery",
+    "SnowDepot",
     "SnowFactory",
-    "Fortress",
-    "LightHouse",
-    "Marshes",
+    "SnowFortress",
+    "SnowLightHouse",
+    "SnowMarshes",
     "SnowTrainRight",
     "SnowTrainCurve",
     "SnowTrainBranchLeft",
@@ -410,8 +408,8 @@ export const CreateScenario = () =>{
             <div className="flex center"><div className={`w-4 h-4 rounded-full ${typeHexagone === 0 ? "bg-white border-4 border-green":"bg-gray"}`}></div></div>
             <label> Plaine</label>
           </div>
-          <div className="bg-lightgrey w-fit p-2 rounded-full flex flex-row gap-4 hover:cursor-pointer" onClick={()=>{setTypeHexagone(1)}}>
-            <div className="flex center"><div className={`w-4 h-4 rounded-full ${typeHexagone === 1 ? "bg-white border-4 border-green":"bg-gray"}`}></div></div>
+          <div className="bg-lightgrey w-fit p-2 rounded-full flex flex-row gap-4 hover:cursor-pointer" onClick={()=>{setTypeHexagone(3)}}>
+            <div className="flex center"><div className={`w-4 h-4 rounded-full ${typeHexagone === 3 ? "bg-white border-4 border-green":"bg-gray"}`}></div></div>
             <label> Snow</label>
           </div>
         </div>
@@ -468,7 +466,7 @@ export const CreateScenario = () =>{
         return (
         <div className="relative w-fit h-fit">
           {debug ? <div className='absolute z-[4100] top-0 left-8 text-vivid_tangerine text-[20px] font-av-bold'><span className='text-white text-[20px] font-av-bold'>posx</span> posy</div>:""}
-          <div key={"terrain"} className="mt-[1px] ml-[1px]"><img src={`images/terrain3.png`} alt={"terrain"} className='w-full h-full'/></div>
+          <div key={"terrain"} className="mt-[1px] ml-[1px]"><img src={`images/terrain${typeHexagone}.png`} alt={"terrain"} className='w-full h-full'/></div>
           <div className="absolute w-full flex flex-col z-[200] top-[58px] left-[10px]">
             {grille.grille.map((e,pos)=>{
               return <div className={`${pos % 2 === 1 ? "ml-[45px]":""} w-full flex flex-row`} key={`ligne-${pos}`}>{
@@ -505,7 +503,7 @@ export const CreateScenario = () =>{
         </div>}
         </div>)
         }
-        },[grille,actualx,actualy])
+        },[grille,actualx,actualy,typeHexagone])
     return <div className="w-full h-fit relative flex flex-row bg-gray-dark" id={"maindiv"} >
     {global} 
     {showingCard}

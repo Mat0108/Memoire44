@@ -1,8 +1,7 @@
-import { CharAllies, SoldatAllies } from "../../army/allies";
+import { SoldatAllies } from "../../army/allies";
 import { SoldatAxis } from "../../army/axis";
-import { Forest, Hills, SandBag, Village } from "../../haxagone/base";
-import { Move } from "../../haxagone/highlight";
-import { AirField, Mountain, RoadCurve, RoadHillCurve, RoadRight } from "../../haxagone/terrain";
+import { Forest, Hills, Village } from "../../haxagone/base";
+import { AirField } from "../../haxagone/terrain";
 
 export const Assaultsurvassieuxenvercours = {
     name:"Assaultsurvassieuxenvercours",

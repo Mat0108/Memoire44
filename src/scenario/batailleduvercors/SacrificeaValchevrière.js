@@ -1,9 +1,8 @@
 import { SoldatAllies } from "../../army/allies";
 import { SoldatAxis } from "../../army/axis";
-
 import { Forest, Hills, Mine, RiversCurve, RiversRight, SandBag, Village } from "../../haxagone/base";
 import { Medal } from "../../haxagone/highlight";
-import { AirField, Church, Mountain, RiverBranch, RiverY, RoadCurve, RoadHillCurve, RoadRight } from "../../haxagone/terrain";
+import { Church, Mountain } from "../../haxagone/terrain";
 
 export const SacrificeaValchevrière= {
    name:"Sacrifice a Valchevrière",

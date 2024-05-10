@@ -1,11 +1,12 @@
 import { useState,useMemo } from "react";
 import { Scenariovide } from "./scenariovide";
-import { Scenariotest } from './scenariotest';
+import { Scenariotest } from './Testing/scenariotest';
 
 import {Assaultsurvassieuxenvercours,Batailledesaintnizier,Marquisdemalleval,SacrificeaValchevrière,Défensedespas} from "./batailleduvercors/index"
 import {PegasusBridge,PointeDuHoc,SainteMereEglise,SwordBearch,OmahaBeach,MontMouchet } from "./batailledebarquement/index"
 
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+import { LigneDeMire } from "./Testing/LigneDeMire";
 
 
 export function loadScenario(scenario){
@@ -13,7 +14,7 @@ export function loadScenario(scenario){
     let y = 9;
     let grille = new Array(y).fill(0).map(() => new Array(x).fill({case:null,defense:null,unité:null,action:null,highlight:null}));   
     if(scenario){
-        scenario.hexa.map(hex=>{
+        scenario.hexa.forEach(hex=>{
         grille[hex.x][hex.y] = hex.contenu
     })
 }
@@ -35,8 +36,9 @@ const listScenario = [
     {name:"Pointe du hoc",url:"Pointeduhoc",image:"batailledebarquement/Pointeduhoc"},
     {name:"Omaha Beach",url:"OmahaBeach",image:"batailledebarquement/omahabeach"},
     {name:"Mount Mouchet",url:"MontMouchet",image:"batailledebarquement/montmouchet"},
-    {name:"Scenario de test",url:"Scenariotest",image:"Scenariovide"},
-    {name:<div className="text-center">Go</div>,url:"Scenariotest",image:"Scenariotest"}
+    {name:" Testing ",url:"Scenariotest",image:"Scenariovide"},
+    {name:"Scenario de test",url:"Scenariotest",image:"/test/Scenariotest"},
+    {name:"Ligne de Mire",url:"LigneDeMire",image:"/test/LigneDeMire"},
 
 ]
 export const SelecteurScenario = ()=>{
@@ -45,6 +47,7 @@ export const SelecteurScenario = ()=>{
     const LoadImage = useMemo(()=>{
         return<div className="w-[900px] p-[50px] bg-black rounded-[4rem] shadow"><div className="w-[800px]"><img src={`images/scenario/${image}.png`} alt={"imagescenario"} className="w-[800px] h-[566px]"/></div></div>
     },[image])
+    const {debug} = useParams();
     return (
     <div className="h-screen w-screen flex flex-row bg-gray">
         <div className="w-[500px] h-full  bg-gray border-r-4 border-black">{listScenario.map((e,pos)=>{
@@ -54,7 +57,7 @@ export const SelecteurScenario = ()=>{
         </div>
         <div className="w-[1200px] h-full bg-gray px-4  flex flex-col center space-2">
             {LoadImage}  
-            {image === "Scenariovide" ? <div className="w-[180px] h-[60px] mt-[30px]"></div>: <Link  to={`/scenario/${url}`} className="w-[180px] h-[60px] mt-[30px] p-2 rounded-3xl text-white bg-green text-2xl text-center">Play</Link>}
+            {image === "Scenariovide" ? <div className="w-[180px] h-[60px] mt-[30px]"></div>: <Link  to={`/scenario/${url}/${debug ?? ""}`} className="w-[180px] h-[60px] mt-[30px] p-2 rounded-3xl text-white bg-green text-2xl text-center">Play</Link>}
           
         </div>  
         
@@ -87,6 +90,8 @@ export function ReturnScenario(scenarioname){
             return OmahaBeach;
         case "MontMouchet":
             return MontMouchet;
+        case "LigneDeMire":
+            return LigneDeMire;
         default:
             return Scenariovide;
     }

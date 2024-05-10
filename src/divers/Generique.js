@@ -385,83 +385,93 @@ export function VerificationLineOfSight(x,y,x2,y2,grille){
     let angle240 = [{x:x+1,y:x%2 === 1 ? y+1 : y},{x:x+2,y:y+1},{x:x+3,y:x%2 === 1 ? y+2:y+1},{x:x+4,y:y+2},{x:x+5,y:x%2 === 1 ? y+3:y+2},{x:x+6,y:y+3}]
     let angle300 = [{x:x+1,y:x%2 === 1 ? y : y-1},{x:x+2,y:y-1},{x:x+3,y:x%2 === 1 ? y-1:y-2},{x:x+4,y:y-2},{x:x+5,y:x%2 === 1 ? y-2:y-3},{x:x+6,y:y-3}]
     let allangle = [angle0,angle60,angle120,angle180,angle240,angle300]
+    
+    let cond = false
+    pointproche(x,y).forEach(item=>{
+        if(item.x === x2 && item.y === y2){
+            cond = true;
+        }
+    })
+    if(cond){return true}
+    let cond1 = []
+    let cond2 = [];
+    allangle.forEach(beta=>{
+        beta.forEach((alpha,pos)=>{
+            if(alpha.x === x2 && alpha.y === y2){
+                cond1 = beta.slice(0,pos);
+        }
+        }) 
+    })
 
-    if(calculDistance(x,y,x2,y2)<2){
-        return true;
-    }else{
-        let cond1 = []
-        let cond2 = [];
-        allangle.forEach(beta=>{
-            beta.forEach((alpha,pos)=>{
-                if(alpha.x === x2 && alpha.y === y2){
-                    cond1 = beta.slice(0,pos);
-            }
-            }) 
+    if(Object.keys(cond1).length>0){
+        let cond = true;
+        cond1.forEach(item=>{
+            if((grille.grille[item.x][item.y].case && grille.grille[item.x][item.y].case._lineofsight) || grille.grille[item.x][item.y].unité){
+                cond = false
+            } 
         })
-
+        return cond;
+    }else{
+        if(x-x2>=0 && y-y2>=0){
+            if(x2%2 === 1){
+                cond2 = [{x:x2+1,y:y2+1},{x:x2,y:y2+1}]
+            }else{
+                cond2 = [{x:x2+1,y:y2},{x:x2,y:y2+1}]
+            }  
+        }else if(x-x2<=0 && y-y2>=0){
+            if(x2%2 === 1){
+                cond2 = [{x:x2-1,y:y2+1},{x:x2,y:y2+1}]
+            }else{
+                cond2 = [{x:x2-1,y:y2},{x:x2,y:y2+1}]
+            }  
+        }else if(x-x2 >= 0 && y-y2<=0){
+            if(x2%2 === 1){
+                cond2 = [{x:x2,y:y2-1},{x:x2+1,y:y2}]
+            }else{
+                cond2 = [{x:x2,y:y2-1},{x:x2+1,y:y2-1}]
+            }  
+        }else if(x-x2<=0 && y-y2<=0){
+            if(x2%2 === 1){
+                cond2 = [{x:x2-1,y:y2},{x:x2,y:y2-1}]
+            }else{
+                cond2 = [{x:x2-1,y:y2-1},{x:x2,y:y2-1}]
+            } 
+        }
+        if(x-x2>0 && y === y2){
+            if(x2%2 === 1){
+                cond2 = [{x:x2+1,y:y2},{x:x2+1,y:y2+1}]
+            }else{
+                cond2 = [{x:x2+1,y:y2-1},{x:x2+1,y:y2}]
+            } 
+        }
+        if(x-x2<0 && y === y2){
+            if(x2%2 === 1){
+                cond2 = [{x:x2-1,y:y2},{x:x2-1,y:y2+1}]
+            }else{
+                cond2 = [{x:x2-1,y:y2-1},{x:x2-1,y:y2}]
+            } 
+        }
         
-       
-        if(Object.keys(cond1).length>0){
-            let cond = true;
-            cond1.forEach(item=>{
-                if((grille.grille[item.x][item.y].case && grille.grille[item.x][item.y].case._lineofsight) || grille.grille[item.x][item.y].unité){
-                    cond = false
-                } 
-            })
-            return cond;
-        }else{
-            if(x-x2>=0 && y-y2>=0){
-                if(x2%2 === 1){
-                    cond2 = [{x:x2+1,y:y2+1},{x:x2,y:y2+1}]
-                }else{
-                    cond2 = [{x:x2+1,y:y2},{x:x2,y:y2+1}]
-                }  
-            }else if(x-x2<=0 && y-y2>=0){
-                if(x2%2 === 1){
-                    cond2 = [{x:x2-1,y:y2+1},{x:x2,y:y2+1}]
-                }else{
-                    cond2 = [{x:x2-1,y:y2},{x:x2,y:y2+1}]
-                }  
-            }else if(x-x2 >= 0 && y-y2<=0){
-                if(x2%2 === 1){
-                    cond2 = [{x:x2,y:y2-1},{x:x2,y:y2+1}]
-                }else{
-                    cond2 = [{x:x2,y:y2-1},{x:x2+1,y:y2-1}]
-                }  
-            }else if(x-x2<=0 && y-y2<=0){
-                if(x2%2 === 1){
-                    cond2 = [{x:x2-1,y:y2},{x:x2,y:y2-1}]
-                }else{
-                    cond2 = [{x:x2-1,y:y2-1},{x:x2,y:y2-1}]
-                } 
-            }
-            if(x-x2>0 && y === y2){
-                if(x2%2 === 1){
-                    cond2 = [{x:x2+1,y:y2},{x:x2+1,y:y2+1}]
-                }else{
-                    cond2 = [{x:x2+1,y:y2-1},{x:x2+1,y:y2}]
-                } 
-            }
-            if(x-x2<0 && y === y2){
-                if(x2%2 === 1){
-                    cond2 = [{x:x2-1,y:y2},{x:x2-1,y:y2+1}]
-                }else{
-                    cond2 = [{x:x2-1,y:y2-1},{x:x2-1,y:y2}]
-                } 
-            }
+        let case1 = grille.grille[cond2[0].x][cond2[0].y]
+        let blockedbycase1 = (case1.case && case1.case._lineofsight ) || !!case1.unité;
+        let case2 = grille.grille[cond2[1].x][cond2[1].y]
+        let blockedbycase2 = (case2.case && case2.case._lineofsight ) || !!case2.unité;
+        if(x2 === 4 && y2 === 12){
+            console.log(x-x2,y-y2,x2%2)
+            console.log(cond2[0],cond2[1])
             
-            if(grille.grille[cond2[0].x][cond2[0].y] && grille.grille[cond2[0].x][cond2[0].y].unité && 
-                grille.grille[cond2[1].x][cond2[1].y] && grille.grille[cond2[1].x][cond2[1].y].unité  ){
-                return false;
-            }
-            if(grille.grille[cond2[0].x][cond2[0].y] && grille.grille[cond2[0].x][cond2[0].y].case && 
-                grille.grille[cond2[1].x][cond2[1].y] && grille.grille[cond2[1].x][cond2[1].y].case  ){
-                return !((grille.grille[cond2[0].x][cond2[0].y].case._lineofsight && grille.grille[cond2[1].x][cond2[1].y].case._lineofsight)) 
-            }
+            
+        }
+        if(blockedbycase1 && blockedbycase2){
+            return false
+        }else{
+            return true
         }
 
+    
+
     }
-    return VerList(allangle);
+    
 }
 
 export function switchResult(unité,Star,Grenade){

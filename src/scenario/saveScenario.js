@@ -10,8 +10,8 @@ export const SaveScenario = (props)=>{
 
 function save(){
       let data=[`export const ${text}= {\n`,`name:"${text}",\n`,`terrain:"${document.getElementById("terrain").value}",\n`,`medalAllies:${document.getElementById("medal").value},\n`,`medalAxe:${document.getElementById("medalAxe").value},\n`,`camp:"${document.getElementById("camp").value}",\n`,`cardAxis:${document.getElementById("allies").value},\n`,`cardAllies:${document.getElementById("axe").value},\n`,"hexa:[\n"]
-      props.grille.map((e,pos)=>{
-        e.map((f,pos2)=>{
+      props.grille.forEach((e,pos)=>{
+        e.forEach((f,pos2)=>{
           data.push(`   {x:${pos},y:${pos2},contenu:{case: ${f.case ? `new ${f.case.constructor.name}(${f.case._orientation?f.case._orientation:""})`:null},bunker: ${f.bunker ? `new ${f.bunker.constructor.name}(${f.bunker._orientation ? f.bunker._orientation : "" })`:null},defense: ${f.defense ? `new ${f.defense.constructor.name}(${f.defense._orientation?f.defense._orientation:""})`:null}, unité:${f.unité ? `new ${f.unité.constructor.name}(${f.unité._nombre?f.unité._nombre:""})`:null},medal:${f.medal ? `new ${f.medal.constructor.name}(${f.medal._nombre?f.medal._nombre:""})`:null},action:null,highlight:null,select:null}}, \n`)
         })
         data.push('\n')

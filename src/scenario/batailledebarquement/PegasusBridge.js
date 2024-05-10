@@ -1,8 +1,6 @@
-import { CharAllies, SoldatAllies } from "../../army/allies";
+import { SoldatAllies } from "../../army/allies";
 import { SoldatAxis } from "../../army/axis";
-import { Bridge, Forest, Hills, Mine, RiversCurve, RiversRight, SandBag, Village, Wire } from "../../haxagone/base";
-import { Move } from "../../haxagone/highlight";
-import { AirField, Mountain, RoadCurve, RoadHillCurve, RoadRight } from "../../haxagone/terrain";
+import { Bridge, Forest, Mine, RiversCurve, RiversRight, SandBag, Village, Wire } from "../../haxagone/base";
 export const PegasusBridge= {
       name:"Pegasus Bridge",
       terrain:"terrain0",

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { SelecteurScenario } from './scenario';
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -13,6 +13,7 @@ const App = ()=>{
       <Router>
         <Routes>
           <Route path="/" element={<SelecteurScenario/>}></Route>
+          <Route path="/:debug" element={<SelecteurScenario/>}></Route>
           <Route path="/scenario/:name/" element={<Play />}></Route>
           <Route path="/scenario/:name/:debug" element={<Play />}></Route>
           <Route path="/create" element={<CreateScenario/>}></Route>

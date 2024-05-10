@@ -17,7 +17,7 @@ export const Play =()=> {
     // new CardGenerique("Attaque centre","attack-center-fr",3,2,"ALL"),);
   const { name , debug: enabledebug} = useParams();
   
-  const [selectedScenerio,setSelectedScenario] = useState(ReturnScenario(name));
+  const selectedScenerio = ReturnScenario(name);
   const [status,setStatus ] = useState(1)
   const [grille, setGrille ] = useState(loadScenario(ReturnScenario(name)));
   const [animation,setAnimation] = useState(new Array(6))
@@ -170,7 +170,9 @@ export const Play =()=> {
     let list = showPortee(grille,Object.keys(unité._portée).length,x,y,unité._portée,null)
     
     list.forEach(item=>{
-      if(localgrille.grille[item.x][item.y].unité && localgrille.grille[item.x][item.y].unité._camp === camp2 ){
+      // console.log(item.x,item.y,VerificationLineOfSight(x,y,item.x,item.y,grille))   
+      if(localgrille.grille[item.x][item.y].unité && localgrille.grille[item.x][item.y].unité._camp === camp2 && VerificationLineOfSight(x,y,item.x,item.y,grille)){
+        if(item.x === 4 && item.y === 12){console.log("hereX")}
         let malus = 0;
         if(localgrille.grille[item.x][item.y].case && localgrille.grille[item.x][item.y].case._malus){
           if(unité._type === "Soldat"){malus = localgrille.grille[item.x][item.y].case._malus.soldat}
@@ -219,8 +221,9 @@ export const Play =()=> {
             if(localgrille.grille[item.x][item.y].unité && localgrille.grille[item.x][item.y].unité._camp === camp2 && f.unité._type === "Artillerie" ? localgrille.grille[item.x][item.y].unité  : VerificationLineOfSight(pos,pos2,item.x,item.y,grille)){
               cond = true;
             }
+            
           })
-        
+          console.log(cond)
           localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:f.unité,action:()=>{calculDés(pos,pos2,f.unité,card._image === "artillery-bombard-fr" ? true:false)},highlight:f.highlight,select:cond ? new Attacking():null}
        
         
@@ -315,6 +318,7 @@ export const Play =()=> {
         cond = true;
       }
     })
+    
     localgrille2.grille[posx][posy] = {case:localgrille2.grille[posx][posy].case,defense:null,unité:f.unité,action:null,highlight: null,select:action === 1 ? (cond ? new Attacking():null ):null}
     setGrille(localgrille2)
   }
@@ -851,7 +855,6 @@ export const Play =()=> {
 
 
   const global = useMemo(()=>{
-    console.log(grille.grille[6][8].select)
     {
       return (
       <div className="relative w-fit h-fit">

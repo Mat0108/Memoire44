@@ -17,7 +17,9 @@ export function HitUnit(unit,nb){
             case "CharAllies":
                 return new CharAllies(nb);    
             case "ArtillerieAllies":
-                return new ArtillerieAllies(nb);                                               
+                return new ArtillerieAllies(nb);
+            default:
+                return new SoldatAxis(nb);                                               
         }
     }else{
         return null;
@@ -40,6 +42,8 @@ export function AddDice(unit,nb,portée,deplacement){
             return new CharAllies(nb,portée,deplacement);    
         case "ArtillerieAllies":
             return new ArtillerieAllies(nb,portée,deplacement);    
+        default:
+            return new SoldatAxis(nb,portée,deplacement);
                                                 
     }
 }
@@ -47,8 +51,6 @@ export function AddDice(unit,nb,portée,deplacement){
 export function ReturnArmy(unit,nb){
 
     switch(unit){
-        case "Country":
-            return {hexagone:new Country(),orientation:0,max:0}
         case "SoldatAxis":
             return {hexagone:new SoldatAxis(nb),orientation:4,max:4}
         case "CharAxis":
@@ -61,5 +63,8 @@ export function ReturnArmy(unit,nb){
             return {hexagone:new CharAllies(nb),orientation:3,max:4}
         case "ArtillerieAllies":
             return {hexagone:new ArtillerieAllies(nb),orientation:2,max:4}                                        
-    }
+        default:
+            return {hexagone:new Country(),orientation:0,max:0}    
+    
+        }
 }

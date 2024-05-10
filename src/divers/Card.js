@@ -54,7 +54,7 @@ export const CampAffichage = ({camp}) =>{
             <div><img src={"images/divers/medalallies.png"} alt={"medalallies"} className="w-10 h-10"/></div>
         </div>
         <div className="flex flex-row center">
-            <div className={`w-5 h-5 rounded-full  mr-[10px] border-[5px] ${camp != "Allies" ? "border-green":"border-red"}`}></div>
+            <div className={`w-5 h-5 rounded-full  mr-[10px] border-[5px] ${camp !== "Allies" ? "border-green":"border-red"}`}></div>
             <div><img src={"images/divers/medalaxis.png"} alt={"medalaxis"} className="w-10 h-10"/></div>
         </div>
     </div>
@@ -64,7 +64,7 @@ export function AirPower(grille,setGrille,x,y,action){
     let localgrille = {...grille};
     let localgrille2 = {...grille};
     let f = localgrille.grille[x][y];   
-    localgrille2.grille[x][y] = {case:f.case,defense:f.defense,unité:f.unité,action:action,highlight:null,select:f.unité._camp == "Allies" ? new Target(2) : new Target(1)}
+    localgrille2.grille[x][y] = {case:f.case,defense:f.defense,unité:f.unité,action:action,highlight:null,select:f.unité._camp === "Allies" ? new Target(2) : new Target(1)}
     setGrille(localgrille2);
 }
 export function Barrage(grille,setGrille,x,y,action){
@@ -72,14 +72,14 @@ export function Barrage(grille,setGrille,x,y,action){
     let localgrille2 = {...grille};
     let f = localgrille.grille[x][y];
     let nb = 0;
-    localgrille.grille.map((e,pos)=>{
-        e.map((f,pos2)=>{
+    localgrille.grille.forEach((e,pos)=>{
+        e.forEach((f,pos2)=>{
           if(f.select){
             nb += 1;
           }
         });
       });   
-    if(nb == 0){
+    if(nb === 0){
         localgrille2.grille[x][y] = {case:f.case,defense:f.defense,unité:f.unité,action:action,highlight:null,select:new Target(4)}
     }
     setGrille(localgrille2);
