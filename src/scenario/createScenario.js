@@ -7,6 +7,7 @@ import { SelectHexa } from './../haxagone/highlight';
 import { ReturnArmy } from "../army/army";
 import { SaveScenario } from './saveScenario';
 import keyboardjs from "keyboardjs";
+import { ListeDivers, ListeHexagone } from "./listeHexagone";
 
 export const CreateScenario = () =>{
 
@@ -26,111 +27,7 @@ export const CreateScenario = () =>{
   let wheel = 1;
   let layoutPetitEcran = false;
 
-  let listHexagone = [
-    "Country",
-    "Hills",
-    "Mountain",
-    "Forest",
-    "Hedgerow",
-    "RiversRight",
-    "RiversCurve",
-    "RiverBranchLeft",
-    "RiverBranchRight",
-    "RiverY",
-    "Dam",
-    "Pond",
-    "LakeA",
-    "LakeB",
-    "LakeC",
-    "RoadRight",
-    "RoadCurve",
-    "RoadBranchLeft",
-    "RoadBranchRight",
-    "RoadX",
-    "RoadY",
-    "RoadHillRight",
-    "RoadHillCurve",
-    "AirField",
-    "AirFieldX",
-    "Village",
-    "Church",
-    "Barracks",
-    "Camp",
-    "Cemetery",
-    "Depot",
-    "Factory",
-    "Fortress",
-    "LightHouse",
-    "Marshes",
-    "TrainRight",
-    "TrainCurve",
-    "TrainBranchLeft",
-    "TrainBranchRight",
-    "TrainX",
-    "TrainXRoad",
-    "Station"
-
-  ]
-  let SnowlistHexagone = [
-    "Country",
-    "SnowHill",
-    "SnowMountain",
-    "SnowForest",
-    "SnowHedgerow",
-    "SnowRiversRight",
-    "SnowRiversCurve",
-    "SnowRiverBranchLeft",
-    "SnowRiverBranchRight",
-    "SnowRiverY",
-    "SnowDam",
-    "SnowPond",
-    "SnowLakeA",
-    "SnowLakeB",
-    "SnowLakeC",
-    "SnowRoadRight",
-    "SnowRoadCurve",
-    "SnowRoadBranchLeft",
-    "SnowRoadBranchRight",
-    "SnowRoadX",
-    "SnowRoadY",
-    "SnowRoadHillRight",
-    "SnowRoadHillCurve",
-    "SnowAirField",
-    "SnowAirFieldX",
-    "SnowVillage",
-    "SnowChurch",
-    "SnowBarracks",
-    "SnowCamp",
-    "SnowCemetery",
-    "SnowDepot",
-    "SnowFactory",
-    "SnowFortress",
-    "SnowLightHouse",
-    "SnowMarshes",
-    "SnowTrainRight",
-    "SnowTrainCurve",
-    "SnowTrainBranchLeft",
-    "SnowTrainBranchRight",
-    "SnowTrainX",
-    "SnowTrainXRoad",
-    "SnowStation",
-
-  ]
-  let listDivers = [
-    "Country",
-    "Bunker",
-    "Casemate",
-    "Bridge",
-    "Ford",
-    "RoadBlock",
-    "Pontoon",
-    "RailBridge",
-    "Loco",
-    "Wagon",
-    "Mine",
-    "Country"
-    
-  ]
+  
   let listDefense = [
     "Country",
     "SandBag",
@@ -161,9 +58,7 @@ export const CreateScenario = () =>{
   //   console.log(delta)
   // }, [delta])
 
-  var pressed = false;
-  var deltatime = 500; // time interval since the last keyup event
-  var lastKeypressTime = 0; 
+
   keyboardjs.bind('d',(e)=>{
     e.preventRepeat();
     Valider();
@@ -275,7 +170,7 @@ export const CreateScenario = () =>{
         }
       }
     }
-  }, [delta,mouse])
+  }, [delta,mouse,actualx,actualy,orientation,grille,wheel])
   // useEffect(() => {
   //   console.log("mouse : ",mouse)
   // }, [mouse])
@@ -320,6 +215,8 @@ export const CreateScenario = () =>{
           setOrientation(1);
           localgrille.grille[actualx][actualy].medal = object.hexagone;
           break;
+        default:
+          break;
       }
     }else{
       switch(type){
@@ -339,6 +236,8 @@ export const CreateScenario = () =>{
           break;
         case "medal":
           localgrille.grille[actualx][actualy].medal = null
+          break;
+        default:
           break;
       }
       
@@ -384,20 +283,19 @@ export const CreateScenario = () =>{
   const showingCard = useMemo(() => {
     let listHexagoneFinal = [];
     let listDiversFinal = [];
-    let listHexagone2 = typeHexagone === 0 ? listHexagone : SnowlistHexagone;
-    for(let i = 0;i<=parseInt(Object.keys(listHexagone2).length/nbItemByLigne);i++){
-      let local = listHexagone2.slice(i*nbItemByLigne,(i+1)*nbItemByLigne)
+    for(let i = 0;i<=parseInt(Object.keys(ListeHexagone(typeHexagone)).length/nbItemByLigne);i++){
+      let local = ListeHexagone(typeHexagone).slice(i*nbItemByLigne,(i+1)*nbItemByLigne)
       listHexagoneFinal.push(
         <div className={`flex flew-row mb-[20px]`} key={`hexagone-${i}`}>
-        {local.map((item,pos)=>{return <div className={`${screenwidth < 2000 ? "w-[50px]" : "w-[65px]"} relative`} key={item} onMouseEnter={()=>{UpdateGrille("case",item === "Country" ? null : returnHexagone(item,orientation))}}   onClick={()=>{setFinal({...final,case:final.case ? null : returnHexagone(item,0)})}} >{returnHexagone(item,0).hexagone.render()}</div>})}
+        {local.map((item,pos)=>{return <div className={`${screenwidth < 2000 ? "w-[50px]" : "w-[65px]"} relative`} key={item === "Country" ? `Country-${Math.random()}`: item} onMouseEnter={()=>{UpdateGrille("case",item === "Country" ? null : returnHexagone(item,orientation))}}   onClick={()=>{setFinal({...final,case:final.case ? null : returnHexagone(item,0)})}} >{returnHexagone(item,0).hexagone.render()}</div>})}
       </div> 
       ) 
     }  
-    for(let i = 0;i<=parseInt(Object.keys(listDivers).length/nbItemByLigne);i++){
-      let local = listDivers.slice(i*nbItemByLigne,(i+1)*nbItemByLigne)
+    for(let i = 0;i<=parseInt(Object.keys(ListeDivers(typeHexagone)).length/nbItemByLigne);i++){
+      let local = ListeDivers(typeHexagone).slice(i*nbItemByLigne,(i+1)*nbItemByLigne)
       listDiversFinal.push(
         <div className={`flex flew-row mb-[20px]`} key={`bunker-${i}`}>
-        {local.map((item,pos)=>{return <div className={`${screenwidth < 2000 ? "w-[50px]" : "w-[65px]"} relative`} key={item} onMouseEnter={()=>{UpdateGrille("bunker",item === "Country" ? null : returnHexagone(item,orientation))}}   onClick={()=>{setFinal({...final,case:final.case ? null : returnHexagone(item,0)})}} >{returnHexagone(item,0).hexagone.render()}</div>})}
+        {local.map((item,pos)=>{return <div className={`${screenwidth < 2000 ? "w-[50px]" : "w-[65px]"} relative`} key={item === "Country" ? `Country-${Math.random()}`: item} onMouseEnter={()=>{UpdateGrille("bunker",item === "Country" ? null : returnHexagone(item,orientation))}}   onClick={()=>{setFinal({...final,case:final.case ? null : returnHexagone(item,0)})}} >{returnHexagone(item,0).hexagone.render()}</div>})}
       </div> 
       ) 
     }  
@@ -426,15 +324,15 @@ export const CreateScenario = () =>{
           <div className={`${layoutPetitEcran ? "w-full" : "w-1/2" }`}>
           <h1 className="text-[24px] text-white mt-[20px] mb-[10px] "> Choissiez l'item de défense : </h1>
             <div className="flex flex-row ">
-              {listDefense.map(item=>{return <div className={`${screenwidth < 2000 ? "w-[50px]" : "w-[65px]"} relative`} key={item} onMouseEnter={()=>{UpdateGrille("defense",item === "Country" ? null :returnHexagone(item,orientation))}}  onClick={()=>{setFinal({...final,defense:final.defense ? null : returnHexagone(item,0)})}}>{returnHexagone(item,0).hexagone.render()}</div>})}
+              {listDefense.map((item,pos)=>{return <div className={`${screenwidth < 2000 ? "w-[50px]" : "w-[65px]"} relative`} key={item === "Country" ? `Country-${pos}`: item} onMouseEnter={()=>{UpdateGrille("defense",item === "Country" ? null :returnHexagone(item,orientation))}}  onClick={()=>{setFinal({...final,defense:final.defense ? null : returnHexagone(item,0)})}}>{returnHexagone(item,0).hexagone.render()}</div>})}
             </div>
             <h1 className="text-[24px] text-white mt-[20px] mb-[10px] " > Choissiez l'unité : </h1>
             <div className="flex flex-row ">
-              {listunité.map(item=>{return <div className={`w-[70px] relative`} key={item} onMouseEnter={()=>{UpdateGrille("unité",item === "Country" ? null :ReturnArmy(item,0))}} onClick={()=>{setFinal({...final,unité:final.unité ? null : ReturnArmy(item,1)})}} >{ReturnArmy(item,0).hexagone.render()}</div>})}
+              {listunité.map((item,pos)=>{return <div className={`w-[70px] relative`} key={item === "Country" ? `Country-${pos}`: item} onMouseEnter={()=>{UpdateGrille("unité",item === "Country" ? null :ReturnArmy(item,0))}} onClick={()=>{setFinal({...final,unité:final.unité ? null : ReturnArmy(item,1)})}} >{ReturnArmy(item,0).hexagone.render()}</div>})}
             </div>
             <h1 className="text-[24px] text-white mt-[20px] mb-[10px] " > Choissiez la medaille : </h1>
             <div className="flex flex-row ">
-              {listmodal.map(item=>{return <div className={`${screenwidth < 2000 ? "w-[50px]" : "w-[65px]"} relative`} key={item} onMouseEnter={()=>{UpdateGrille("medal",item === "Country" ? null :returnHexagone(item,0))}} onClick={()=>{setFinal({...final,medal:final.medal ? null : returnHexagone(item,0)})}} >{returnHexagone(item,0).hexagone.render()}</div>})}
+              {listmodal.map((item,pos)=>{return <div className={`${screenwidth < 2000 ? "w-[50px]" : "w-[65px]"} relative`} key={item === "Country" ? `Country-${pos}`: item} onMouseEnter={()=>{UpdateGrille("medal",item === "Country" ? null :returnHexagone(item,0))}} onClick={()=>{setFinal({...final,medal:final.medal ? null : returnHexagone(item,0)})}} >{returnHexagone(item,0).hexagone.render()}</div>})}
             </div>
           </div>
           {!layoutPetitEcran && <div className="w-1/2">
@@ -457,7 +355,8 @@ export const CreateScenario = () =>{
     </div>
 
   }
-  , [status,actualx,actualy,final,mouse,typeHexagone])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  , [status,actualx,actualy,final,mouse,typeHexagone,layoutPetitEcran,screenwidth,orientation,grille])
   const Modal = useMemo(() => <div className='absolute top-0 '>{modal}</div>, [modal]);
 
   const global = useMemo(()=>{
@@ -503,6 +402,7 @@ export const CreateScenario = () =>{
         </div>}
         </div>)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         },[grille,actualx,actualy,typeHexagone])
     return <div className="w-full h-fit relative flex flex-row bg-gray-dark" id={"maindiv"} >
     {global} 

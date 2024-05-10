@@ -218,6 +218,16 @@ export class SnowPond extends CaseGenerique {
         super(test6('snow',"h_snowpond",orientation),null,false,false,false,false,false,false,false," ")
     }
 }
+export class SnowBunker extends CaseGenerique{
+    constructor (orientation){
+        super(test2("snow","o_wbunker",orientation),null,{soldat:-1,tank:-2},true,true,true)
+    }
+}
+export class SnowDragonTeeth extends CaseGenerique{
+    constructor (orientation){
+        super(test3("snow","o_dragonteeth",orientation),null,null,true,true,true)
+    }
+}
 
 //how edit snow image
 // saturation -16 87 0
