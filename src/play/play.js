@@ -48,7 +48,7 @@ export const Play =()=> {
     let localgrille2 = {...grille};
     localgrille.grille.forEach((e,pos)=>{
       e.forEach((f,pos2)=>{
-        if(f.highlight && (f.highlight.constructor.name === "Move" || f.highlight.constructor.name === "Target" || f.highlight.constructor.name === "Retreat")){
+        if(f.highlight && (f.highlight instanceof Move  || f.highlight instanceof Target || f.highlight instanceof Retreat)){
           localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:f.unité,action:null,highlight:null,select:f.select}
         }
       })})
@@ -63,9 +63,7 @@ export const Play =()=> {
     let localgrille2 = {...grille};
     localgrille.grille.forEach((e,pos)=>{
       e.forEach((f,pos2)=>{
-        console.log(f.select !== null)
-        if(f.select !== null | f.highlight !== null | f.action !== null){    
-          console.log('here')
+        if(f.select !== null | f.highlight !== null | f.action !== null){              
           localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:f.unité,action:null,highlight:null,select:null}
         }
       })})
@@ -75,10 +73,10 @@ export const Play =()=> {
   function UpdateMedal(f,nb){
     if(nb < 1){
       if(camp === "Allies"){
-        medalAlliésList.push(HitUnit(f.unité.constructor.name,1));
+        medalAlliésList.push(HitUnit(f.unité,1));
         
       }else{
-        medalAxisList.push(HitUnit(f.unité.constructor.name,1));
+        medalAxisList.push(HitUnit(f.unité,1));
         }
     }
   }
@@ -100,10 +98,10 @@ export const Play =()=> {
       if(f.unité._nombre - result <= 0){
         if(camp === "Allies"){
           // let medal = {...medalAlliésList}
-          medalAlliésList.push(HitUnit(f.unité.constructor.name,1));
+          medalAlliésList.push(HitUnit(f.unité,1));
           // setMedalAlliésList(medal);
         }else{
-          medalAxisList.push(HitUnit(f.unité.constructor.name,1));
+          medalAxisList.push(HitUnit(f.unité,1));
           // setMedalAxis(medalAxis+1);
         }
         localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:null,action:null,highlight:null,select:null}
@@ -111,7 +109,7 @@ export const Play =()=> {
       }else if(dice.nbflag > 0 && localgrille.grille[x][y]._ignoreflag ? dice.nbflag > 1 : true){
         let flaglist = Flag(x,y,dice.nbflag,camp2);
         if(!Object.keys(flaglist).length ){
-          localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:f.unité._nombre - result > 0 ? HitUnit(f.unité.constructor.name,f.unité._nombre - result ):null,action:ambuscade ? ()=>{calculDés(x,y,grille.grille[x][y].unité,false)}:null,highlight:null,select:ambuscade ? new Attacking() : null}
+          localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:f.unité._nombre - result > 0 ? HitUnit(f.unité,f.unité._nombre - result ):null,action:ambuscade ? ()=>{calculDés(x,y,grille.grille[x][y].unité,false)}:null,highlight:null,select:ambuscade ? new Attacking() : null}
         }else{
           let chooseflag = 0
           flaglist.forEach(item=>{
@@ -120,12 +118,12 @@ export const Play =()=> {
             }
           })
           if(chooseflag === Object.keys(flaglist).length  ){
-            localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:f.unité._nombre - result-dice.nbflag > 0 ? HitUnit(f.unité.constructor.name,f.unité._nombre - result - dice.nbflag ):null,action:null,highlight:null,select:null}
+            localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:f.unité._nombre - result-dice.nbflag > 0 ? HitUnit(f.unité,f.unité._nombre - result - dice.nbflag ):null,action:null,highlight:null,select:null}
           }else if(chooseflag === Object.keys(flaglist).length-1  ){
             flaglist.forEach(item=>{
               if(!localgrille.grille[item.x][item.y].unité){
                 let g = localgrille.grille[item.x][item.y];
-                localgrille.grille[item.x][item.y] = {case:g.case,defense:g.defense,unité:f.unité._nombre - result > 0 ? HitUnit(f.unité.constructor.name,f.unité._nombre - result):null,action:null,highlight:null,select:null}
+                localgrille.grille[item.x][item.y] = {case:g.case,defense:g.defense,unité:f.unité._nombre - result > 0 ? HitUnit(f.unité,f.unité._nombre - result):null,action:null,highlight:null,select:null}
                 localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:null,action:null,highlight:null,select:null}
       
               }
@@ -148,7 +146,7 @@ export const Play =()=> {
         if(card._image === "artillery-bombard-fr" && refire ){
           localgrille.grille[x2][y2] = {case:f2.case,defense:f2.defense,unité:f2.unité,action:()=>{calculDés(x2,y2,null,null,f2.unité,false)},highlight:null,select:new Attacking()}
         }else if(card._image === "behind-enemy-lines-fr"){
-          localgrille.grille[x2][y2] = {case:f2.case,defense:f2.defense,unité:AddDice(f2.unité.constructor.name,f2.unité._nombre,[4,3,2],[2,2,2]),action:()=>{ShowPortéeUnit(x2,y2,AddDice(f2.unité.constructor.name,f2.unité._nombre,[4,3,2],[2,2,2]))},highlight:null,select:new SelectHexa()}
+          localgrille.grille[x2][y2] = {case:f2.case,defense:f2.defense,unité:AddDice(f2.unité,f2.unité._nombre,[4,3,2],[2,2,2]),action:()=>{ShowPortéeUnit(x2,y2,AddDice(f2.unité,f2.unité._nombre,[4,3,2],[2,2,2]))},highlight:null,select:new SelectHexa()}
         
         }else{
           localgrille.grille[x2][y2] = {case:f2.case,defense:f2.defense,unité:f2.unité,action:null,highlight:null,select:null}
@@ -170,9 +168,7 @@ export const Play =()=> {
     let list = showPortee(grille,Object.keys(unité._portée).length,x,y,unité._portée,null)
     
     list.forEach(item=>{
-      // console.log(item.x,item.y,VerificationLineOfSight(x,y,item.x,item.y,grille))   
       if(localgrille.grille[item.x][item.y].unité && localgrille.grille[item.x][item.y].unité._camp === camp2 && VerificationLineOfSight(x,y,item.x,item.y,grille)){
-        if(item.x === 4 && item.y === 12){console.log("hereX")}
         let malus = 0;
         if(localgrille.grille[item.x][item.y].case && localgrille.grille[item.x][item.y].case._malus){
           if(unité._type === "Soldat"){malus = localgrille.grille[item.x][item.y].case._malus.soldat}
@@ -200,7 +196,7 @@ export const Play =()=> {
     })
     localgrille.grille.forEach((e,pos)=>{
       e.forEach((f,pos2)=>{
-        if(f.select && (f.select.constructor.name === "Selected" )){
+        if(f.select && (f.select instanceof Selected )){
           localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:f.unité,action:()=>{calculDés(pos,pos2,f.unité,card._image === "artillery-bombard-fr" ? true:false)},highlight:f.highlight,select:new Attacking()}
         }})})
     let g = localgrille.grille[x][y]; 
@@ -214,7 +210,7 @@ export const Play =()=> {
     RemoveHighlight()
     localgrille.grille.forEach((e,pos)=>{
       e.forEach((f,pos2)=>{
-        if(f.select && (f.select.constructor.name === "SelectHexa" || f.select.constructor.name === "Attacking")){
+        if(f.select && (f.select instanceof SelectHexa || f.select instanceof Attacking)){
           let list = showPortee(grille,Object.keys(f.unité._portée).length,pos,pos2,f.unité._portée,null)
           let cond = false;
           list.forEach(item=>{
@@ -223,7 +219,6 @@ export const Play =()=> {
             }
             
           })
-          console.log(cond)
           localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:f.unité,action:()=>{calculDés(pos,pos2,f.unité,card._image === "artillery-bombard-fr" ? true:false)},highlight:f.highlight,select:cond ? new Attacking():null}
        
         
@@ -263,7 +258,7 @@ export const Play =()=> {
     let f = localgrille.grille[x][y];
     let f2 = localgrille.grille[x2][y2];
     localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:null,action:null,highlight:null,select:null}
-    localgrille.grille[x2][y2] = {case:f2.case,defense:f2.defense,unité:HitUnit(f.unité.constructor.name,nbunit),action:null,highlight:null,select:null}
+    localgrille.grille[x2][y2] = {case:f2.case,defense:f2.defense,unité:HitUnit(f.unité,nbunit),action:null,highlight:null,select:null}
     if(x !== x2 || y !== y2){
       if(localgrille.grille[originx][originy].unité && isCombatRapproche(x,y,originx,originy) ){
         if(localgrille.grille[originx][originy].unité._type === "Soldat"){
@@ -362,24 +357,24 @@ export const Play =()=> {
         e.forEach((f,pos2)=>{
           if(card._image === "general-advance-fr" || card._image === "pincer-move-fr"){
             if(y >= zone1.min && y <= zone1.max && pos2 >= zone1.min && pos2 <= zone1.max){
-              if(f.select && f.select.constructor.name === "SelectHexa"){
+              if(f.select && f.select instanceof SelectHexa){
                 nb += 1;
               }
 
             }
           else if(card._image !== "pincer-move-fr" && y > zone2.min && y < zone2.max && pos2 > zone2.min && pos2 < zone2.max){
 
-            if(f.select && f.select.constructor.name === "SelectHexa"){
+            if(f.select && f.select instanceof SelectHexa){
               nb += 1;
             }
 
           }else if(y >= zone3.min && y <= zone3.max && pos2 >= zone3.min && pos2 <= zone3.max){
-          if(f.select && f.select.constructor.name === "SelectHexa"){
+          if(f.select && f.select instanceof SelectHexa){
             nb += 1;
           }
 
           }
-        }else if(f.select && f.select.constructor.name === "SelectHexa"){
+        }else if(f.select && f.select instanceof SelectHexa){
             nb += 1;
           }
         });
@@ -455,7 +450,7 @@ export const Play =()=> {
     
     localgrille.grille.forEach((e,pos)=>{
       e.forEach((f,pos2)=>{
-        if(f.select && f.select.constructor.name === "SelectHexa"){
+        if(f.select && f.select instanceof SelectHexa){
           localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:f.unité,action:()=>{ShowPortéeUnit(pos,pos2,f.unité)},highlight:f.highlight,select:f.select}
         }
       })
@@ -499,21 +494,21 @@ export const Play =()=> {
       if(result > 0){
         if(unité._type === "Soldat"){
           if(unité._nombre + result <=4){
-            localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:HitUnit(unité.constructor.name,unité._nombre + result),action:null,highlight:null,select:new SelectHexa()}
+            localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:HitUnit(unité,unité._nombre + result),action:null,highlight:null,select:new SelectHexa()}
           }else{
-            localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:HitUnit(unité.constructor.name,4),action:null,highlight:null,select:new SelectHexa()}
+            localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:HitUnit(unité,4),action:null,highlight:null,select:new SelectHexa()}
           }
         }else if(unité._type === "Char"){
           if(unité._nombre + result <=3){
-            localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:HitUnit(unité.constructor.name,unité._nombre + result),action:null,highlight:null,select:new SelectHexa()}
+            localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:HitUnit(unité,unité._nombre + result),action:null,highlight:null,select:new SelectHexa()}
           }else{
-            localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:HitUnit(unité.constructor.name,4),action:null,highlight:null,select:new SelectHexa()}
+            localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:HitUnit(unité,4),action:null,highlight:null,select:new SelectHexa()}
           }
         }else if(unité._type === "Artillerie"){
           if(unité._nombre + result <=2){
-            localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:HitUnit(unité.constructor.name,unité._nombre + result),action:null,highlight:null,select:new SelectHexa()}
+            localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:HitUnit(unité,unité._nombre + result),action:null,highlight:null,select:new SelectHexa()}
           }else{
-            localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:HitUnit(unité.constructor.name,4),action:null,highlight:null,select:new SelectHexa()}
+            localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:HitUnit(unité,4),action:null,highlight:null,select:new SelectHexa()}
           }
         }
       }
@@ -538,7 +533,7 @@ export const Play =()=> {
         localgrille.grille.forEach((e,pos)=>{
           e.forEach((f,pos2)=>{
                 if(f.unité && f.unité._camp === camp && f.unité._type === "Artillerie"){
-                  localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité.constructor.name,f.unité._nombre,null,[2,2,2]),action:null,highlight:null,select:null}
+                  localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité,f.unité._nombre,null,[2,2,2]),action:null,highlight:null,select:null}
                 }
           })})
         
@@ -559,7 +554,7 @@ export const Play =()=> {
         localgrille.grille.forEach((e,pos)=>{
           e.forEach((f,pos2)=>{
                 if(f.unité && f.unité._camp === camp && f.unité._type === "Soldat"){
-                  localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité.constructor.name,f.unité._nombre,[4,3,2],[1,1,1]),action:null,highlight:null,select:null}
+                  localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité,f.unité._nombre,[4,3,2],[1,1,1]),action:null,highlight:null,select:null}
                 }
           })})
         setGrille(localgrille2);
@@ -578,9 +573,9 @@ export const Play =()=> {
                   })
                   if(cond){
                     if(f.unité._type === "Soldat"){
-                      localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité.constructor.name,f.unité._nombre,[4,3,2],[]),action:null,highlight:null,select:new Attacking()}
+                      localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité,f.unité._nombre,[4,3,2],[]),action:null,highlight:null,select:new Attacking()}
                     }else if(f.unité._type === "Char"){
-                      localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité.constructor.name,f.unité._nombre,[4,4,4],[]),action:null,highlight:null,select:new Attacking()}
+                      localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité,f.unité._nombre,[4,4,4],[]),action:null,highlight:null,select:new Attacking()}
                     
                     }
 
@@ -605,7 +600,7 @@ export const Play =()=> {
                 }
               })   
               if(cond){
-                localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité.constructor.name,f.unité._nombre,f.unité._portée.map(item=>{return item+1}),[1,1,1]),action:()=>{updateSelectedUnit(pos,pos2,true,false)},highlight:null,select:null}
+                localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité,f.unité._nombre,f.unité._portée.map(item=>{return item+1}),[1,1,1]),action:()=>{updateSelectedUnit(pos,pos2,true,false)},highlight:null,select:null}
               }
             }
           })})
@@ -642,11 +637,11 @@ export const Play =()=> {
                   })
                   if(cond){
                     if(f.unité._type === "Soldat"){
-                      localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité.constructor.name,f.unité._nombre,[4,3,2],[1,2]),action:null,highlight:null,select:new Attacking()}
+                      localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité,f.unité._nombre,[4,3,2],[1,2]),action:null,highlight:null,select:new Attacking()}
                     }else if(f.unité._type === "Char"){
-                      localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité.constructor.name,f.unité._nombre,[4,4,4],[1,1,1]),action:null,highlight:null,select:new Attacking()}
+                      localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité,f.unité._nombre,[4,4,4],[1,1,1]),action:null,highlight:null,select:new Attacking()}
                     }else if(f.unité._type === "Artillerie"){
-                      localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité.constructor.name,f.unité._nombre,[4,4,3,3,2,2],[2]),action:null,highlight:null,select:new Attacking()}
+                      localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité,f.unité._nombre,[4,4,3,3,2,2],[2]),action:null,highlight:null,select:new Attacking()}
                     
                     }
 
@@ -667,7 +662,7 @@ export const Play =()=> {
       case "dig-in-fr":
         localgrille.grille.forEach((e,pos)=>{
           e.forEach((f,pos2)=>{
-            if(f.select && f.select.constructor.name === "SelectHexa"){
+            if(f.select && f.select instanceof SelectHexa){
               localgrille2.grille[pos][pos2] = {case:f.case,defense:new SandBag(camp !== "Allies"),unité:f.unité,action:null,highlight:null,select:null}
             }
           })})
@@ -693,7 +688,7 @@ export const Play =()=> {
         localgrille.grille.forEach((e,pos)=>{
           e.forEach((f,pos2)=>{
                 if(f.unité && f.unité._camp === camp && f.unité._type === "Char"){
-                  localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité.constructor.name,f.unité._nombre,[3,3,3]),action:null,highlight:null,select:null}
+                  localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité,f.unité._nombre,[3,3,3]),action:null,highlight:null,select:null}
                 }
           })})
         setGrille(localgrille2);
@@ -703,7 +698,7 @@ export const Play =()=> {
         localgrille.grille.forEach((e,pos)=>{
           e.forEach((f,pos2)=>{
                 if(f.unité && f.unité._camp === camp && f.unité._type === "Soldat"){
-                  localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité.constructor.name,f.unité._nombre,[3,2,1],[1,2]),action:null,highlight:null,select:null}
+                  localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité,f.unité._nombre,[3,2,1],[1,2]),action:null,highlight:null,select:null}
                 }
           })})
         setGrille(localgrille2);
@@ -724,7 +719,7 @@ export const Play =()=> {
           localgrille.grille.forEach((e,pos)=>{
             e.forEach((f,pos2)=>{
                   if(f.unité && f.unité._camp === camp && (arraysEqual(f.unité._portée, [4,3,2])   || arraysEqual(f.unité.portée ,[4,4,4]))){
-                    localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:HitUnit(f.unité.constructor.name,f.unité._nombre),action:null,highlight:null,select:null}
+                    localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:HitUnit(f.unité,f.unité._nombre),action:null,highlight:null,select:null}
                   }
             })})
           setGrille(localgrille2);        
@@ -740,7 +735,7 @@ export const Play =()=> {
     let localgrille2 = {...grille};
     localgrille.grille.forEach((e,pos)=>{
       e.forEach((f,pos2)=>{
-        if(f.select && f.select.constructor.name === "Selected" ){
+        if(f.select && f.select instanceof Selected ){
           let ptproches = pointproche(pos,pos2);
           let cond = false
           let malus = 0;
@@ -855,7 +850,6 @@ export const Play =()=> {
 
 
   const global = useMemo(()=>{
-      console.log(grille.grille)
       return (
       <div className="relative w-fit h-fit">
         <div className='absolute -top-2 mr-[50px] right-0 z-[10] w-[550px] h-[54px] flex flex-row'>
@@ -874,7 +868,6 @@ export const Play =()=> {
           {grille.grille.map((e,pos)=>{
             return <div className={`${pos % 2 === 1 ? "ml-[45px]":""} w-full flex flex-row`} key={`ligne-${pos}`}>{
               e.map((f,pos2)=>{
-                      console.log(f.action)
                       return <div className={`relative w-[91px] h-[78px] border-0 border-white ${f.action ? "hover:cursor-pointer":""}`} onClick={f.action}  key={`${pos}${pos2}`} id={`${pos}${pos2}`} >
                         {debug ? <div className='absolute z-[1000] bottom-0 left-8 text-vivid_tangerine text-[28px] font-av-bold'><span className='text-white'>{pos}</span> {pos2}</div> :""}
                         <div className='absolute z-10 w-full h-full'>{f.case ? f.case.render(): ""}</div>
@@ -882,7 +875,7 @@ export const Play =()=> {
                         <div className='absolute z-30 w-full h-full'>{f.bunker ? f.bunker.render(): ""}</div>
                         <div className='absolute z-40 w-full h-full'>{f.unité ? f.unité.render(): ""}</div>
                         <div className='absolute z-[50] w-full h-full'>{f.medal ? f.medal.render(): ""}</div>
-                        <div className={`absolute z-[60] w-full h-full ${f.highlight && f.highlight.constructor.name !== "Target" ? "opacity-50":""}`}>{f.highlight ? f.highlight.render(): ""}</div>
+                        <div className={`absolute z-[60] w-full h-full ${f.highlight && f.highlight instanceof Target ? "opacity-50":""}`}>{f.highlight ? f.highlight.render(): ""}</div>
                         <div className='absolute z-[70] w-full h-full '>{f.select ? f.select.render(): ""}</div>
                         </div>
                   

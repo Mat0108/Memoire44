@@ -74,7 +74,7 @@ export class Mine extends CaseGenerique{
     }
 }
 export function returnHexagone(text,orientation){
-// console.log('text : ', text)
+    
 
     switch(text){
         case "Country":
