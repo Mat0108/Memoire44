@@ -855,7 +855,7 @@ export const Play =()=> {
 
 
   const global = useMemo(()=>{
-    {
+      console.log(grille.grille)
       return (
       <div className="relative w-fit h-fit">
         <div className='absolute -top-2 mr-[50px] right-0 z-[10] w-[550px] h-[54px] flex flex-row'>
@@ -874,8 +874,7 @@ export const Play =()=> {
           {grille.grille.map((e,pos)=>{
             return <div className={`${pos % 2 === 1 ? "ml-[45px]":""} w-full flex flex-row`} key={`ligne-${pos}`}>{
               e.map((f,pos2)=>{
-                  if(pos2 != (pos % 2 === 1 ? x-1 : x)){
-                      
+                      console.log(f.action)
                       return <div className={`relative w-[91px] h-[78px] border-0 border-white ${f.action ? "hover:cursor-pointer":""}`} onClick={f.action}  key={`${pos}${pos2}`} id={`${pos}${pos2}`} >
                         {debug ? <div className='absolute z-[1000] bottom-0 left-8 text-vivid_tangerine text-[28px] font-av-bold'><span className='text-white'>{pos}</span> {pos2}</div> :""}
                         <div className='absolute z-10 w-full h-full'>{f.case ? f.case.render(): ""}</div>
@@ -887,12 +886,11 @@ export const Play =()=> {
                         <div className='absolute z-[70] w-full h-full '>{f.select ? f.select.render(): ""}</div>
                         </div>
                   
-              }})
+              })
           }</div>
         })}
         </div>
       </div>)
-      }
      },[grille,debug])
      
      const Modal = useMemo(() => <div className='absolute top-0 '>{modal}</div>, [modal])

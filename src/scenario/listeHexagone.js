@@ -123,7 +123,7 @@ export function ListeDivers(terrain){
         "Loco",
         "Wagon",
         "Mine",
-        "SnowDragonTeeth",
+        "SnowDragonTeeth",-
         "Country"
         
     ]

@@ -6,17 +6,21 @@ import {Route,Routes} from 'react-router';
 import "./index.css"
 import { Play } from './play/play';
 import { CreateScenario } from './scenario/createScenario';
+import Home from './Home';
+import About from './About';
 const App = ()=>{
     return (
     <div className="App w-screen h-screen bg-gray-dark " key="main">
       {/* <div className='flex'>{SelecteurScenario(selectedScenerio,setSelectedScenario)}</div> */}
       <Router>
         <Routes>
-          <Route path="/" element={<SelecteurScenario/>}></Route>
-          <Route path="/:debug" element={<SelecteurScenario/>}></Route>
+          <Route path="/" element={<Home/>}></Route>
+          <Route path="/play" element={<SelecteurScenario/>}></Route>
+          <Route path="/play/:debug" element={<SelecteurScenario/>}></Route> 
           <Route path="/scenario/:name/" element={<Play />}></Route>
           <Route path="/scenario/:name/:debug" element={<Play />}></Route>
           <Route path="/create" element={<CreateScenario/>}></Route>
+          <Route path="/about" element={<About/>}></Route>
         </Routes>
  
       </Router>   
