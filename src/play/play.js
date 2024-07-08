@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 
-import {CardGenerique, Dice, Flag, VerificationLineOfSight, isCombatRapproche, pointproche, showPortee} from '../divers/Generique'
+import {CardGenerique, Dice, Flag, LogList, VerificationLineOfSight, isCombatRapproche, pointproche, showPortee} from '../divers/Generique'
 import { ReturnScenario, loadScenario } from '../scenario';
 import { Attacking, Selected, Move, Retreat, SelectHexa, Target } from '../haxagone/highlight';
 import { AddDice, HitUnit } from '../army/army';
@@ -168,7 +168,8 @@ export const Play =()=> {
     let list = showPortee(grille,Object.keys(unité._portée).length,x,y,unité._portée,null)
     
     list.forEach(item=>{
-      if(localgrille.grille[item.x][item.y].unité && localgrille.grille[item.x][item.y].unité._camp === camp2 && VerificationLineOfSight(x,y,item.x,item.y,grille)){
+      if(localgrille.grille[item.x][item.y].unité && localgrille.grille[item.x][item.y].unité._camp === camp2 ){
+        if( VerificationLineOfSight(x,y,item.x,item.y,grille)){
         let malus = 0;
         if(localgrille.grille[item.x][item.y].case && localgrille.grille[item.x][item.y].case._malus){
           if(unité._type === "Soldat"){malus = localgrille.grille[item.x][item.y].case._malus.soldat}
@@ -193,7 +194,7 @@ export const Play =()=> {
         }
 
       }
-    })
+    }})
     localgrille.grille.forEach((e,pos)=>{
       e.forEach((f,pos2)=>{
         if(f.select && (f.select instanceof Selected )){
@@ -212,10 +213,13 @@ export const Play =()=> {
       e.forEach((f,pos2)=>{
         if(f.select && (f.select instanceof SelectHexa || f.select instanceof Attacking)){
           let list = showPortee(grille,Object.keys(f.unité._portée).length,pos,pos2,f.unité._portée,null)
+          LogList(list)
           let cond = false;
           list.forEach(item=>{
-            if(localgrille.grille[item.x][item.y].unité && localgrille.grille[item.x][item.y].unité._camp === camp2 && f.unité._type === "Artillerie" ? localgrille.grille[item.x][item.y].unité  : VerificationLineOfSight(pos,pos2,item.x,item.y,grille)){
-              cond = true;
+            if(localgrille.grille[item.x][item.y].unité && localgrille.grille[item.x][item.y].unité._camp === camp2 ){
+              if(f.unité._type === "Artillerie" ? localgrille.grille[item.x][item.y].unité  : VerificationLineOfSight(pos,pos2,item.x,item.y,grille)){
+                cond = true;
+              }
             }
             
           })
@@ -236,8 +240,10 @@ export const Play =()=> {
     let cond = false;
     if(Refire){
       list.forEach(item=>{
-        if(localgrille.grille[item.x][item.y].unité && localgrille.grille[item.x][item.y].unité._camp === camp2 && VerificationLineOfSight(x2,y2,item.x,item.y,grille)){
-          cond = true;
+        if(localgrille.grille[item.x][item.y].unité && localgrille.grille[item.x][item.y].unité._camp === camp2 ){
+          if(VerificationLineOfSight(x2,y2,item.x,item.y,grille)){
+            cond = true;
+          }
         }
       })  
     }
@@ -303,17 +309,19 @@ export const Play =()=> {
 
     let f = localgrille.grille[oldposx][oldposy]
     let list = showPortee(grille,Object.keys(f.unité._portée).length,posx,posy,f.unité._portée,null)
+
     localgrille2.grille[oldposx][oldposy] = {case:f.case,defense:null,unité:null,action:null,highlight:null,select:null}
     // UnitCanAttack.push({x:posx,y:posy})
    
     let cond = false;
     list.forEach(item=>{
-      if(localgrille.grille[item.x][item.y].unité && localgrille.grille[item.x][item.y].unité._camp === camp2 && VerificationLineOfSight(posx,posy,item.x,item.y,grille)){
-        
-        cond = true;
+      if(localgrille.grille[item.x][item.y].unité && localgrille.grille[item.x][item.y].unité._camp === camp2){
+        if(VerificationLineOfSight(posx,posy,item.x,item.y,grille)){    
+          cond = true;
+        }
       }
     })
-    
+    console.log(posx,posy,cond)
     localgrille2.grille[posx][posy] = {case:localgrille2.grille[posx][posy].case,defense:null,unité:f.unité,action:null,highlight: null,select:action === 1 ? (cond ? new Attacking():null ):null}
     setGrille(localgrille2)
   }

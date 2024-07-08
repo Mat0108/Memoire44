@@ -402,7 +402,7 @@ export function VerificationLineOfSight(x,y,x2,y2,grille){
         }
         }) 
     })
-
+    
     if(Object.keys(cond1).length>0){
         let cond = true;
         cond1.forEach(item=>{
@@ -412,6 +412,7 @@ export function VerificationLineOfSight(x,y,x2,y2,grille){
         })
         return cond;
     }else{
+        
         if(x-x2>=0 && y-y2>=0){
             if(x2%2 === 1){
                 cond2 = [{x:x2+1,y:y2+1},{x:x2,y:y2+1}]
@@ -456,11 +457,11 @@ export function VerificationLineOfSight(x,y,x2,y2,grille){
         let blockedbycase1 = (case1.case && case1.case._lineofsight ) || !!case1.unité;
         let case2 = grille.grille[cond2[1].x][cond2[1].y]
         let blockedbycase2 = (case2.case && case2.case._lineofsight ) || !!case2.unité;
-        if(x2 === 4 && y2 === 12){
-            console.log(x-x2,y-y2,x2%2)
+        if(!blockedbycase1 || !blockedbycase2){
+            
             console.log(cond2[0],cond2[1])
-            
-            
+            console.log(x2,y2)
+            console.log(x-x2,y-y2,x2%2, y2%2,x%2,y%2)
         }
         if(blockedbycase1 && blockedbycase2){
             return false
@@ -548,3 +549,14 @@ export function Flag(x,y,nbflag,camp){
 }
 
 // list.push({x:x,y:y})
+
+export function LogList(list){
+    let list2 = [...list]
+    list2.sort((a, b) => {
+        if (a.x === b.x) {
+            return a.y - b.y;
+        }
+        return a.x - b.x;
+    });
+    console.log(list2)
+}
