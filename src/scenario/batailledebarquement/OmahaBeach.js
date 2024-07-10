@@ -1,5 +1,5 @@
 import { CharAllies, SoldatAllies } from "../../army/allies";
-import { ArtillerieAxis, SoldatAxis } from "../../army/axis";
+import { ArtillerieAxis, CharAxis, SoldatAxis } from "../../army/axis";
 import { Bunker, Hedgehow, Hills, SandBag, Village, Wire } from "../../haxagone/base";
 import { Medal } from "../../haxagone/highlight";
 
@@ -8,7 +8,7 @@ export const OmahaBeach= {
     terrain:"terrain1",
     medalAllies:6,
     medalAxe:6,
-    camp:"Allies",
+    camp:"Axis",
     cardAxis:4,
     cardAllies:5,
     hexa:[
@@ -28,7 +28,7 @@ export const OmahaBeach= {
     
        {x:1,y:0,contenu:{case: null,bunker: null,defense: null, unité:null,medal:null,action:null,highlight:null,select:null}}, 
        {x:1,y:1,contenu:{case: null,bunker: null,defense: null, unité:null,medal:null,action:null,highlight:null,select:null}}, 
-       {x:1,y:2,contenu:{case: null,bunker: null,defense: null, unité:null,medal:null,action:null,highlight:null,select:null}}, 
+       {x:1,y:2,contenu:{case: null,bunker: null,defense: null, unité:new SoldatAxis(4),medal:null,action:null,highlight:null,select:null}}, 
        {x:1,y:3,contenu:{case: null,bunker: null,defense: null, unité:null,medal:null,action:null,highlight:null,select:null}}, 
        {x:1,y:4,contenu:{case: null,bunker: null,defense: null, unité:null,medal:null,action:null,highlight:null,select:null}}, 
        {x:1,y:5,contenu:{case: null,bunker: null,defense: null, unité:null,medal:null,action:null,highlight:null,select:null}}, 
@@ -44,7 +44,7 @@ export const OmahaBeach= {
        {x:2,y:1,contenu:{case: null,bunker: null,defense: null, unité:null,medal:null,action:null,highlight:null,select:null}}, 
        {x:2,y:2,contenu:{case: null,bunker: null,defense: null, unité:null,medal:null,action:null,highlight:null,select:null}}, 
        {x:2,y:3,contenu:{case: new Hills(),bunker: null,defense: null, unité:null,medal:null,action:null,highlight:null,select:null}}, 
-       {x:2,y:4,contenu:{case: null,bunker: null,defense: null, unité:null,medal:null,action:null,highlight:null,select:null}}, 
+       {x:2,y:4,contenu:{case: null,bunker: null,defense: null, unité:new CharAxis(3),medal:null,action:null,highlight:null,select:null}}, 
        {x:2,y:5,contenu:{case: null,bunker: null,defense: null, unité:null,medal:null,action:null,highlight:null,select:null}}, 
        {x:2,y:6,contenu:{case: null,bunker: null,defense: null, unité:null,medal:null,action:null,highlight:null,select:null}}, 
        {x:2,y:7,contenu:{case: new Village(),bunker: null,defense: null, unité:new SoldatAxis(4),medal:new Medal(),action:null,highlight:null,select:null}}, 
@@ -57,7 +57,7 @@ export const OmahaBeach= {
        {x:3,y:0,contenu:{case: null,bunker: null,defense: null, unité:null,medal:null,action:null,highlight:null,select:null}}, 
        {x:3,y:1,contenu:{case: new Hills(),bunker: new Bunker(),defense: null, unité:new ArtillerieAxis(2),medal:null,action:null,highlight:null,select:null}}, 
        {x:3,y:2,contenu:{case: new Hills(),bunker: null,defense: null, unité:null,medal:null,action:null,highlight:null,select:null}}, 
-       {x:3,y:3,contenu:{case: null,bunker: null,defense: new Wire(), unité:null,medal:null,action:null,highlight:null,select:null}}, 
+       {x:3,y:3,contenu:{case: null,bunker: null,defense: new Hedgehow(), unité:null,medal:null,action:null,highlight:null,select:null}}, 
        {x:3,y:4,contenu:{case: new Hills(),bunker: new Bunker(),defense: null, unité:new SoldatAxis(4),medal:null,action:null,highlight:null,select:null}}, 
        {x:3,y:5,contenu:{case: new Hills(),bunker: null,defense: null, unité:null,medal:null,action:null,highlight:null,select:null}}, 
        {x:3,y:6,contenu:{case: new Hills(),bunker: null,defense: null, unité:null,medal:null,action:null,highlight:null,select:null}}, 

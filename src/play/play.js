@@ -8,7 +8,7 @@ import { AirPower, Barrage, CampAffichage, CardSelect} from '../divers/Card';
 
 
 import { useParams } from 'react-router';
-import { SandBag } from '../haxagone/base';
+import { Hills, SandBag } from '../haxagone/base';
 import { FormControlLabel, Switch } from '@mui/material';
 
 
@@ -172,12 +172,12 @@ export const Play =()=> {
         if( VerificationLineOfSight(x,y,item.x,item.y,grille)){
         let malus = 0;
         if(localgrille.grille[item.x][item.y].case && localgrille.grille[item.x][item.y].case._malus){
-          if(unité._type === "Soldat"){malus = localgrille.grille[item.x][item.y].case._malus.soldat}
-          else if(unité._type === "Char"){malus = localgrille.grille[item.x][item.y].case._malus.tank}
+          if(unité._type === "Soldat"){malus = localgrille.grille[item.x][item.y].case._malus.Soldat}
+          else if(unité._type === "Tank"){malus = localgrille.grille[item.x][item.y].case._malus.Tank}
         }
         if(localgrille.grille[item.x][item.y].defense && localgrille.grille[item.x][item.y].defense._malus){
-          if(unité._type === "Soldat"){malus = localgrille.grille[item.x][item.y].case._malus.soldat+malus}
-          else if(unité._type === "Char"){malus = localgrille.grille[item.x][item.y].case._malus.tank+malus}
+          if(unité._type === "Soldat"){malus = localgrille.grille[item.x][item.y].case._malus.Soldat+malus}
+          else if(unité._type === "Tank"){malus = localgrille.grille[item.x][item.y].case._malus.Tank+malus}
         }
         if(item.dés + malus > 0){
           let f = localgrille2.grille[item.x][item.y];
@@ -213,7 +213,6 @@ export const Play =()=> {
       e.forEach((f,pos2)=>{
         if(f.select && (f.select instanceof SelectHexa || f.select instanceof Attacking)){
           let list = showPortee(grille,Object.keys(f.unité._portée).length,pos,pos2,f.unité._portée,null)
-          LogList(list)
           let cond = false;
           list.forEach(item=>{
             if(localgrille.grille[item.x][item.y].unité && localgrille.grille[item.x][item.y].unité._camp === camp2 ){
@@ -280,7 +279,7 @@ export const Play =()=> {
             </div>
           </div>
           )
-        }else if(localgrille.grille[originx][originy].unité._type === "Char"){
+        }else if(localgrille.grille[originx][originy].unité._type === "Tank"){
           setModal(
             <div className='relative w-screen h-screen flex center z-[350] '>
             <div className='absolute w-[400px] h-[100px] rounded-3xl flex flex-col bg-gray z-[350]'>
@@ -506,7 +505,7 @@ export const Play =()=> {
           }else{
             localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:HitUnit(unité,4),action:null,highlight:null,select:new SelectHexa()}
           }
-        }else if(unité._type === "Char"){
+        }else if(unité._type === "Tank"){
           if(unité._nombre + result <=3){
             localgrille.grille[x][y] = {case:f.case,defense:f.defense,unité:HitUnit(unité,unité._nombre + result),action:null,highlight:null,select:new SelectHexa()}
           }else{
@@ -582,7 +581,7 @@ export const Play =()=> {
                   if(cond){
                     if(f.unité._type === "Soldat"){
                       localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité,f.unité._nombre,[4,3,2],[]),action:null,highlight:null,select:new Attacking()}
-                    }else if(f.unité._type === "Char"){
+                    }else if(f.unité._type === "Tank"){
                       localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité,f.unité._nombre,[4,4,4],[]),action:null,highlight:null,select:new Attacking()}
                     
                     }
@@ -646,7 +645,7 @@ export const Play =()=> {
                   if(cond){
                     if(f.unité._type === "Soldat"){
                       localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité,f.unité._nombre,[4,3,2],[1,2]),action:null,highlight:null,select:new Attacking()}
-                    }else if(f.unité._type === "Char"){
+                    }else if(f.unité._type === "Tank"){
                       localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité,f.unité._nombre,[4,4,4],[1,1,1]),action:null,highlight:null,select:new Attacking()}
                     }else if(f.unité._type === "Artillerie"){
                       localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité,f.unité._nombre,[4,4,3,3,2,2],[2]),action:null,highlight:null,select:new Attacking()}
@@ -695,7 +694,7 @@ export const Play =()=> {
       case "armor-assault-fr":
         localgrille.grille.forEach((e,pos)=>{
           e.forEach((f,pos2)=>{
-                if(f.unité && f.unité._camp === camp && f.unité._type === "Char"){
+                if(f.unité && f.unité._camp === camp && f.unité._type === "Tank"){
                   localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:AddDice(f.unité,f.unité._nombre,[3,3,3]),action:null,highlight:null,select:null}
                 }
           })})
@@ -753,12 +752,12 @@ export const Play =()=> {
             if(localgrille.grille[pt.x][pt.y].unité && localgrille.grille[pt.x][pt.y].unité._camp === camp2){
               
               if(localgrille.grille[pos][pos2].case && localgrille.grille[pos][pos2].case._malus){
-                if(localgrille.grille[pt.x][pt.y].unité._type === "Soldat"){malus = localgrille.grille[pos][pos2].case._malus.soldat}
-                else if(localgrille.grille[pt.x][pt.y].unité._type === "Char"){malus = localgrille.grille[pos][pos2].case._malus.tank}
+                if(localgrille.grille[pt.x][pt.y].unité._type === "Soldat"){malus = localgrille.grille[pos][pos2].case._malus.Soldat}
+                else if(localgrille.grille[pt.x][pt.y].unité._type === "Tank"){malus = localgrille.grille[pos][pos2].case._malus.Tank}
               }
               if(localgrille.grille[pos][pos2].defense && localgrille.grille[pos][pos2].defense._malus){
-                if(localgrille.grille[pt.x][pt.y].unité._type === "Soldat"){malus = localgrille.grille[pos][pos2].case._malus.soldat+malus}
-                else if(localgrille.grille[pt.x][pt.y].unité._type === "Char"){malus = localgrille.grille[pos][pos2].case._malus.tank+malus}
+                if(localgrille.grille[pt.x][pt.y].unité._type === "Soldat"){malus = localgrille.grille[pos][pos2].case._malus.Soldat+malus}
+                else if(localgrille.grille[pt.x][pt.y].unité._type === "Tank"){malus = localgrille.grille[pos][pos2].case._malus.Tank+malus}
               }
               cond = true;
               localx = pt.x;
@@ -883,7 +882,7 @@ export const Play =()=> {
                         <div className='absolute z-30 w-full h-full'>{f.bunker ? f.bunker.render(): ""}</div>
                         <div className='absolute z-40 w-full h-full'>{f.unité ? f.unité.render(): ""}</div>
                         <div className='absolute z-[50] w-full h-full'>{f.medal ? f.medal.render(): ""}</div>
-                        <div className={`absolute z-[60] w-full h-full ${f.highlight && f.highlight instanceof Target ? "opacity-50":""}`}>{f.highlight ? f.highlight.render(): ""}</div>
+                        <div className={`absolute z-[60] w-full h-full ${f.highlight && (f.highlight instanceof Target || f.highlight instanceof Move ) ? "opacity-50":""}`}>{f.highlight ? f.highlight.render(): ""}</div>
                         <div className='absolute z-[70] w-full h-full '>{f.select ? f.select.render(): ""}</div>
                         </div>
                   

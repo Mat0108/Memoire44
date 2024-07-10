@@ -29,17 +29,17 @@ export class SnowStation extends CaseGenerique{
 
 export class SnowForest extends CaseGenerique{
     constructor(orientation){
-        super(`images/snow/h_wforest.png`,null,{soldat:-2,tank:-2},true,false,true,false,false,false," ")
+        super(`images/snow/h_wforest.png`,null,{Soldat:-2,Tank:-2},true,false,true,false,false,false," ")
     }
 }
 export class SnowHill extends CaseGenerique{
     constructor(orientation){
-        super(`images/snow/h_whill.png`,null,{soldat:-2,tank:-2},true,false,true,false,false,false," ")
+        super(`images/snow/h_whill.png`,null,{Soldat:-2,Tank:-2},true,false,true,false,false,false," ")
     }
 }
 export class SnowVillage extends CaseGenerique{
     constructor(orientation){
-        super(`images/snow/h_wvillage.png`,null,{soldat:-2,tank:-2},true,false,true,false,false,false," ")
+        super(`images/snow/h_wvillage.png`,null,{Soldat:-2,Tank:-2},true,false,true,false,false,false," ")
     }
 }
 
@@ -65,7 +65,7 @@ export class SnowRiverBranchRight extends CaseGenerique{
 }
 export class SnowFactory extends CaseGenerique{
     constructor(orientation){
-        super(`images/snow/h_wfactory.png`,null,{soldat:-2,tank:-2},true,false,true,false,false,false," ")
+        super(`images/snow/h_wfactory.png`,null,{Soldat:-2,Tank:-2},true,false,true,false,false,false," ")
     }
 }
 
@@ -128,12 +128,12 @@ export class SnowRoadBranchRight extends CaseGenerique{
 }
 export class SnowMountain extends CaseGenerique{
     constructor(orientation){
-        super(`images/snow/h_snowmountain.png`,null,{soldat:-2,tank:-2},true,false,true,false,false,false," ")
+        super(`images/snow/h_snowmountain.png`,null,{Soldat:-2,Tank:-2},true,false,true,false,false,false," ")
     }
 }
 export class SnowHedgerow extends CaseGenerique{
     constructor(orientation){
-        super(`images/snow/h_snowhedgerow.png`,null,{soldat:-2,tank:-2},true,false,true,false,false,false," ")
+        super(`images/snow/h_snowhedgerow.png`,null,{Soldat:-2,Tank:-2},true,false,true,false,false,false," ")
     }
 }
 
@@ -220,7 +220,7 @@ export class SnowPond extends CaseGenerique {
 }
 export class SnowBunker extends CaseGenerique{
     constructor (orientation){
-        super(test2("snow","o_wbunker",orientation),null,{soldat:-1,tank:-2},true,true,true)
+        super(test2("snow","o_wbunker",orientation),null,{Soldat:-1,Tank:-2},true,true,true)
     }
 }
 export class SnowDragonTeeth extends CaseGenerique{

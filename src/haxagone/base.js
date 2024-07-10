@@ -1,26 +1,27 @@
-import { CaseGenerique, test3, test6 } from "../divers/Generique";
+import { CaseGenerique,test3, test6 } from "../divers/Generique";
 import { Medal } from "./highlight";
 import { SnowAirField, SnowAirFieldX, SnowBarracks, SnowBunker, SnowCamp, SnowCemetery, SnowChurch, SnowDam, SnowDepot, SnowDragonTeeth, SnowFactory, SnowForest, SnowFortress, SnowHedgerow, SnowHill, SnowLakeA, SnowLakeB, SnowLakeC, SnowLightHouse, SnowMarshes, SnowMountain, SnowPond, SnowRiverBranchLeft, SnowRiverBranchRight, SnowRiverY, SnowRiversCurve, SnowRiversRight, SnowRoadBranchLeft, SnowRoadBranchRight, SnowRoadCurve, SnowRoadHillCurve, SnowRoadHillRight, SnowRoadRight, SnowRoadX, SnowRoadY, SnowStation, SnowTrainBranchLeft, SnowTrainBranchRight, SnowTrainCurve, SnowTrainRight, SnowTrainX, SnowTrainXRoad, SnowVillage } from "./snow";
 import { AirField, AirFieldX, Barracks, Camp, Casemate, Cemetery, Church, Dam, Depot, Factory, Ford, Fortress, LakeA, LakeB, LakeC, LightHouse, Loco, Marshes, Mountain, Pond, Pontoon, RailBridge, RiverBranchLeft, RiverBranchRight, RiverY, RoadBlock, RoadBranchLeft, RoadBranchRight, RoadCurve, RoadHillCurve, RoadHillRight, RoadRight, RoadX, RoadY, Station, TrainBranchLeft, TrainBranchRight, TrainCurve, TrainRight, TrainX, TrainXRoad, Wagon } from "./terrain";
 
+
 export class Country extends CaseGenerique {
     constructor(){
-        super(`images/base/h_country-1-1.png`,null,{soldat:-1,tank:-1},false,true,false,false)
+        super(`images/base/h_country-1-1.png`,null,{Soldat:-1,Tank:-1},false,true,false,false)
     }
 }
 export class SandBag extends CaseGenerique {
     constructor(orientation){
-        super(`images/base/${orientation ?"o_sand1":"o_sand2"}.png`,orientation,{soldat:-1,tank:-1},false,true,false,false,"images/cards/base/sandbags-fr.png")
+        super(`images/base/${orientation ?"o_sand1":"o_sand2"}.png`,orientation,{Soldat:-1,Tank:-1},false,true,false,false,"images/cards/base/sandbags-fr.png")
     }
 }
 export class Wire extends CaseGenerique{
     constructor (){
-        super("images/base/o_wire.png",null,{soldat:-1},false,false,false,false,)
+        super("images/base/o_wire.png",null,{Soldat:-1},false,false,false,{Soldat:true})
     }
 }
 export class Hedgehow extends CaseGenerique{
     constructor (){
-        super("images/base/o_hedgehog.png",false,true,false,false,false)
+        super("images/base/o_hedgehog.png",false,true,false,false,false,{Tank:true})
     }
 }
 export class Hedgerow extends CaseGenerique{
@@ -30,25 +31,25 @@ export class Hedgerow extends CaseGenerique{
 }
 export class Bunker extends CaseGenerique{
     constructor (){
-        super("images/base/o_bunker.png",null,{soldat:-1,tank:-2},true,true,true)
+        super("images/base/o_bunker.png",null,{Soldat:-1,Tank:-2},true,true,true)
     }
 }
 
 export class Hills extends CaseGenerique {
     constructor (){
-        super("images/base/h_hills.png",null,{soldat:-1,tank:-1},false,false,true,true,"images/cards/base/hill-fr.png",false,"brightness-[1.20] saturate-[0.6] ")
+        super("images/base/h_hills.png",null,{Soldat:-1,Tank:-1},false,false,true,true,"images/cards/base/hill-fr.png",false,"brightness-[1.20] saturate-[0.6] ",true)
     }
 }
 
 export class Forest extends CaseGenerique {
     constructor (hover){
-        super("images/base/h_forest.png",null,{soldat:-1,tank:-2},true,false,true,true,"images/cards/base/forest-fr.png",false,"brightness-[1.40] saturate-[0.4]")
+        super("images/base/h_forest.png",null,{Soldat:-1,Tank:-2},true,false,true,true,"images/cards/base/forest-fr.png",false,"brightness-[1.40] saturate-[0.4]")
     }
 }
 
 export class Village extends CaseGenerique{
     constructor() {
-        super("images/base/h_village.png",null,{soldat:-1,tank:-2},true,false,true,true,"images/cards/base/village-fr.png",false,"")
+        super("images/base/h_village.png",null,{Soldat:-1,Tank:-2},true,false,true,true,"images/cards/base/village-fr.png",false,"")
     }
 }
 

@@ -58,6 +58,6 @@ export function ReturnArmy(unit, nb) {
     } else if (unit instanceof ArtillerieAllies) {
         return { hexagone: new ArtillerieAllies(nb), orientation: 2, max: 4 };
     } else {
-        return { hexagone: new Country(), orientation: 0, max: 0 }; // default case
+        return { hexagone: new SoldatAxis(4),orientation: 4, max: 4 }; // default case
     }
 }

@@ -39,13 +39,13 @@ export class SoldatGenerique  {
         if(this._nombre === 4){ 
             return (
             <div className="flex  w-full">
-                <div className={`absolute ${this._type === "Char"?"top-2":"top-0"} w-full`}>
+                <div className={`absolute ${this._type === "Tank"?"top-2":"top-0"} w-full`}>
                     <div className="flex flex-row center">
                         {elem}
                         {elem}
                     </div>
                 </div>
-                <div className={`absolute ${this._type === "Char"?"top-11":"top-9"}  z-[40]`}>
+                <div className={`absolute ${this._type === "Tank"?"top-11":"top-9"}  z-[40]`}>
                     <div className="flex flex-row center">                    
                         {elem}
                         {elem}
@@ -102,7 +102,7 @@ export class SoldatGenerique  {
 }
 
 export class CaseGenerique {
-    constructor(image,orientation,malus,deplacmentmax,ignoreflag,lineofsight,byentering,imageexplicatif,hover,className ) {
+    constructor(image,orientation,malus,deplacmentmax,ignoreflag,lineofsight,byentering,imageexplicatif,hover,className,isUpperCase ) {
         this._orientation = orientation;
         this._image = image;
         this._malus = malus ? malus :null;
@@ -113,6 +113,7 @@ export class CaseGenerique {
         this._imageexplicatif = imageexplicatif ? imageexplicatif : null;
         this._hover = hover ? hover : null;
         this._className = className ? className : null; 
+        this._isUpperCase = isUpperCase ? isUpperCase : false;
 
     }
 
@@ -357,8 +358,10 @@ export function showPortee(grille,portée,posx,posy,dés,deplacement,pathFinding
         betterPush(posx+4,posy+4,5);
     }
     if(!pathFinding){return VerList(list)}
+    
     let list2 = []
     VerList(list).forEach(item=>{
+        
         let path = jkstraPathFinding(grille.grille,{x:posx,y:posy},item)
         if(path !== null && path.length <= portée){
             list2.push(item)
@@ -454,15 +457,10 @@ export function VerificationLineOfSight(x,y,x2,y2,grille){
         }
         
         let case1 = grille.grille[cond2[0].x][cond2[0].y]
-        let blockedbycase1 = (case1.case && case1.case._lineofsight ) || !!case1.unité;
+        let blockedbycase1 = (case1 && case1.case && case1.case._lineofsight ) || (case1 && !!case1.unité);
         let case2 = grille.grille[cond2[1].x][cond2[1].y]
-        let blockedbycase2 = (case2.case && case2.case._lineofsight ) || !!case2.unité;
-        if(!blockedbycase1 || !blockedbycase2){
-            
-            console.log(cond2[0],cond2[1])
-            console.log(x2,y2)
-            console.log(x-x2,y-y2,x2%2, y2%2,x%2,y%2)
-        }
+        let blockedbycase2 = (case2 && case2.case && case2.case._lineofsight ) || (case2 && !!case2.unité);
+
         if(blockedbycase1 && blockedbycase2){
             return false
         }else{
@@ -485,7 +483,7 @@ export function switchResult(unité,Star,Grenade){
         case 3:
             return {result:"Soldat",dice:unité._type === "Soldat"};
         case 4:
-            return {result:"Char",dice:unité._type === "Char"};
+            return {result:"Tank",dice:unité._type === "Tank"};
         case 5:
             return {result:"Flag",dice:false}
         case 6:

@@ -5,7 +5,7 @@ export const ListCard = [
     // titre,imageurl,nbunit,zone,type
     new CardGenerique("Choisir une carte","back-fr"),
     new CardGenerique("Attaque aérienne","air-power-fr",0,0,0,0,true,true,false),
-    new CardGenerique("Assault de blindés","armor-assault-fr",4,"ALL","Char",false,false,false,true),
+    new CardGenerique("Assault de blindés","armor-assault-fr",4,"ALL","Tank",false,false,false,true),
     new CardGenerique("Tir d'artillerie","artillery-bombard-fr","ALL","ALL","Artillerie"),
     new CardGenerique("Assaut gauche","assault-left-fr","ALL",1,"ALL"),
     new CardGenerique("Assaut centre","assault-center-fr","ALL",2,"ALL"),
@@ -17,7 +17,7 @@ export const ListCard = [
     new CardGenerique("Infiltration","behind-enemy-lines-fr",1,"ALL","Soldat",false),
     new CardGenerique("Combat rapproché","close-assault-fr",0,0,0,0,false,false,true),
     new CardGenerique("Consolidation de position","dig-in-fr",4),
-    new CardGenerique("Ordre du QG","direct-hq-fr",4,"ALL","Char","Soldat"),
+    new CardGenerique("Ordre du QG","direct-hq-fr",4,"ALL","Tank","Soldat"),
     new CardGenerique("Fusillade","firefight-fr",4,"ALL","ALL",false,false,false,true),
     new CardGenerique("Attaque frontale","general-advance-fr",2,"ALL","ALL"),
     new CardGenerique("Assault d'infanterie","infantry-assault-fr","ALL","ALL","Soldat"),
@@ -67,6 +67,7 @@ export function AirPower(grille,setGrille,x,y,action){
     localgrille2.grille[x][y] = {case:f.case,defense:f.defense,unité:f.unité,action:action,highlight:null,select:f.unité._camp === "Allies" ? new Target(2) : new Target(1)}
     setGrille(localgrille2);
 }
+
 export function Barrage(grille,setGrille,x,y,action){
     let localgrille = {...grille};
     let localgrille2 = {...grille};

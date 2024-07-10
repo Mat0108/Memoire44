@@ -8,6 +8,7 @@ import {PegasusBridge,PointeDuHoc,SainteMereEglise,SwordBearch,OmahaBeach,MontMo
 import { Link, useParams } from 'react-router-dom';
 import { LigneDeMire } from "./Testing/LigneDeMire";
 import { LigneDeMire2 } from "./Testing/LigneDeMire2";
+import { Deplacement } from "./Testing/Deplacement";
 
 
 export function loadScenario(scenario){
@@ -40,7 +41,8 @@ const listScenario = [
     {name:" Testing ",url:"Scenariotest",image:"Scenariovide"},
     {name:"Scenario de test",url:"Scenariotest",image:"/test/Scenariotest"},
     {name:"Ligne de Mire",url:"LigneDeMire",image:"/test/LigneDeMire"},
-    {name:"Ligne de Mire",url:"LigneDeMire2",image:"/test/LigneDeMire2"},
+    {name:"Ligne de Mire",url:"LigneDeMire2",image:"/test/LigneDeMire"},
+    {name:"Deplacement",url:"Deplacement",image:"/test/Scenariotest"},
     
 ]
 export const SelecteurScenario = ()=>{
@@ -98,6 +100,8 @@ export function ReturnScenario(scenarioname){
             return LigneDeMire;
         case "LigneDeMire2":
             return LigneDeMire2;
+        case "Deplacement":
+            return Deplacement;
         default:
             return Scenariovide;
     }

@@ -10,7 +10,7 @@ export class SoldatAxis extends SoldatGenerique {
 export class CharAxis extends SoldatGenerique {
     constructor(nb,portée,deplacement){
         let orientation = true;
-        super(`images/base/${orientation ? "u_gertank_top":"u_gertank_bottom"}.png`,nb ? nb : 3,portée ? portée : [3,3,3],deplacement ? deplacement:[1,1,1],"w-[40%]","Char","Axis")
+        super(`images/base/${orientation ? "u_gertank_top":"u_gertank_bottom"}.png`,nb ? nb : 3,portée ? portée : [3,3,3],deplacement ? deplacement:[1,1,1],"w-[40%]","Tank","Axis")
     }
 }
 
