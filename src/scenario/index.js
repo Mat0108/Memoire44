@@ -9,6 +9,7 @@ import { Link, useParams } from 'react-router-dom';
 import { LigneDeMire } from "./Testing/LigneDeMire";
 import { LigneDeMire2 } from "./Testing/LigneDeMire2";
 import { Deplacement } from "./Testing/Deplacement";
+import { LigneDeMire3 } from "./Testing/LigneDeMire3";
 
 
 export function loadScenario(scenario){
@@ -42,7 +43,8 @@ const listScenario = [
     {name:"Scenario de test",url:"Scenariotest",image:"/test/Scenariotest"},
     {name:"Ligne de Mire",url:"LigneDeMire",image:"/test/LigneDeMire"},
     {name:"Ligne de Mire",url:"LigneDeMire2",image:"/test/LigneDeMire"},
-    {name:"Deplacement",url:"Deplacement",image:"/test/Scenariotest"},
+    {name:"Ligne de Mire",url:"LigneDeMire3",image:"/test/LigneDeMire"},
+    {name:"Deplacement",url:"Deplacement",image:"/test/Deplacement"},
     
 ]
 export const SelecteurScenario = ()=>{
@@ -100,6 +102,8 @@ export function ReturnScenario(scenarioname){
             return LigneDeMire;
         case "LigneDeMire2":
             return LigneDeMire2;
+        case "LigneDeMire3":
+            return LigneDeMire3;
         case "Deplacement":
             return Deplacement;
         default:

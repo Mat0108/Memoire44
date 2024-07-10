@@ -418,7 +418,7 @@ export function VerificationLineOfSight(x,y,x2,y2,grille){
         
         if(x-x2>=0 && y-y2>=0){
             if(x2%2 === 1){
-                cond2 = [{x:x2+1,y:y2+1},{x:x2,y:y2+1}]
+                cond2 = [{x:x2+1,y:y2+1},{x:x2+1,y:y2}]
             }else{
                 cond2 = [{x:x2+1,y:y2},{x:x2,y:y2+1}]
             }  

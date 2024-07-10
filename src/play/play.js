@@ -10,6 +10,7 @@ import { AirPower, Barrage, CampAffichage, CardSelect} from '../divers/Card';
 import { useParams } from 'react-router';
 import { Hills, SandBag } from '../haxagone/base';
 import { FormControlLabel, Switch } from '@mui/material';
+import { RoadRight, RoadCurve, RoadHillRight, RoadHillCurve, RoadBranchRight,RoadBranchLeft,RoadX,RoadY  } from '../haxagone/terrain';
 
 
 export const Play =()=> {
@@ -324,12 +325,50 @@ export const Play =()=> {
     localgrille2.grille[posx][posy] = {case:localgrille2.grille[posx][posy].case,defense:null,unité:f.unité,action:null,highlight: null,select:action === 1 ? (cond ? new Attacking():null ):null}
     setGrille(localgrille2)
   }
-  
+  function isRoad(item){
+    return grille.grille[item.x][item.y].case instanceof RoadRight || 
+    grille.grille[item.x][item.y].case instanceof RoadCurve || 
+    grille.grille[item.x][item.y].case instanceof RoadHillRight || 
+    grille.grille[item.x][item.y].case instanceof RoadHillCurve || 
+    grille.grille[item.x][item.y].case instanceof RoadBranchRight || 
+    grille.grille[item.x][item.y].case instanceof RoadBranchLeft || 
+    grille.grille[item.x][item.y].case instanceof RoadX || 
+    grille.grille[item.x][item.y].case instanceof RoadY
+  }
   //function pour montrée la portée de deplacmeent
   function ShowPortéeUnit(posx,posy,unité){
     RemoveHighlight();
     
     let list = showPortee(grille,Object.keys(unité._deplacement).length,posx,posy,null,unité._deplacement,true)
+    let updatedList = [...list]
+    
+    console.log(updatedList)
+    let roadPosition = [{x:posx,y:posy}]
+    
+    unité._deplacement.forEach((e,pos)=>{
+      let pts = pointproche(roadPosition.at(-1).x,roadPosition.at(-1).y)
+      pts.forEach(pt=>{
+        let exist = Object.keys(roadPosition.filter(f=>f.x === pt.x && f.y === pt.y)).length === 1
+        if(isRoad(pt) && !exist ){
+          roadPosition.push(pt);
+          if(pos === Object.keys( unité._deplacement).length-1){
+            console.log(roadPosition)
+            let Index = list.findIndex(f=>f.x === roadPosition.at(-1).x && f.y === roadPosition.at(-1).y)
+            console.log(Index)
+            console.log(updatedList[Index])
+            updatedList[Index].deplacement = 1;
+            let finalpts = pointproche(pt.x,pt.y);
+            finalpts.forEach(fpt=>{
+              let cond = Object.keys(list.filter(f=>f.x === fpt.x && f.y === fpt.y)).length === 1
+              if (!cond) {
+                  updatedList.push({x:fpt.x,y:fpt.y,dés:0,deplacement:2});
+              }
+            })
+          }
+
+        }
+      })
+    })
 
     let localgrille = {...grille};
     let localgrille2 = {...grille};
@@ -337,7 +376,7 @@ export const Play =()=> {
    
     localgrille.grille.forEach((e,pos)=>{
       e.forEach((f,pos2)=>{
-        list.forEach(item=>{
+        updatedList.forEach(item=>{
           if(item.x === pos && item.y === pos2 && !debug ? !f.unité :item.x === pos && item.y === pos2 && !f.unité){  
             localgrille2.grille[pos][pos2] = {case:f.case,defense:f.defense,unité:f.unité,action:()=>{MoveAction(posx,posy,pos,pos2,item.deplacement)},highlight: new Move(item.deplacement),select:f.select}
             
