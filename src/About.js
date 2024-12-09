@@ -1,6 +1,9 @@
+import { Link } from "react-router-dom"
+
 const About = ()=>{
-    return <div className="w-full h-full p-[10%] flex flex-col gap-4 center text-[18px] text-white text-justify">
+    return <div className="w-full h-full p-[10%] flex flex-col gap-4 center text-[18px] text-white text-justify relative">
         
+        <div className="absolute top-2 left-1"><Link to={`/play`} className="w-fit h-fit  py-1 px-3 rounded-full text-white bg-green text-3xl text-center">{"←"}</Link> </div>
         <p className="text-[26px] pt-4">Mémoire 44 Fan Game - Avis de non-propriété</p>
 
         <p>Ce fan game basé sur le jeu de société "Mémoire 44" de Days of Wonder. Il est important de noter que ce projet est entièrement non officiel et n'est pas approuvé ni soutenu par Days of Wonder, l'éditeur du jeu "Mémoire 44". Je tiens à souligner que je n'ai aucun droit ni aucune autorisation pour utiliser la propriété intellectuelle de "Mémoire 44" dans ce fan game.

@@ -8,6 +8,9 @@ import { Play } from './play/play';
 import { CreateScenario } from './scenario/createScenario';
 import Home from './Home';
 import About from './About';
+import Progress from './Progress'
+import Tuto from './scenario/tuto';
+
 const App = ()=>{
     return (
     <div className="App w-screen h-screen bg-gray-dark " key="main">
@@ -21,6 +24,8 @@ const App = ()=>{
           <Route path="/scenario/:name/:debug" element={<Play />}></Route>
           <Route path="/create" element={<CreateScenario/>}></Route>
           <Route path="/about" element={<About/>}></Route>
+          <Route path="/progress" element={<Progress/>}></Route>
+          <Route path="/tuto" element={<Tuto/>}></Route>
         </Routes>
  
       </Router>   

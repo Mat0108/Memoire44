@@ -11,6 +11,7 @@ import { useParams } from 'react-router';
 import { Hills, SandBag } from '../haxagone/base';
 import { FormControlLabel, Switch } from '@mui/material';
 import { RoadRight, RoadCurve, RoadHillRight, RoadHillCurve, RoadBranchRight,RoadBranchLeft,RoadX,RoadY  } from '../haxagone/terrain';
+import { Link } from 'react-router-dom';
 
 
 export const Play =()=> {
@@ -935,6 +936,9 @@ export const Play =()=> {
      const Modal = useMemo(() => <div className='absolute top-0 '>{modal}</div>, [modal])
      return (
       <div className="w-full h-full relative " >
+        <div className="absolute top-0 right-0">
+          <Link to="/tuto" className="w-fit h-[50px] mr-10 mt-10 relative p-2 flex flex-row bg-gray  rounded-lg">Tutoriel</Link>
+        </div>
         <div className='absolute top-0 flex flex-row'>
           {global} 
           <div className='flex flex-col'>

@@ -55,21 +55,26 @@ export const SelecteurScenario = ()=>{
     },[image])
     const {debug} = useParams();
     return (
-    <div className="h-screen w-screen flex flex-row bg-gray">
-        <div className="w-[500px] h-full overflow-auto bg-gray border-r-4 border-black">{listScenario.map((e,pos)=>{
-        return <div key={pos} onMouseEnter={()=>{setImage(e.image);setUrl(e.url)}}  className={`text-left p-2 w-full bg-gray  h-[50px] text-2xl ${e.image === "Scenariovide" ? "text-center":"bg-lightgrey px-8"}`}>{e.name}</div>})}
-        {process.env.NODE_ENV !=="production" && <> <div onMouseEnter={()=>{setImage("Scenariovide")}} className={`text-left p-2 w-full bg-gray  h-[50px] text-2xl text-center`}>Createur de scenario</div>
-        <div onMouseEnter={()=>{setImage("Scenariovide")}} className={`text-left p-2 w-full bg-lightgrey h-[50px] text-2xl px-8 text-center`}><Link to={"/create"}>Go</Link></div></>}
-    
-        <div onMouseEnter={()=>{setImage("Scenariovide")}} className={`text-left p-2 w-full bg-gray  h-[50px] text-2xl px-8 text-center`}><Link to={"/about"}>A propos</Link></div>
-        </div>
-        <div className="w-[1200px] h-full bg-gray px-4  flex flex-col center space-2">
-            {LoadImage}  
-            {image === "Scenariovide" ? <div className="w-[180px] h-[60px] mt-[30px]"></div>: <Link  to={`/scenario/${url}/${debug ?? ""}`} className="w-[180px] h-[60px] mt-[30px] p-2 rounded-3xl text-white bg-green text-2xl text-center">Play</Link>}
-          
-        </div>  
+        <div className="h-screen w-screen flex flex-row bg-gray relative">
+            <div className="w-[500px] h-full overflow-auto bg-gray border-r-4 border-black">{listScenario.map((e,pos)=>{
+            return <div key={pos} onMouseEnter={()=>{setImage(e.image);setUrl(e.url)}}  className={`text-left p-2 w-full bg-gray  h-[50px] text-2xl ${e.image === "Scenariovide" ? "text-center":"bg-lightgrey px-8"}`}>{e.name}</div>})}
+            {process.env.NODE_ENV !=="production" && <> <div onMouseEnter={()=>{setImage("Scenariovide")}} className={`text-left p-2 w-full bg-gray  h-[50px] text-2xl text-center`}>Createur de scenario</div>
+            <div onMouseEnter={()=>{setImage("Scenariovide")}} className={`text-left p-2 w-full bg-lightgrey h-[50px] text-2xl px-8 text-center`}><Link to={"/create"}>Go</Link></div></>}
         
-    </div>)
+            <div onMouseEnter={()=>{setImage("Scenariovide")}} className={`text-left p-2 w-full bg-gray  h-[50px] text-2xl px-8 text-center`}><Link to={"/about"}>A propos</Link></div>
+            </div>
+            <div className="relative w-[1200px] h-full bg-gray px-4  flex flex-col center space-2">
+                <div className="absolute w-full h-fit top-0 h-[60px] flex center gap-2  ">
+                    <Link  to={`/about`} className="w-[180px] h-fit mt-[10px] py-1 px-2 rounded-xl text-white bg-blue text-2xl text-center">A propos</Link>
+                    <Link  to={`/progress`} className="w-fit h-fit mt-[10px] py-1 px-5 rounded-xl text-white bg-blue text-2xl text-center">Progression du dévellopement</Link>
+                
+                </div>
+                {LoadImage}  
+                {image === "Scenariovide" ? <div className="w-[180px] h-[60px] mt-[30px]"></div> : <Link  to={`/scenario/${url}/${debug ?? ""}`} className="w-[180px] h-[60px] mt-[30px] p-2 rounded-3xl text-white bg-green text-2xl text-center">Play</Link>}
+            
+            </div>  
+            
+        </div>)
 }
 
 export function ReturnScenario(scenarioname){

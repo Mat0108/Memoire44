@@ -26,8 +26,8 @@ export const MontMouchet= {
        {x:0,y:12,contenu:{case: null,bunker: null,defense: null, unité:null,medal:null,action:null,highlight:null,select:null}}, 
     
        {x:1,y:0,contenu:{case: new Forest(),bunker: null,defense: null, unité:null,medal:null,action:null,highlight:null,select:null}}, 
-       {x:1,y:1,contenu:{case: new Forest(),bunker: null,defense: null, unité:null,medal:null,action:null,highlight:null,select:null}}, 
-       {x:1,y:2,contenu:{case: null,bunker: null,defense: null, unité:new CharAxis(4),medal:null,action:null,highlight:null,select:null}}, 
+       {x:1,y:1,contenu:{case: null,bunker: null,defense: null, unité:new CharAxis(4),medal:null,action:null,highlight:null,select:null}}, 
+       {x:1,y:2,contenu:{case: null,bunker: null,defense: null, unité:new SoldatAxis(),medal:null,action:null,highlight:null,select:null}}, 
        {x:1,y:3,contenu:{case: new Village(),bunker: null,defense: null, unité:null,medal:null,action:null,highlight:null,select:null}}, 
        {x:1,y:4,contenu:{case: null,bunker: null,defense: null, unité:null,medal:null,action:null,highlight:null,select:null}}, 
        {x:1,y:5,contenu:{case: new Village(),bunker: null,defense: null, unité:null,medal:null,action:null,highlight:null,select:null}}, 
